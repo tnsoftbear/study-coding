@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="blk">
+    <input type="radio" id="None" name="ss" value="None" checked="checked"> None</br>
+    <input type="radio" id="Lax" name="ss" value="Lax"> Lax</br>
+    <input type="radio" id="Strict" name="ss" value="Strict"> Strict</br>
+    <button id = 'btn'>Login</button>
+    </div>
+    <img src = '/img.php'>
+
+    <script>
+        const blk = document.getElementById("blk");
+
+        if (document.cookie) {
+            blk.style.display = "none";
+        }
+
+        btn.addEventListener("click", e => {
+            const ss = document.querySelector('input[name="ss"]:checked').value;
+            fetch("/login.php?ss=" + ss, {"method":"POST"})
+                .then(a=>a.text())
+                .then(console.log)
+        })
+    </script>
+</body>
+</html>
