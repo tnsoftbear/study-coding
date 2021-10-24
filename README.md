@@ -17,7 +17,7 @@ Currently includes solutions for tasks of exercism.com and codewars.com case stu
 
 ## ReactJs
 
-My experiments with react js. It consists code written in JS and TS as well.
+* [My experiments with react js](https://github.com/tnsoftbear/study-coding/tree/master/reactjs/own/tic-tak-toe-tutorial). It consists code written in JS and TS as well.
 
 ## Rust
 
