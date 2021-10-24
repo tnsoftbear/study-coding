@@ -1,5 +1,7 @@
 # Study coding own samples
 
+ #study #bash #go #js #javascript #reactjs #rust #scala #ts #typescript
+
 This repository contains different sources written by me as result of studing different programming languages and coding practices.
 
 ## Bash
