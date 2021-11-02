@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	token := "ahgpohik2pvkqe80k0cdvh7mk6"
+	token := "62u05k7rubiigheghn8kvpq394"
 	url := "https://ringzer0ctf.com/challenges/14"
 
 	c := colly.NewCollector()
@@ -21,18 +21,18 @@ func main() {
 		re := regexp.MustCompile(`----- BEGIN MESSAGE -----\s*([01]+)\s*----- END MESSAGE -----`)
 		matches := re.FindAllStringSubmatch(e.Text, -1)
 		inputBinString := matches[0][1]
-		charCount := len(inputBinString) / 8
-		var bytes []byte
+		charTotal := len(inputBinString) / 8
+		var chars []byte
 		var i int
-		for i = 0; i < charCount; i++ {
+		for i = 0; i < charTotal; i++ {
 			charBinString := inputBinString[i*8:(i+1)*8]
 			if charInt, err := strconv.ParseInt(charBinString, 2, 8); err != nil {
 				fmt.Print(err)
 			} else {
-				bytes = append(bytes, byte(charInt))
+				chars = append(chars, byte(charInt))
 			}
 		}
-		var input = string(bytes)
+		var input = string(chars)
 		h512 := sha512.New()
 		io.WriteString(h512, input)
 		url2 := fmt.Sprintf("%s/%x", url, h512.Sum(nil))
