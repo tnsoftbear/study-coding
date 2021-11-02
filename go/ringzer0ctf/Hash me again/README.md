@@ -2,11 +2,18 @@
 
 Solution for [Coding Challenge #14](https://ringzer0ctf.com/challenges/14)
 
-> You have 2 seconds to hash this message using sha512 algorithm
-> Send the answer back using https://ringzer0ctf.com/challenges/14/[your_hash]
-> ----- BEGIN MESSAGE -----
-> 001101000100000100110000010000010100011001101100001101110100011001
-> ...
+## Task
+
+You have 2 seconds to hash this message using sha512 algorithm
+Send the answer back using https://ringzer0ctf.com/challenges/14/[your_hash]
+
+```txt
+----- BEGIN MESSAGE -----
+001101000100000100110000010000010100011001101100001101110100011001
+...
+```
+
+## Solution description
 
 This solution splits zero-one input to 8 character slices, because we want to represent it as array of binary strings, where each character represents a bit and 8 characters represent a string of binary byte.  
 We transform this string of binary byte to integer and use it to represent ASCII character.  

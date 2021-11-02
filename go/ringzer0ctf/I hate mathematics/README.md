@@ -4,11 +4,14 @@ Solution for ["I hate mathematics"](https://ringzer0ctf.com/challenges/32) chall
 
 ## Task
 
-> You have 2 seconds to send the answer
-> Send the answer back using https://ringzer0ctf.com/challenges/32/[answer]
-> ----- BEGIN MESSAGE -----
-> 6472 + 0x1e06 - 1010111101010 = ?
-> ----- END MESSAGE -----
+You have 2 seconds to send the answer
+Send the answer back using https://ringzer0ctf.com/challenges/32/[answer]
+
+```txt
+----- BEGIN MESSAGE -----
+6472 + 0x1e06 - 1010111101010 = ?
+----- END MESSAGE -----
+```
 
 ## Solution description
 
