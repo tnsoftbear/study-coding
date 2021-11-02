@@ -2,11 +2,23 @@
 
 Solution for ["I hate mathematics"](https://ringzer0ctf.com/challenges/32) challenge
 
+## Task
+
+> You have 2 seconds to send the answer
+> Send the answer back using https://ringzer0ctf.com/challenges/32/[answer]
+> ----- BEGIN MESSAGE -----
+> 6472 + 0x1e06 - 1010111101010 = ?
+> ----- END MESSAGE -----
+
+## Solution description
+
 "github.com/gocolly/colly" go library is used for fetching site data and sending calculation result as well.
 
 This challenge displays ariphmetic expression that consists of decimal, hexadecimal and binary number. To solve it, we need to parse this expression input to numeric strings, and convert them to integers in decimal numeric system on base 10. Then calculate expression and post it to challenge url.
 
 ## Other solutions
+
+[Bash solution article](http://linusson.org/2018/11/09/i-hate-mathematics-the-challenge-not-the-science/)
 
 ### Bash-1
 
