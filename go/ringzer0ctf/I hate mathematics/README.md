@@ -4,7 +4,7 @@ Solution for ["I hate mathematics"](https://ringzer0ctf.com/challenges/32) chall
 
 ## Task
 
-You have 2 seconds to send the answer
+You have 2 seconds to send the answer  
 Send the answer back using https://ringzer0ctf.com/challenges/32/[answer]
 
 ```txt
@@ -19,7 +19,7 @@ Send the answer back using https://ringzer0ctf.com/challenges/32/[answer]
 
 This challenge displays ariphmetic expression that consists of decimal, hexadecimal and binary number. To solve it, we need to parse this expression input to numeric strings, and convert them to integers in decimal numeric system on base 10. Then calculate expression and post it to challenge url.
 
-## Other solutions
+## Other solutions (not mine)
 
 [Bash solution article](http://linusson.org/2018/11/09/i-hate-mathematics-the-challenge-not-the-science/)
 

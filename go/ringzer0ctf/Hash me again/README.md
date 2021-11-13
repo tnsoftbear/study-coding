@@ -4,7 +4,7 @@ Solution for [Coding Challenge #14](https://ringzer0ctf.com/challenges/14)
 
 ## Task
 
-You have 2 seconds to hash this message using sha512 algorithm
+You have 2 seconds to hash this message using sha512 algorithm  
 Send the answer back using https://ringzer0ctf.com/challenges/14/[your_hash]
 
 ```txt
@@ -26,7 +26,7 @@ Use `github.com/gocolly/colly` library for:
 * sending the determined hash result to respective challenge url;
 * scrapping the flag from the result page with success response.
 
-## Others solutions
+## Others solutions (not mine)
 
 ### Bash
 
