@@ -10,7 +10,7 @@ Currently includes solutions for tasks of exercism.com case studies and my own e
 
 ## Go
 
-Currently includes solutions for tasks of exercism.com and codewars.com case studies and my own experiments.
+Currently includes solutions for tasks of exercism.com, codewars.com, spoj.com, ringzer0ctf.com case studies and my own experiments.
 
 ## JavaScript
 
