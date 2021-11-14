@@ -9,13 +9,12 @@ import (
 
 const AREA = 1000001
 const IS_PRIME = 1
-const NOT_PRIME = -1
+const NOT_PRIME = 2
 const UNKNOWN = 0
 const DROPPED = 0
 
-var numberStatuses [AREA]int8
-var primeNumbers []int64	
-var allResults [][]int64
+var numberStatuses [AREA]uint8
+var primeNumbers []uint32	
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 var writer *bufio.Writer = bufio.NewWriter(os.Stdout)
@@ -23,7 +22,7 @@ var writer *bufio.Writer = bufio.NewWriter(os.Stdout)
 func printf(f string, a ...interface{}) { fmt.Fprintf(writer, f, a...) }
 func scanf(f string, a ...interface{})  { fmt.Fscanf(reader, f, a...) }
 
-func produceNextPrime() int64 {
+func produceNextPrime() uint32 {
 	highestPrime := primeNumbers[len(primeNumbers)-1]
 	possiblyPrime := suggestNextPossiblyPrime(highestPrime)
 mainloop:
@@ -42,7 +41,7 @@ mainloop:
 	}
 }
 
-func suggestNextPossiblyPrime(current int64) int64 {
+func suggestNextPossiblyPrime(current uint32) uint32 {
 	possiblyPrime := current + 1
 	for {
 		if isUnknownStatus(possiblyPrime) {
@@ -52,15 +51,15 @@ func suggestNextPossiblyPrime(current int64) int64 {
 	}
 }
 
-func registerPrime(prime int64) {
+func registerPrime(prime uint32) {
 	primeNumbers = append(primeNumbers, prime)
 	setIsPrime(prime)
 	unsetCompositesOfPrimeInNumberStatuses(prime)
 }
 
-func unsetCompositesOfPrimeInNumberStatuses(prime int64) {
-	var len = int64(len(numberStatuses))
-	var i, k int64
+func unsetCompositesOfPrimeInNumberStatuses(prime uint32) {
+	var len = uint32(len(numberStatuses))
+	var i, k uint32
 	k = prime
 	for i = 1; k < len; i++ {
 		if isUnknownStatus(k) {
@@ -70,20 +69,20 @@ func unsetCompositesOfPrimeInNumberStatuses(prime int64) {
 	}
 }
 
-func setIsPrime(number int64) {
+func setIsPrime(number uint32) {
 	numberStatuses[number-1] = IS_PRIME
 }
 
-func setNotPrime(number int64) {
+func setNotPrime(number uint32) {
 	numberStatuses[number-1] = NOT_PRIME
 }
 
-func isUnknownStatus(number int64) bool {
+func isUnknownStatus(number uint32) bool {
 	return numberStatuses[number-1] == UNKNOWN
 }
 
-func findNextPrime(currentPrime int64) int64 {
-	var prevPrime int64
+func findNextPrime(currentPrime uint32) uint32 {
+	var prevPrime uint32
 	for _, prime := range primeNumbers {
 		if prevPrime == currentPrime {
 			return prime
@@ -93,17 +92,17 @@ func findNextPrime(currentPrime int64) int64 {
 	return produceNextPrime()
 }
 
-func runCase(min int64, max int64, caseI int) {
+func runCase(min uint32, max uint32, caseIdx int) {
+	var area [AREA]uint32
 	size := max - min + 1
-	var area [AREA]int64
-	var i, st int64
+	var i, st uint32
 	for i = 0; i < size; i++ {
 		area[i] = min + i
 	}
 	if (area[0] == 1) {
 		area[0] = DROPPED
 	}
-	var prime int64 = 2
+	var prime uint32 = 2
 	for {
 		if min%prime == 0 {
 			st = 0
@@ -122,39 +121,37 @@ func runCase(min int64, max int64, caseI int) {
 		}
 	}
 
-	allResults = append(allResults, []int64{})
-	for _, v := range area {
+	for i := 0; uint32(i) < size; i++ {
+		v := area[i]
 		if v != DROPPED {
-			allResults[caseI] = append(allResults[caseI], v)
+			printf("%d\n", v)
 		}
 	}
+	writer.Flush()
 }
 
 func main() {
 	setNotPrime(1)
 	registerPrime(2)
 	registerPrime(3)
-	// var startTime, endTime []int64
 	var caseCount int
-	var min, max int64
+	var min, max uint32
+	var mins, maxs [150]uint32
 
-	defer writer.Flush()
 	scanf("%d\n", &caseCount)
 	for i := 0; i < caseCount; i++ {
 		scanf("%d %d\n", &min, &max)
-		// startTime = append(startTime, time.Now().UnixMilli())
-		runCase(min, max, i)
-		// endTime = append(endTime, time.Now().UnixMilli())
+		mins[i] = min
+		maxs[i] = max
 	}
 
 	for i := 0; i < caseCount; i++ {
-		for _, v := range allResults[i] {
-			printf("%d\n", v)
-		}
+		// var startTime, endTime []uint32
+		// startTime = append(startTime, time.Now().UnixMilli())
+		runCase(mins[i], maxs[i], i)
+		// endTime = append(endTime, time.Now().UnixMilli())
+		// fmt.Printf("Iteration: %d, Elapsed time (sec): %d\n", i, (endTime[i] - startTime[i]))
 	}
-	// for i := 0; i < caseCount; i++ {
-	// 	fmt.Printf("Iteration: %d, Elapsed time (sec): %d\n", i, (endTime[i] - startTime[i]))
-	// }
 }
 
 // 2146483647 2147483647

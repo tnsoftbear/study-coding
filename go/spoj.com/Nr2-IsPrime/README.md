@@ -7,6 +7,7 @@
 
 ## Links
 
+* [Task: PRIME1 - Prime Generator](https://www.spoj.com/problems/PRIME1/)
 * [Primality test](https://en.wikipedia.org/wiki/Primality_test)
 * [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
 * [Волшебное решето Эратосфена](https://habr.com/ru/post/91112/)

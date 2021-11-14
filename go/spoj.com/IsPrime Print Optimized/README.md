@@ -2,8 +2,10 @@
 
 ## My solution
 
-Time: 0.95
-Mem: 50M
+[Task: PRINT - Prime Intervals](https://www.spoj.com/problems/PRINT/)
+
+Time: 0.71
+Mem: 15M
 
 It is based on Segmentation Sieve algorithm, see [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes).  
 IO reads and writes are optimized with help buffering provided by "bufio" library.  
