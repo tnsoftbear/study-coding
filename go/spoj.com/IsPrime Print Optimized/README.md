@@ -18,6 +18,10 @@ Use for testing the next min, max ranges:
 999800000 999900000  
 999700000 999800000  
 
+## OOP solution
+
+`segmented-sieve-oop.go` works slower to 10% and reads more memory
+
 ## Task Description
 
 In this problem you have to print all primes from given interval.
