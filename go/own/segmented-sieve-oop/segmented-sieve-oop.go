@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"time"
+	"github.com/tnsoftbear/"
 )
 
 const IS_PROFILING = true
@@ -213,7 +213,7 @@ func (ic *InputController) rangeByIndex(idx int) Range {
 	return ic.ranges[idx]
 }
 
-// --- MinMax OV ---
+// --- Range OV ---
 
 type Range struct {
 	min uint32
@@ -221,43 +221,6 @@ type Range struct {
 }
 
 // --- Profiler ---
-
-type Profiler struct {
-	isEnabled bool
-	startTime []int64
-	endTime   []int64
-}
-
-func (pr *Profiler) start() {
-	if !pr.isEnabled {
-		return
-	}
-	pr.startTime = append(pr.startTime, time.Now().UnixMilli())
-}
-
-func (pr *Profiler) end() {
-	if !pr.isEnabled {
-		return
-	}
-	pr.endTime = append(pr.endTime, time.Now().UnixMilli())
-}
-
-func (pr *Profiler) elapsedTime(idx int) int64 {
-	if !pr.isEnabled {
-		return 0
-	}
-	return pr.endTime[idx] - pr.startTime[idx]
-}
-
-func (pr *Profiler) printMyself() {
-	if !pr.isEnabled {
-		return
-	}
-	for idx := range pr.startTime {
-		printf(fmt.Sprintf("Iteration: %d, Elapsed time (sec): %d\n", idx, pr.elapsedTime(idx)))
-	}
-	writer.Flush()
-}
 
 // --- App ---
 
