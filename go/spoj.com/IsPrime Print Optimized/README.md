@@ -18,6 +18,13 @@ Use for testing the next min, max ranges:
 999800000 999900000  
 999700000 999800000  
 
+## Simplified solution
+
+`segmented-sieve-optimized-4.go` - ispired by [C++ v14 solution](https://github.com/rajonaust/SPOJ/blob/master/PRINT%20-%20Prime%20Intervals)
+
+Time: 0.47
+Mem: 14M
+
 ## OOP solution
 
 `segmented-sieve-oop.go` works slower to 10% and reads more memory
