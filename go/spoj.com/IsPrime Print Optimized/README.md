@@ -26,6 +26,8 @@ Use for testing the next min, max ranges:
 Time: 0.47
 Mem: 14M
 
+Run with inputs: `go run segmented-sieve-optimized-4.go < input.txt > primes.txt`
+
 ## Experiments
 
 ### OOP solution
@@ -38,6 +40,10 @@ Mem: 22M
 ### Predefined primes
 
 `segmented-sieve-optimized-3.go` - I prebuilt primes and put them into array. Soultion isn't accepted because exceed acceptable program size
+
+## Other solutions
+
+* [C++ v14, Time: 0.30, Mem: 5.3M](http://spoj-solutions.blogspot.com/2015/01/prime1-prime-generatorprint-prime.html)
 
 ## Task Description
 
