@@ -27,6 +27,30 @@ func (p *PrimeFinder) Construct(areaSize uint32, isResultOutput bool) {
 	p.registerPrime(3)
 }
 
+func (p *PrimeFinder) RunCase(minMax types.Range, caseIdx int, writer *bufio.Writer) {
+	var area *Area = &Area{}
+	area.Construct(minMax, p.areaSize)
+	p.startWith(2)
+	for {
+		area.Sieve(p.Value)
+		p.findNextPrime()
+		if area.IsPrimeOverPossible(p.Value) {
+			break
+		}
+	}
+
+	if p.isResultOutput {
+		area.PrintMyself(writer)
+	}
+}
+
+func (p *PrimeFinder) PrintMyself(prefix string, writer *bufio.Writer) {
+	fmt.Fprintf(writer, "%s Value: %d, primeNumbers: %v numberStatuses: %v\n", prefix, p.Value, p.primeNumbers, p.numberStatuses)
+	writer.Flush()
+}
+
+// --- private ---
+
 func (p *PrimeFinder) produceNextPrime() {
 	highestPrime := p.primeNumbers[len(p.primeNumbers)-1]
 	possiblyPrime := p.suggestNextPossiblyPrime(highestPrime)
@@ -102,26 +126,4 @@ func (p *PrimeFinder) findNextPrime() {
 
 func (p *PrimeFinder) startWith(init uint32) {
 	p.Value = init
-}
-
-func (p *PrimeFinder) PrintMyself(prefix string, writer *bufio.Writer) {
-	fmt.Fprintf(writer, "%s Value: %d, primeNumbers: %v numberStatuses: %v\n", prefix, p.Value, p.primeNumbers, p.numberStatuses)
-	writer.Flush()
-}
-
-func (p *PrimeFinder) RunCase(minMax types.Range, caseIdx int, writer *bufio.Writer) {
-	var area *Area = &Area{}
-	area.Construct(minMax, p.areaSize)
-	p.startWith(2)
-	for {
-		area.Sieve(p.Value)
-		p.findNextPrime()
-		if area.IsPrimeOverPossible(p.Value) {
-			break
-		}
-	}
-
-	if p.isResultOutput {
-		area.PrintMyself(writer)
-	}
 }

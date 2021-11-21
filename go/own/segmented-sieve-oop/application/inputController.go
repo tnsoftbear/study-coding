@@ -16,8 +16,6 @@ func (ic *InputController) Construct(reader *bufio.Reader) {
 	ic.reader = reader
 }
 
-func (ic *InputController) scanf(f string, a ...interface{}) { fmt.Fscanf(ic.reader, f, a...) }
-
 func (ic *InputController) Read() {
 	var min, max uint32
 	ic.scanf("%d\n", &ic.caseCount)
@@ -34,3 +32,5 @@ func (ic *InputController) RangeByIndex(idx int) types.Range {
 func (ic *InputController) CaseCount() int {
 	return ic.caseCount
 }
+
+func (ic *InputController) scanf(f string, a ...interface{}) { fmt.Fscanf(ic.reader, f, a...) }

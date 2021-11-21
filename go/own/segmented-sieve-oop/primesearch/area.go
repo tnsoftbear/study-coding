@@ -3,18 +3,18 @@ package primesearch
 import (
 	"fmt"
 	"bufio"
-	. "segmented-sieve-oop/types"
+	"segmented-sieve-oop/types"
 )
 
 type Area struct {
 	Size     uint32
 	Statuses []uint32
-	MinMax   Range
+	MinMax   types.Range
 }
 
 const DROPPED = 0
 
-func (a *Area) Construct(minMax Range, areaSize uint32) {
+func (a *Area) Construct(minMax types.Range, areaSize uint32) {
 	a.MinMax = minMax
 	a.Statuses = make([]uint32, areaSize)
 	var i uint32
@@ -25,10 +25,6 @@ func (a *Area) Construct(minMax Range, areaSize uint32) {
 	if a.Statuses[0] == 1 {
 		a.Statuses[0] = DROPPED
 	}
-}
-
-func (a *Area) calcSize() uint32 {
-	return a.MinMax.Max - a.MinMax.Min + 1
 }
 
 func (a *Area) IsPrimeOverPossible(prime uint32) bool {
@@ -65,4 +61,8 @@ func (a *Area) PrintMyself(writer *bufio.Writer) {
 		}
 	}
 	writer.Flush()
+}
+
+func (a *Area) calcSize() uint32 {
+	return a.MinMax.Max - a.MinMax.Min + 1
 }
