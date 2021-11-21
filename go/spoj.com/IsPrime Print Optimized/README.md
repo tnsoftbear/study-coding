@@ -4,6 +4,8 @@
 
 [Task: PRINT - Prime Intervals](https://www.spoj.com/problems/PRINT/)
 
+`segmented-sieve-optimized.go`
+
 Time: 0.71
 Mem: 15M
 
@@ -24,9 +26,18 @@ Use for testing the next min, max ranges:
 Time: 0.47
 Mem: 14M
 
-## OOP solution
+## Experiments
 
-`segmented-sieve-oop.go` works slower to 10% and reads more memory
+### OOP solution
+
+This is OOP style solution for `segmented-sieve-optimized.go`. I want to check overhead of decoupling logic to objects.
+
+Time: 0.89
+Mem: 22M
+
+### Predefined primes
+
+`segmented-sieve-optimized-3.go` - I prebuilt primes and put them into array. Soultion isn't accepted because exceed acceptable program size
 
 ## Task Description
 

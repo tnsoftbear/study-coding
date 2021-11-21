@@ -116,9 +116,7 @@ func runCase(min uint32, max uint32, caseIdx int) {
 		}
 
  		prime = findNextPrime(prime)
-		// printf("prime: %d max: %d\n", prime, max)
 		if prime*prime > max {
-			// printf("break on prime: %d max: %d\n", prime, max)
 			break
 		}
 	}
