@@ -41,6 +41,13 @@ Mem: 22M
 
 `segmented-sieve-optimized-3.go` - I prebuilt primes and put them into array. Soultion isn't accepted because exceed acceptable program size
 
+### Parallel calculations
+
+`segmented-sieve-parallel.go` is parallel version of `segmented-sieve-optimized-4.go`
+
+Time: 0.58, 0.61, 0.80
+Mem: 168M, 178M, 180M
+
 ## Other solutions
 
 * [C++ v14, Time: 0.30, Mem: 5.3M](http://spoj-solutions.blogspot.com/2015/01/prime1-prime-generatorprint-prime.html)
