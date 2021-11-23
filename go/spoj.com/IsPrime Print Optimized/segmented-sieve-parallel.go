@@ -96,8 +96,6 @@ func runCase(min uint32, max uint32, caseIdx byte, wg *sync.WaitGroup) {
 
 	completedCases[caseIdx] = PRINTED
 	ll("End case %d, completedCases: %v", caseIdx, completedCases)
-
-	wg.Done()
 }
 
 func buildInitialPrimes() {
@@ -131,7 +129,10 @@ func main() {
 	wg := new(sync.WaitGroup) // allocate memory for type and return pointer to it
 	wg.Add(int(caseCount))
 	for b = 0; b < caseCount; b++ {
-		go runCase(mins[b], maxs[b], b, wg)
+		go func(b byte) {
+			runCase(mins[b], maxs[b], b, wg)
+			wg.Done()
+		}(b)
 	}
 	wg.Wait()
 }

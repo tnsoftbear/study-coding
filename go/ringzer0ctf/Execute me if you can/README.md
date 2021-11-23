@@ -2,6 +2,27 @@
 
 Solution for ["Execute me if you can"](https://ringzer0ctf.com/challenges/121) challenge
 
+`testshell.c` executes shellcode. It is compiled by `gcc -fno-stack-protector -z execstack testshell.c -o testshell` in linux (wsl).
+
+If you look into `strace ./testshell` it writes to stdin ("0") file descriptor
+
+```c
+read(3, "\\xeb\\x4d\\x5e\\x66\\x83\\xec\\x0c\\x48"..., 512) = 508
+read(3, "", 512)                        = 0
+mprotect(0x55b9c5234000, 127, PROT_EXEC) = 0
+write(0, "Ce07Kd50Zv1z", 12Ce07Kd50Zv1z)            = 12
+```
+
+Thus we need to `bash -c ./testshell 0>&1`
+
+## Links
+
+* [Problem discussion](https://stackoverflow.com/questions/29593556/directing-shellcode-output-to-a-file-c)
+* [Execute shellcode from txt file](https://stackoverflow.com/questions/17842499/read-and-execute-shellcode-from-a-txt-file)
+* [Online Assembler and Disassembler](http://shell-storm.org/online/Online-Assembler-and-Disassembler/)
+* [Go: os/File](https://pkg.go.dev/os#File.Write)
+* [Go exec/Cmd](https://pkg.go.dev/os/exec#example-Cmd.Output)
+
 ## Task
 
 You have 1 second to execute this code and get the output.
