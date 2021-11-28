@@ -5,8 +5,7 @@ import (
 )
 
 func main() {
-	var app *application.App = &application.App{}
-	app.Run()
+	application.New().Run()
 }
 
 // 2146483647 2147483647

@@ -17,6 +17,10 @@ type App struct{
 	writer *bufio.Writer
 }
 
+func New() *App {
+	return &App{}
+}
+
 func (app *App) Run() {
 	app.reader = bufio.NewReader(os.Stdin)
 	app.writer = bufio.NewWriter(os.Stdout)

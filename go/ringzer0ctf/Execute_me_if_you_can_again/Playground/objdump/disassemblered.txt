@@ -1,0 +1,58 @@
+sc: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
+
+sc:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000400000 <main>:
+  400000:	eb 50                	jmp    400052 <main+0x52>
+  400002:	5e                   	pop    rsi
+  400003:	66 83 ec 0c          	sub    sp,0xc
+  400007:	48 89 e0             	mov    rax,rsp
+  40000a:	48 31 c9             	xor    rcx,rcx
+  40000d:	68 e6 e3 b0 3e       	push   0x3eb0e3e6
+  400012:	48 89 cf             	mov    rdi,rcx
+  400015:	80 c1 0c             	add    cl,0xc
+  400018:	40 8a 3e             	mov    dil,BYTE PTR [rsi]
+  40001b:	40 f6 d7             	not    dil
+  40001e:	40 88 38             	mov    BYTE PTR [rax],dil
+  400021:	48 ff c6             	inc    rsi
+  400024:	68 fc 48 de ec       	push   0xffffffffecde48fc
+  400029:	48 ff c0             	inc    rax
+  40002c:	e2 ea                	loop   400018 <main+0x18>
+  40002e:	2c 0c                	sub    al,0xc
+  400030:	48 89 c6             	mov    rsi,rax
+  400033:	68 96 d1 54 dd       	push   0xffffffffdd54d196
+  400038:	48 31 c0             	xor    rax,rax
+  40003b:	48 89 c7             	mov    rdi,rax
+  40003e:	40 b7 01             	mov    dil,0x1
+  400041:	04 01                	add    al,0x1
+  400043:	48 89 c2             	mov    rdx,rax
+  400046:	80 c2 0b             	add    dl,0xb
+  400049:	0f 05                	syscall 
+  40004b:	48 31 c0             	xor    rax,rax
+  40004e:	04 3c                	add    al,0x3c
+  400050:	0f 05                	syscall 
+  400052:	e8 ab ff ff ff       	call   400002 <main+0x2>
+  400057:	a6                   	cmps   BYTE PTR ds:[rsi],BYTE PTR es:[rdi]
+  400058:	ba ce a9 b3 a6       	mov    edx,0xa6b3a9ce
+  40005d:	af                   	scas   eax,DWORD PTR es:[rdi]
+  40005e:	86 b3 88 a8 b4 48    	xchg   BYTE PTR [rbx+0x48b4a888],dh
+  400064:	20 df                	and    bh,bl
+  400066:	ae                   	scas   al,BYTE PTR es:[rdi]
+  400067:	84 1f                	test   BYTE PTR [rdi],bl
+  400069:	2e 19 3c 4b          	sbb    DWORD PTR cs:[rbx+rcx*2],edi
+  40006d:	6b 8b ae 52 37 57 52 	imul   ecx,DWORD PTR [rbx+0x573752ae],0x52
+  400074:	f1                   	icebp  
+  400075:	d5                   	(bad)  
+  400076:	4d 68 82 8f 0d 4e    	rex.WRB push 0x4e0d8f82
+  40007c:	5b                   	pop    rbx
+  40007d:	52                   	push   rdx
+  40007e:	41                   	rex.B
+  40007f:	4e                   	rex.WRX
+  400080:	44 53                	rex.R push rbx
+  400082:	54                   	push   rsp
+  400083:	52                   	push   rdx
+  400084:	32                   	.byte 0x32
+  400085:	5d                   	pop    rbp

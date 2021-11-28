@@ -3,7 +3,7 @@ package main
 /**
  * This program downloads shellcode, converts it to binary format and save in file
  * Run linux tool for disassembling this binary shellcode:
- * $ ndisasm -b64 shellcode.txt
+ * $ ndisasm -b64 shellcode.bin
  */
 
 import (
@@ -11,6 +11,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+
 	"github.com/gocolly/colly"
 )
 
@@ -28,7 +29,7 @@ func grabShellcode(siteContent string) string {
 }
 
 func writeToFile(shellcode []byte) {
-	file, _ := os.Create("shellcode.txt")
+	file, _ := os.Create("shellcode.bin")
 	file.Write(shellcode)
 	file.Close()
 }

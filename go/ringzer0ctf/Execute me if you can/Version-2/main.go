@@ -1,17 +1,19 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"github.com/gocolly/colly"
 	"os"
 	"os/exec"
 	"regexp"
-	"github.com/gocolly/colly"
 )
 
-const PHPSESSID = "sjgbeb33698aj6sgi6ni99t8u6"
 const CHALLENGE_URL = "https://ringzer0ctf.com/challenges/121"
 const BEGIN_MARKER = "----- BEGIN SHELLCODE -----"
 const END_MARKER = "----- END SHELLCODE -----"
+
+var cookieHeader string
 
 func grabShellcode(siteContent string) string {
 	re := regexp.MustCompile(BEGIN_MARKER + `\s*(.+)\s*` + END_MARKER)
@@ -40,7 +42,7 @@ func execShellcodeFromFile() string {
 func sendResultAndReadFlag(result string) {
 	c2 := colly.NewCollector()
 	c2.OnRequest(func(r2 *colly.Request) {
-		r2.Headers.Set("Cookie", "PHPSESSID="+PHPSESSID)
+		r2.Headers.Set("Cookie", cookieHeader)
 	})
 	c2.OnHTML("html", func(e2 *colly.HTMLElement) {
 		re := regexp.MustCompile(`FLAG-[\w\d]+`)
@@ -54,9 +56,18 @@ func sendResultAndReadFlag(result string) {
 }
 
 func main() {
+	phpsessid := flag.String("phpsessid", "", "PHP Session ID")
+	flag.Parse()
+	if len(*phpsessid) == 0 {
+		fmt.Println("PHP Session ID value missed\n")
+		flag.PrintDefaults()
+		return
+	}
+
+	cookieHeader = "PHPSESSID=" + *phpsessid
 	c := colly.NewCollector()
 	c.OnRequest(func(r *colly.Request) {
-		r.Headers.Set("Cookie", "PHPSESSID="+PHPSESSID)
+		r.Headers.Set("Cookie", cookieHeader)
 	})
 	c.OnHTML("div[class=message]", func(e *colly.HTMLElement) {
 		shellcode := grabShellcode(e.Text)
@@ -66,18 +77,3 @@ func main() {
 	})
 	c.Visit(CHALLENGE_URL)
 }
-
-// func toAscii(expression string) string {
-// 	re := regexp.MustCompile(`\\x(.{2})`)
-// 	matches := re.FindAllStringSubmatch(expression, -1)
-// 	// fmt.Printf("Matches: %v", matches)
-// 	var charBytes []byte
-// 	for _, match := range matches {
-// 		hexStr := match[1]
-// 		dec, _ := strconv.ParseInt(hexStr, 16, 8)
-// 		charBytes = append(charBytes, byte(dec))
-// 	}
-// 	ascii := string(charBytes)
-// 	fmt.Printf("%s", ascii)
-// 	return ""
-// }
