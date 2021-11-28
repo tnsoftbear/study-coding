@@ -12,8 +12,8 @@ type Profiler struct {
 	endTime   []int64
 }
 
-func (pr *Profiler) Construct(isEnabled bool) {
-	pr.isEnabled = isEnabled
+func New(isEnabled bool) *Profiler {
+	return &Profiler{isEnabled: isEnabled}
 }
 
 func (pr *Profiler) Start() {

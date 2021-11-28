@@ -12,8 +12,8 @@ type InputController struct {
 	reader    *bufio.Reader
 }
 
-func (ic *InputController) Construct(reader *bufio.Reader) {
-	ic.reader = reader
+func NewInputController(reader *bufio.Reader) *InputController {
+	return &InputController{reader: reader}
 }
 
 func (ic *InputController) Read() {

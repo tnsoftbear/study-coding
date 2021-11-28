@@ -13,11 +13,8 @@ int main(void)
 
     // get file size and allocate. We're going to convert to bytes 
     // from text, so this allocation will be safely large enough
-    
     int stream = fileno(file);
-
     fstat(stream, &st);
-
     buf = valloc(st.st_size);
 
     while (fscanf(file, "\\x%02x", &v) == 1)
@@ -26,9 +23,8 @@ int main(void)
     }
 
     mprotect(buf, length, PROT_EXEC);
-
     int (*ret)() = (int (*)())buf;
     ret();
-
+    
     return 0;
 }

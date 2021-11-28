@@ -18,18 +18,20 @@ type PrimeFinder struct {
 	areaSize uint32
 }
 
-func (p *PrimeFinder) Construct(areaSize uint32, isResultOutput bool) {
-	p.numberStatuses = make([]uint8, areaSize)
-	p.areaSize = areaSize
-	p.isResultOutput = isResultOutput
+func NewPrimeFinder(areaSize uint32, isResultOutput bool) *PrimeFinder {
+	p := PrimeFinder{
+		numberStatuses: make([]uint8, areaSize),
+		areaSize: areaSize,
+		isResultOutput: isResultOutput,
+	}
 	p.setNotPrime(1)
 	p.registerPrime(2)
 	p.registerPrime(3)
+	return &p
 }
 
 func (p *PrimeFinder) RunCase(minMax types.Range, caseIdx int, writer *bufio.Writer) {
-	var area *Area = &Area{}
-	area.Construct(minMax, p.areaSize)
+	area := NewArea(minMax, p.areaSize)
 	p.startWith(2)
 	for {
 		area.Sieve(p.Value)

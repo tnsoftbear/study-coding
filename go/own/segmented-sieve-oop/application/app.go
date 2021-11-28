@@ -25,15 +25,12 @@ func (app *App) Run() {
 	isEchoResult := flag.Bool("echoResult", IS_RESULT_OUTPUT, "Display found prime numbers")
 	flag.Parse()
 
-	var primeFinder *primesearch.PrimeFinder = &primesearch.PrimeFinder{}
-	primeFinder.Construct(AREA_SIZE, *isEchoResult)
+	primeFinder := primesearch.NewPrimeFinder(AREA_SIZE, *isEchoResult)
 
-	var inputController *InputController = &InputController{}
-	inputController.Construct(app.reader)
+	inputController := NewInputController(app.reader)
 	inputController.Read()
 	
-	var profiler *profiler.Profiler = &profiler.Profiler{}
-	profiler.Construct(*isProfiling)
+	var profiler *profiler.Profiler = profiler.New(*isProfiling)
 
 	for i := 0; i < inputController.CaseCount(); i++ {
 		profiler.Start()

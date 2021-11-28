@@ -7,16 +7,17 @@ import (
 )
 
 type Area struct {
-	Size     uint32
 	Statuses []uint32
 	MinMax   types.Range
 }
 
 const DROPPED = 0
 
-func (a *Area) Construct(minMax types.Range, areaSize uint32) {
-	a.MinMax = minMax
-	a.Statuses = make([]uint32, areaSize)
+func NewArea(minMax types.Range, areaSize uint32) *Area {
+	a := Area{
+		Statuses: make([]uint32, areaSize),
+		MinMax: minMax,
+	}
 	var i uint32
 	size := a.calcSize()
 	for i = 0; i < size; i++ {
@@ -25,6 +26,7 @@ func (a *Area) Construct(minMax types.Range, areaSize uint32) {
 	if a.Statuses[0] == 1 {
 		a.Statuses[0] = DROPPED
 	}
+	return &a
 }
 
 func (a *Area) IsPrimeOverPossible(prime uint32) bool {
