@@ -1,0 +1,21 @@
+Secure area: <br>
+<textarea id="script1" onchange="safe(this.value, 'secure')"></textarea><br>
+<iframe id="secure" sandbox="allow-scripts allow-modals"></iframe><br>
+
+Insecure area: <br>
+<textarea id="script2" onchange="unsafe(this.value, 'insecure')"></textarea><br>
+
+<script>
+document.session = "secret";
+function safe(t, id) {
+    var i = document.getElementById(id);
+    i.srcdoc = "<body><script>document.write("+t+");<"+"/script></body>";
+}
+
+function unsafe(t, id) {
+    document.getElementById(id).innerText = eval(t);
+}
+</script>
+
+Try to enter: alert(document.session)
+

