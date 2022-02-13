@@ -13,13 +13,14 @@ type Circuit func(context.Context) (string, error)
 func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 	var consecutiveFailures int = 0
 	var lastAttempt = time.Now()
-	fmt.Printf("Breaker() initial state is - consecutiveFailures: %v, lastAttempt: %v\n", consecutiveFailures, lastAttempt)
+	fmt.Printf("Breaker() initial state is - consecutiveFailures: %v, failureThreshold: %v\n", consecutiveFailures, failureThreshold)
 	var m sync.RWMutex
-	return func(ctx context.Context) (string, error) {
+
+	var circuitBreaker = func(ctx context.Context) (string, error) {
 		m.RLock()
 		failureRate := consecutiveFailures - int(failureThreshold)
-		fmt.Printf("A] time.Now(): %v, consecutiveFailures: %v, failureThreshold: %v, Failure rate: %d, lastAttempt: %v\n",
-			time.Now(), consecutiveFailures, failureThreshold, failureRate, lastAttempt)
+		fmt.Printf("A] Now: %v, lastAttempt: %v, consecutiveFailures: %v, Failure rate: %d\n",
+			time.Now().Format("15:04:05.9999"), lastAttempt.Format("15:04:05.9999"), consecutiveFailures, failureRate)
 		/**
 		 * Когда допустимый рейт ошибок превышен, мы больше не хотим запускать целевую ф-цию до тех пор пока не пройдёт интервал времени shouldRetryAt.
 		 * Этот интервал времени так же увеличивается пропорционально увеличению рейта ошибок.
@@ -29,15 +30,17 @@ func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 			shouldRetryAt := lastAttempt.Add(secondToAdd)
 			var isAfter bool = time.Now().After(shouldRetryAt)
 			fmt.Printf(
-				"B] time.Now(): %v, lastAttempt: %v, secondToAdd: %v, shouldRetryAt: %v, now is After shouldRetryAt: %v\n",
-				time.Now(), lastAttempt, secondToAdd, shouldRetryAt, isAfter)
+				"B] Now: %v, lastAttempt: %v, secondToAdd: %v, shouldRetryAt: %v, now is After shouldRetryAt: %v\n",
+				time.Now().Format("15:04:05.9999"), lastAttempt.Format("15:04:05.9999"), secondToAdd, shouldRetryAt.Format("15:04:05.9999"), isAfter)
 			if !isAfter {
 				m.RUnlock()
 				return "", errors.New("service unreachable")
 			}
 		}
 		m.RUnlock()
+
 		response, err := circuit(ctx) // Выполнить целевую ф-цию
+		
 		m.Lock()
 		defer m.Unlock()
 		lastAttempt = time.Now() // Зафиксировать время попытки
@@ -45,9 +48,12 @@ func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 			consecutiveFailures++ // увеличить счетчик ошибок
 			return response, err  // и вернуть ошибку
 		}
+
 		consecutiveFailures = 0 // Иначе сбросить счетчик ошибок
 		return response, nil
 	}
+	
+	return circuitBreaker;
 }
 
 func myFunction(ctx context.Context) (string, error) {
