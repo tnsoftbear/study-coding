@@ -9,6 +9,7 @@ import (
 	"math/rand"
 )
 
+const TIME_FORMAT = "15:04:05.0000"
 type Circuit func(context.Context) (string, error)
 
 func DebounceFirst(circuit Circuit, d time.Duration) Circuit {
@@ -20,15 +21,15 @@ func DebounceFirst(circuit Circuit, d time.Duration) Circuit {
 		m.Lock()
 		defer func() { // т.к. defer, то threshold будет инициализирован будущей датой только после первого выполнения circuit(ctx)
 			threshold = time.Now().Add(d)
-			fmt.Printf("threshold defined by %v + %v = %v (deferred)\n", time.Now().Format("15:04:05.9999"), d, threshold.Format("15:04:05.9999"))
+			fmt.Printf("threshold defined by %v + %v = %v (deferred)\n", time.Now().Format(TIME_FORMAT), d, threshold.Format(TIME_FORMAT))
 			m.Unlock()
 		}()
 
 		if time.Now().Before(threshold) {
-			fmt.Printf("now %v is before threshold %v, thus return cached result\n", time.Now().Format("15:04:05.9999"), threshold.Format("15:04:05.9999"))
+			fmt.Printf("now %v is before threshold %v, thus return cached result\n", time.Now().Format(TIME_FORMAT), threshold.Format(TIME_FORMAT))
 			return "Cached - " + result, err
 		} else {
-			fmt.Printf("now %v is after threshold %v, thus call circuit()\n", time.Now().Format("15:04:05.9999"), threshold.Format("15:04:05.9999"))
+			fmt.Printf("now %v is after threshold %v, thus call circuit()\n", time.Now().Format(TIME_FORMAT), threshold.Format(TIME_FORMAT))
 		}
 
 		result, err = circuit(ctx)

@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+const TIME_FORMAT = "15:04:05.0000"
 type Circuit func(context.Context) (string, error)
 
 func Breaker(circuit Circuit, failureThreshold uint) Circuit {
@@ -20,7 +21,7 @@ func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 		m.RLock()
 		failureRate := consecutiveFailures - int(failureThreshold)
 		fmt.Printf("A] Now: %v, lastAttempt: %v, consecutiveFailures: %v, Failure rate: %d\n",
-			time.Now().Format("15:04:05.9999"), lastAttempt.Format("15:04:05.9999"), consecutiveFailures, failureRate)
+			time.Now().Format(TIME_FORMAT), lastAttempt.Format(TIME_FORMAT), consecutiveFailures, failureRate)
 		/**
 		 * Когда допустимый рейт ошибок превышен, мы больше не хотим запускать целевую ф-цию до тех пор пока не пройдёт интервал времени shouldRetryAt.
 		 * Этот интервал времени так же увеличивается пропорционально увеличению рейта ошибок.
@@ -31,7 +32,7 @@ func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 			var isAfter bool = time.Now().After(shouldRetryAt)
 			fmt.Printf(
 				"B] Now: %v, lastAttempt: %v, secondToAdd: %v, shouldRetryAt: %v, now is After shouldRetryAt: %v\n",
-				time.Now().Format("15:04:05.9999"), lastAttempt.Format("15:04:05.9999"), secondToAdd, shouldRetryAt.Format("15:04:05.9999"), isAfter)
+				time.Now().Format(TIME_FORMAT), lastAttempt.Format(TIME_FORMAT), secondToAdd, shouldRetryAt.Format(TIME_FORMAT), isAfter)
 			if !isAfter {
 				m.RUnlock()
 				return "", errors.New("service unreachable")

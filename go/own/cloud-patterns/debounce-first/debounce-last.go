@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+const TIME_FORMAT = "15:04:05.0000"
 type Circuit func(context.Context) (string, error)
 
 func DebounceLast(circuit Circuit, d time.Duration) Circuit {
@@ -22,7 +23,7 @@ func DebounceLast(circuit Circuit, d time.Duration) Circuit {
 		m.Lock()
 		defer m.Unlock()
 		threshold = time.Now().Add(d)
-		fmt.Printf("Now: %v threshold calculated: %v\n", time.Now().Format("15:04:05.9999"), threshold.Format("15:04:05.9999"))
+		fmt.Printf("Now: %v threshold calculated: %v\n", time.Now().Format(TIME_FORMAT), threshold.Format(TIME_FORMAT))
 		var doOnce = func() {
 			ticker = time.NewTicker(time.Millisecond * 100)
 			go func() {
@@ -36,7 +37,7 @@ func DebounceLast(circuit Circuit, d time.Duration) Circuit {
 					select {
 					case <-ticker.C:
 						m.Lock()
-						fmt.Printf("<-Ticker.C Now: %v, threshold: %v, is after: %v\n", time.Now().Format("15:04:05.9999"), threshold.Format("15:04:05.9999"), time.Now().After(threshold))
+						fmt.Printf("<-Ticker.C Now: %v, threshold: %v, is after: %v\n", time.Now().Format(TIME_FORMAT), threshold.Format(TIME_FORMAT), time.Now().After(threshold))
 						if time.Now().After(threshold) {
 							result, err = circuit(ctx)
 							m.Unlock()
