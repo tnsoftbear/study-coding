@@ -1,27 +1,29 @@
 package primesearch
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"segmented-sieve-oop/types"
 )
 
-const IS_PRIME = 1
-const NOT_PRIME = 2
-const UNKNOWN = 0
+const (
+	Unknown byte = iota
+	IsPrime
+	NotPrime
+)
 
 type PrimeFinder struct {
 	Value          uint32
 	numberStatuses []uint8
 	primeNumbers   []uint32
 	isResultOutput bool
-	areaSize uint32
+	areaSize       uint32
 }
 
 func NewPrimeFinder(areaSize uint32, isResultOutput bool) *PrimeFinder {
 	p := PrimeFinder{
 		numberStatuses: make([]uint8, areaSize),
-		areaSize: areaSize,
+		areaSize:       areaSize,
 		isResultOutput: isResultOutput,
 	}
 	p.setNotPrime(1)
@@ -30,7 +32,7 @@ func NewPrimeFinder(areaSize uint32, isResultOutput bool) *PrimeFinder {
 	return &p
 }
 
-func (p *PrimeFinder) RunCase(minMax types.Range, caseIdx int, writer *bufio.Writer) {
+func (p *PrimeFinder) RunCase(minMax types.Range, writer *bufio.Writer) {
 	area := NewArea(minMax, p.areaSize)
 	p.startWith(2)
 	for {
@@ -47,8 +49,12 @@ func (p *PrimeFinder) RunCase(minMax types.Range, caseIdx int, writer *bufio.Wri
 }
 
 func (p *PrimeFinder) PrintMyself(prefix string, writer *bufio.Writer) {
-	fmt.Fprintf(writer, "%s Value: %d, primeNumbers: %v numberStatuses: %v\n", prefix, p.Value, p.primeNumbers, p.numberStatuses)
-	writer.Flush()
+	println(writer, "%s Value: %d, primeNumbers: %v numberStatuses: %v\n", prefix, p.Value, p.primeNumbers, p.numberStatuses)
+	err := writer.Flush()
+	if err != nil {
+		println(writer, "Flush() call failed")
+		return
+	}
 }
 
 // --- private ---
@@ -90,10 +96,10 @@ func (p *PrimeFinder) registerPrime(prime uint32) {
 }
 
 func (p *PrimeFinder) unsetCompositesOfPrimeInNumberStatuses(prime uint32) {
-	var len = uint32(len(p.numberStatuses))
+	var l = uint32(len(p.numberStatuses))
 	var i, k uint32
 	k = prime
-	for i = 1; k < len; i++ {
+	for i = 1; k < l; i++ {
 		if p.isUnknownStatus(k) {
 			p.setNotPrime(k)
 		}
@@ -102,15 +108,15 @@ func (p *PrimeFinder) unsetCompositesOfPrimeInNumberStatuses(prime uint32) {
 }
 
 func (p *PrimeFinder) setIsPrime(number uint32) {
-	p.numberStatuses[number-1] = IS_PRIME
+	p.numberStatuses[number-1] = IsPrime
 }
 
 func (p *PrimeFinder) setNotPrime(number uint32) {
-	p.numberStatuses[number-1] = NOT_PRIME
+	p.numberStatuses[number-1] = NotPrime
 }
 
 func (p *PrimeFinder) isUnknownStatus(number uint32) bool {
-	return p.numberStatuses[number-1] == UNKNOWN
+	return p.numberStatuses[number-1] == Unknown
 }
 
 func (p *PrimeFinder) findNextPrime() {
@@ -128,4 +134,11 @@ func (p *PrimeFinder) findNextPrime() {
 
 func (p *PrimeFinder) startWith(init uint32) {
 	p.Value = init
+}
+
+func (p *PrimeFinder) println(writer *bufio.Writer, f string, args ...interface{}) {
+	_, err := fmt.Fprintf(writer, f+"\n", args...)
+	if err != nil {
+		return
+	}
 }

@@ -1,9 +1,9 @@
 package profiler
 
 import (
+	"bufio"
 	"fmt"
 	"time"
-	"bufio"
 )
 
 type Profiler struct {
@@ -42,7 +42,18 @@ func (pr *Profiler) PrintMyself(writer *bufio.Writer) {
 		return
 	}
 	for idx := range pr.startTime {
-		fmt.Fprintf(writer, "Iteration: %d, Elapsed time (sec): %d\n", idx, pr.ElapsedTime(idx))
+		pr.println(writer, "Iteration: %d, Elapsed time (sec): %d", idx, pr.ElapsedTime(idx))
 	}
-	writer.Flush()
+	err := writer.Flush()
+	if err != nil {
+		pr.println(writer, "Flush() call failed")
+		return
+	}
+}
+
+func (pr *Profiler) println(writer *bufio.Writer, f string, args ...interface{}) {
+	_, err := fmt.Fprintf(writer, f+"\n", args...)
+	if err != nil {
+		return
+	}
 }

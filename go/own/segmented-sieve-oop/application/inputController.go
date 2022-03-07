@@ -33,4 +33,11 @@ func (ic *InputController) CaseCount() int {
 	return ic.caseCount
 }
 
-func (ic *InputController) scanf(f string, a ...interface{}) { fmt.Fscanf(ic.reader, f, a...) }
+// --- private ---
+
+func (ic *InputController) scanf(f string, a ...interface{}) {
+	_, err := fmt.Fscanf(ic.reader, f, a...)
+	if err != nil {
+		return
+	}
+}

@@ -1,8 +1,8 @@
 package primesearch
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"segmented-sieve-oop/types"
 )
 
@@ -16,7 +16,7 @@ const DROPPED = 0
 func NewArea(minMax types.Range, areaSize uint32) *Area {
 	a := Area{
 		Statuses: make([]uint32, areaSize),
-		MinMax: minMax,
+		MinMax:   minMax,
 	}
 	var i uint32
 	size := a.calcSize()
@@ -51,7 +51,7 @@ func (a *Area) Sieve(prime uint32) {
 }
 
 func (a *Area) PrintMyselfInLine(prefix string, writer *bufio.Writer) {
-	fmt.Fprintf(writer, "%s: min: %d, max: %d, %v\n", prefix, a.MinMax.Min, a.MinMax.Max, a.Statuses)
+	a.println(writer, "%s: min: %d, max: %d, %v", prefix, a.MinMax.Min, a.MinMax.Max, a.Statuses)
 }
 
 func (a *Area) PrintMyself(writer *bufio.Writer) {
@@ -59,12 +59,25 @@ func (a *Area) PrintMyself(writer *bufio.Writer) {
 	for i := 0; uint32(i) < size; i++ {
 		v := a.Statuses[i]
 		if v != DROPPED {
-			fmt.Fprintf(writer, "%d\n", v)
+			a.println(writer, "%d", v)
 		}
 	}
-	writer.Flush()
+	err := writer.Flush()
+	if err != nil {
+		println(writer, "Flush() call failed")
+		return
+	}
 }
+
+// --- private ---
 
 func (a *Area) calcSize() uint32 {
 	return a.MinMax.Max - a.MinMax.Min + 1
+}
+
+func (a *Area) println(writer *bufio.Writer, f string, args ...interface{}) {
+	_, err := fmt.Fprintf(writer, f+"\n", args...)
+	if err != nil {
+		return
+	}
 }
