@@ -29,7 +29,7 @@ Telegram|tnsoftbear
 
 ## WORK EXPERIENCE
 
-+10 years of web software developement (Riga Technical Univercity, AG Softbear, AG Wutsch)
++10 years of web software developement (Riga Technical Univercity, "Softbear" AG, "Wütsch" AG, "123drück" AG, Auction software development freelance at upwork.com)
 
 ### Last duties
 
