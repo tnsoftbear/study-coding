@@ -29,7 +29,7 @@ Telegram|tnsoftbear
 
 ## WORK EXPERIENCE
 
-+10 years of web software developement
++10 years of web software developement (Riga Technical Univercity, AG Softbear, AG Wutsch)
 
 ### Last duties
 
