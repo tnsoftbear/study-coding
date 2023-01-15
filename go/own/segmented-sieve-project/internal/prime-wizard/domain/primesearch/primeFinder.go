@@ -18,7 +18,7 @@ type PrimeFinder struct {
 	areaSize       uint32
 }
 
-func NewPrimeFinder(areaSize uint32, isResultOutput bool) *PrimeFinder {
+func NewPrimeFinder(areaSize uint32) *PrimeFinder {
 	p := PrimeFinder{
 		numberStatuses: make([]uint8, areaSize),
 		areaSize:       areaSize,

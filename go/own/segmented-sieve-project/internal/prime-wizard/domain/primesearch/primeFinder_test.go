@@ -1,12 +1,13 @@
 package primesearch
 
 import (
+	"reflect"
 	"segmented-sieve-project/internal/prime-wizard/domain/types"
 	"testing"
 )
 
 func TestPrimeFinder_NewPrimeFinder(t *testing.T) {
-	actual := NewPrimeFinder(10, false)
+	actual := NewPrimeFinder(10)
 	expected := &PrimeFinder{
 		value:          0,
 		numberStatuses: []uint8{2, 1, 1, 2, 0, 2, 0, 2, 2, 0},
@@ -32,15 +33,38 @@ func TestPrimeFinder_NewPrimeFinder(t *testing.T) {
 			t.Errorf("actual primeNumbers: %v, expected primeNumbers: %v", actual.primeNumbers, expected.primeNumbers)
 		}
 	}
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf("actual: %v, expected: %v", actual, expected)
+	}
 }
 
 func TestPrimeFinder_DetectPrimes(t *testing.T) {
-	pf := NewPrimeFinder(100, false)
-	actual := pf.DetectPrimes(types.Range{Min: 11, Max: 30})
-	expected := []uint32{11, 13, 17, 19, 23, 29}
-	for i, v := range actual {
-		if v != expected[i] {
-			t.Errorf("actual: %v, expected: %v", actual, expected)
+	testData := []struct {
+		areaSize uint32
+		minMax   types.Range
+		expected []uint32
+	}{
+		{
+			areaSize: 100,
+			minMax:   types.Range{Min: 11, Max: 30},
+			expected: []uint32{11, 13, 17, 19, 23, 29},
+		},
+		{
+			areaSize: 100,
+			minMax:   types.Range{Min: 100, Max: 130},
+			expected: []uint32{101, 103, 107, 109, 113, 127},
+		},
+		{
+			areaSize: 100,
+			minMax:   types.Range{Min: 1000, Max: 1030},
+			expected: []uint32{1009, 1013, 1019, 1021},
+		},
+	}
+	for _, v := range testData {
+		pf := NewPrimeFinder(v.areaSize)
+		actual := pf.DetectPrimes(v.minMax)
+		if !reflect.DeepEqual(actual, v.expected) {
+			t.Errorf("actual: %v, expected: %v", actual, v.expected)
 		}
 	}
 }

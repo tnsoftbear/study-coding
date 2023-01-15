@@ -30,7 +30,7 @@ func (app *App) Run() {
 	isEchoResult := flag.Bool("echoResult", IsResultOutput, "Display found prime numbers")
 	flag.Parse()
 
-	primeFinder := primesearch.NewPrimeFinder(AreaSize, *isEchoResult)
+	primeFinder := primesearch.NewPrimeFinder(AreaSize)
 	basicRenderer := render.NewBasicRenderer(app.writer)
 
 	inputController := NewInputController(app.reader)
