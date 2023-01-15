@@ -1,6 +1,7 @@
 package primesearch
 
 import (
+	"reflect"
 	"segmented-sieve-project/internal/prime-wizard/domain/types"
 	"testing"
 )
@@ -15,10 +16,8 @@ func TestArea_NewArea(t *testing.T) {
 		t.Errorf("Statuses slice is not set correctly")
 	}
 	expected := []uint32{0, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	for i, v := range area.Statuses {
-		if v != expected[i] {
-			t.Errorf("Statuses[%d] is not set correctly", i)
-		}
+	if !reflect.DeepEqual(area.Statuses, expected) {
+		t.Errorf("Statuses slice is not set correctly. Actual: %v, expected: %v", area.Statuses, expected)
 	}
 }
 
@@ -33,26 +32,34 @@ func TestArea_IsPrimeOverPossible(t *testing.T) {
 	}
 }
 
-func TestArea_Sieve1(t *testing.T) {
-	minMax := types.Range{Min: 1, Max: 5}
-	area := NewArea(minMax, 5)
-	area.Sieve(2)
-	expected := []uint32{0, 2, 3, 0, 5}
-	for i, v := range area.Statuses {
-		if v != expected[i] {
-			t.Errorf("Statuses[%d] is not set correctly", i)
-		}
+func TestArea_Sieve(t *testing.T) {
+	testData := []struct {
+		minMax   types.Range
+		areaSize uint32
+		expected []uint32
+	}{
+		{
+			minMax:   types.Range{Min: 11, Max: 20},
+			areaSize: 10,
+			expected: []uint32{11, 0, 13, 0, 15, 0, 17, 0, 19, 0},
+		},
+		{
+			minMax:   types.Range{Min: 1, Max: 5},
+			areaSize: 5,
+			expected: []uint32{0, 2, 3, 0, 5},
+		},
+		{
+			minMax:   types.Range{Min: 101, Max: 120},
+			areaSize: 20,
+			expected: []uint32{101, 0, 103, 0, 105, 0, 107, 0, 109, 0, 111, 0, 113, 0, 115, 0, 117, 0, 119, 0},
+		},
 	}
-}
 
-func TestArea_Sieve2(t *testing.T) {
-	minMax := types.Range{Min: 11, Max: 20}
-	area := NewArea(minMax, 10)
-	area.Sieve(2)
-	expected := []uint32{11, 0, 13, 0, 15, 0, 17, 0, 19, 0}
-	for i, v := range area.Statuses {
-		if v != expected[i] {
-			t.Errorf("Statuses[%d] is not set correctly", i)
+	for _, v := range testData {
+		area := NewArea(v.minMax, v.areaSize)
+		area.Sieve(2)
+		if !reflect.DeepEqual(area.Statuses, v.expected) {
+			t.Errorf("Statuses slice is not set correctly. Actual: %v, expected: %v", area.Statuses, v.expected)
 		}
 	}
 }
