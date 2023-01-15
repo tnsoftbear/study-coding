@@ -6,6 +6,7 @@ import (
 	"os"
 	"segmented-sieve-project/internal/pkg/profiler"
 	"segmented-sieve-project/internal/prime-wizard/domain/primesearch"
+	"segmented-sieve-project/internal/prime-wizard/domain/render"
 )
 
 const IsProfilingDef = true
@@ -30,15 +31,19 @@ func (app *App) Run() {
 	flag.Parse()
 
 	primeFinder := primesearch.NewPrimeFinder(AreaSize, *isEchoResult)
+	basicRenderer := render.NewBasicRenderer(app.writer)
 
 	inputController := NewInputController(app.reader)
 	inputController.Read()
 
-	var prof *profiler.Profiler = profiler.New(*isProfiling)
+	var prof = profiler.New(*isProfiling)
 
 	for i := 0; i < inputController.CaseCount(); i++ {
 		prof.Start()
-		primeFinder.RunCase(inputController.RangeByIndex(i), app.writer)
+		primes := primeFinder.DetectPrimes(inputController.RangeByIndex(i))
+		if *isEchoResult {
+			basicRenderer.PrintPrimes(primes)
+		}
 		prof.End()
 	}
 	prof.PrintMyself(app.writer)

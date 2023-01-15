@@ -2,6 +2,16 @@
 
 Implemented with help of segmented sieve algorithm.
 
+Run `go run segmented-sieve.go` and enter input values (see below).
+
+Available options:
+ 
+* `-echoResult` - display found prime numbers (default `true`)
+* `-profiling` - enable time profiling (default `true`)
+* `-h` - help
+
+Example: `go run segmented-sieve.go -profiling=false` - run without profiling.
+
 ## Docs
 
 * [Decision records](decision_records/decision_records.md)

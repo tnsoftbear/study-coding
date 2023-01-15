@@ -2,7 +2,6 @@ package primesearch
 
 import (
 	"bufio"
-	"fmt"
 	"segmented-sieve-project/internal/prime-wizard/domain/types"
 )
 
@@ -16,7 +15,6 @@ type PrimeFinder struct {
 	value          uint32
 	numberStatuses []uint8
 	primeNumbers   []uint32
-	isResultOutput bool
 	areaSize       uint32
 }
 
@@ -24,20 +22,11 @@ func NewPrimeFinder(areaSize uint32, isResultOutput bool) *PrimeFinder {
 	p := PrimeFinder{
 		numberStatuses: make([]uint8, areaSize),
 		areaSize:       areaSize,
-		isResultOutput: isResultOutput,
 	}
 	p.setNotPrime(1)
 	p.registerPrime(2)
 	p.registerPrime(3)
 	return &p
-}
-
-func (p *PrimeFinder) RunCase(minMax types.Range, writer *bufio.Writer) {
-	primes := p.DetectPrimes(minMax)
-
-	if p.isResultOutput {
-		p.printPrimes(primes, writer)
-	}
 }
 
 func (p *PrimeFinder) DetectPrimes(minMax types.Range) []uint32 {
@@ -139,17 +128,4 @@ func (p *PrimeFinder) findNextPrime() {
 
 func (p *PrimeFinder) startWith(init uint32) {
 	p.value = init
-}
-
-func (p *PrimeFinder) println(writer *bufio.Writer, f string, args ...interface{}) {
-	_, err := fmt.Fprintf(writer, f+"\n", args...)
-	if err != nil {
-		return
-	}
-}
-
-func (p *PrimeFinder) printPrimes(primes []uint32, writer *bufio.Writer) {
-	for _, prime := range primes {
-		fmt.Fprintln(writer, prime)
-	}
 }

@@ -11,7 +11,6 @@ func TestPrimeFinder_NewPrimeFinder(t *testing.T) {
 		value:          0,
 		numberStatuses: []uint8{2, 1, 1, 2, 0, 2, 0, 2, 2, 0},
 		primeNumbers:   []uint32{2, 3},
-		isResultOutput: false,
 		areaSize:       10,
 	}
 	if actual.value != expected.value {
@@ -32,9 +31,6 @@ func TestPrimeFinder_NewPrimeFinder(t *testing.T) {
 		if v != expected.primeNumbers[i] {
 			t.Errorf("actual primeNumbers: %v, expected primeNumbers: %v", actual.primeNumbers, expected.primeNumbers)
 		}
-	}
-	if actual.isResultOutput != expected.isResultOutput {
-		t.Errorf("actual isResultOutput: %v, expected isResultOutput: %v", actual.isResultOutput, expected.isResultOutput)
 	}
 }
 
