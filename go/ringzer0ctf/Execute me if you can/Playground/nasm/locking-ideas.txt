@@ -1,0 +1,84 @@
+protected function save(): void
+    {
+        $inputDto = $this->getInputDto();
+        $configDto = $this->getConfigDto();
+        $isNew = !$inputDto->id;
+        if (!$this->lotItem->ItemNum) {
+            /**
+             * If item# not defined outside, then we should atomically calculate-assign-save.
+             * LotItem saving should drop its $__Modified property.
+             */
+            $this->lotItem = $this->getLotItemNoAssigner()->applyItemNoAtomically(
+                $this->lotItem,
+                $configDto->editorUserId
+            );
+            $this->isModified = true;
+        }
+        if ($this->lotItem->__Modified) {
+            $this->isModified = true;
+            $this->getLotItemWriteRepository()->saveWithModifier($this->lotItem, $configDto->editorUserId);
+        }
+        if ($isNew) {
+            $this->doPostCreate();
+        } else {
+            $this->doPostUpdate();
+        }
+    }
+
+Look to this \Sam\EntityMaker\LotItem\Save\LotItemMakerProducer::save() method. It looks complicated because of this legacy solution that is named “Item# atomic applier”. But as we can see it isn’t so “atomic” as it would intend to be, because:
+
+Sometimes we are wrapped in transaction and save exactly there doesn’t make difference until commit.
+
+We must release its internal locks after higher level transaction commit. 
+
+Applier is still affected by race condition between item# generation and checking/getting the lock.
+
+What if we would extract the next logic to higher level:
+
+check if item# generation feature enabled (is empty item# on input)
+
+if enabled, then lock by account (lock for auto-assignment functionality)
+
+generate item#
+
+lock by item# (lock for item# uniqueness constraint)
+
+do things (validate all, assign values, save)
+
+As you can see, in this solution we apply lock by account (lock for auto-assignment functionality) earlier - i.e. before validation. But we do that only for input with empty item# and when existing lot has absent item#.
+
+But this drawback helps us to move internal lock by item# (lock for item# uniqueness constraint) to the external caller, where the same external lock is acquired already. We unify them.
+
+The next scenarios look fine:
+
+Scenario-1
+
+Process-A: generate X
+
+Process-B: receives X on input and lock X
+
+Process-A: sees X is locked, re-generates Y
+
+Process-B: saves X
+
+Scenario-2
+
+Process-A: generate X and lock X
+
+Process-B: receives X on input, sees X is locked, fails
+
+Process-A: saves X
+
+
+
+
+
+
+
+But we are still affected by race condition between generation and locking, 
+
+Process-A: generate X
+
+Process-B: receives X on input and lock X, it saves X, unlock
+
+Process-A: validates X, it is failed on validation
