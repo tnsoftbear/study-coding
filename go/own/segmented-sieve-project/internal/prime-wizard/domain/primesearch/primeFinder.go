@@ -13,7 +13,7 @@ const (
 )
 
 type PrimeFinder struct {
-	Value          uint32
+	value          uint32
 	numberStatuses []uint8
 	primeNumbers   []uint32
 	isResultOutput bool
@@ -33,23 +33,28 @@ func NewPrimeFinder(areaSize uint32, isResultOutput bool) *PrimeFinder {
 }
 
 func (p *PrimeFinder) RunCase(minMax types.Range, writer *bufio.Writer) {
-	area := NewArea(minMax, p.areaSize)
-	p.startWith(2)
-	for {
-		area.Sieve(p.Value)
-		p.findNextPrime()
-		if area.IsPrimeOverPossible(p.Value) {
-			break
-		}
-	}
+	primes := p.DetectPrimes(minMax)
 
 	if p.isResultOutput {
-		area.PrintMyself(writer)
+		p.printPrimes(primes, writer)
 	}
 }
 
+func (p *PrimeFinder) DetectPrimes(minMax types.Range) []uint32 {
+	area := NewArea(minMax, p.areaSize)
+	p.startWith(2)
+	for {
+		area.Sieve(p.value)
+		p.findNextPrime()
+		if area.IsPrimeOverPossible(p.value) {
+			break
+		}
+	}
+	return area.GetFoundPrimes()
+}
+
 func (p *PrimeFinder) PrintMyself(prefix string, writer *bufio.Writer) {
-	println(writer, "%s Value: %d, primeNumbers: %v numberStatuses: %v\n", prefix, p.Value, p.primeNumbers, p.numberStatuses)
+	println(writer, "%s value: %d, primeNumbers: %v numberStatuses: %v\n", prefix, p.value, p.primeNumbers, p.numberStatuses)
 	err := writer.Flush()
 	if err != nil {
 		println(writer, "Flush() call failed")
@@ -72,7 +77,7 @@ mainloop:
 			}
 			if prime*prime > possiblyPrime {
 				p.registerPrime(possiblyPrime)
-				p.Value = possiblyPrime
+				p.value = possiblyPrime
 				return
 			}
 		}
@@ -121,10 +126,10 @@ func (p *PrimeFinder) isUnknownStatus(number uint32) bool {
 
 func (p *PrimeFinder) findNextPrime() {
 	var prevPrime uint32
-	currentPrime := p.Value
+	currentPrime := p.value
 	for _, prime := range p.primeNumbers {
 		if prevPrime == currentPrime {
-			p.Value = prime
+			p.value = prime
 			return
 		}
 		prevPrime = prime
@@ -133,12 +138,18 @@ func (p *PrimeFinder) findNextPrime() {
 }
 
 func (p *PrimeFinder) startWith(init uint32) {
-	p.Value = init
+	p.value = init
 }
 
 func (p *PrimeFinder) println(writer *bufio.Writer, f string, args ...interface{}) {
 	_, err := fmt.Fprintf(writer, f+"\n", args...)
 	if err != nil {
 		return
+	}
+}
+
+func (p *PrimeFinder) printPrimes(primes []uint32, writer *bufio.Writer) {
+	for _, prime := range primes {
+		fmt.Fprintln(writer, prime)
 	}
 }

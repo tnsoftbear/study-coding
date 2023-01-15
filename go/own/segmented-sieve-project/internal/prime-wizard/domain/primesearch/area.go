@@ -69,6 +69,18 @@ func (a *Area) PrintMyself(writer *bufio.Writer) {
 	}
 }
 
+func (a *Area) GetFoundPrimes() []uint32 {
+	var result []uint32
+	size := a.calcSize()
+	for i := 0; uint32(i) < size; i++ {
+		v := a.Statuses[i]
+		if v != DROPPED {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
 // --- private ---
 
 func (a *Area) calcSize() uint32 {
