@@ -2,7 +2,11 @@
 
 Implemented with help of segmented sieve algorithm.
 
-## PRINT - Prime Intervals
+## Docs
+
+* [Decision records](decision_records/decision_records.md)
+
+## The "Prime Intervals" task
 
 In this problem you have to print all primes from given interval.
 
