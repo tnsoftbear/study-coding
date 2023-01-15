@@ -13,8 +13,8 @@ Currently includes solutions for tasks of exercism.com case studies and my own e
 Currently includes solutions for tasks of exercism.com, codewars.com, spoj.com, ringzer0ctf.com case studies and my own experiments.  
 For instance,
 
+* [OOP implementation of prime numbers detection](https://github.com/tnsoftbear/study-coding/tree/master/go/own/segmented-sieve-project)
 * Optimized [generator of prime numbers](https://github.com/tnsoftbear/study-coding/tree/master/go/spoj.com/IsPrime%20Print%20Optimized) is bases on the "Sieve of Eratosthenes" algorithm
-* [OOP implementation of prime numbers detection](https://github.com/tnsoftbear/study-coding/tree/master/go/own/segmented-sieve-oop)
 
 ## JavaScript
 
