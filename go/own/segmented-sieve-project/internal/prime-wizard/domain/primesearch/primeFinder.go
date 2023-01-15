@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	Unknown byte = iota
-	IsPrime
-	NotPrime
+	unknown byte = iota
+	isPrime
+	notPrime
 )
 
 type PrimeFinder struct {
@@ -108,15 +108,15 @@ func (p *PrimeFinder) unsetCompositesOfPrimeInNumberStatuses(prime uint32) {
 }
 
 func (p *PrimeFinder) setIsPrime(number uint32) {
-	p.numberStatuses[number-1] = IsPrime
+	p.numberStatuses[number-1] = isPrime
 }
 
 func (p *PrimeFinder) setNotPrime(number uint32) {
-	p.numberStatuses[number-1] = NotPrime
+	p.numberStatuses[number-1] = notPrime
 }
 
 func (p *PrimeFinder) isUnknownStatus(number uint32) bool {
-	return p.numberStatuses[number-1] == Unknown
+	return p.numberStatuses[number-1] == unknown
 }
 
 func (p *PrimeFinder) findNextPrime() {
