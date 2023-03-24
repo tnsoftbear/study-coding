@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "github.com/tnsoftbear/grpc1/calculator";
+
+package calculator;
+
+service CalculatorService {
+  rpc Add(AddRequest) returns (AddResponse) {}
+}
+
+message AddRequest {
+  int32 num1 = 1;
+  int32 num2 = 2;
+}
+
+message AddResponse {
+  int32 result = 1;
+}
