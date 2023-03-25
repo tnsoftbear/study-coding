@@ -19,7 +19,7 @@ func main() {
 	sib := sendinblue.NewAPIClient(cfg)
 	sendTransacSms := sendinblue.SendTransacSms{
 		Sender:    "I am sender",
-		Recipient: "+37122355667",
+		Recipient: "+37122334455",
 		Content:   "This is content",
 		Type_:     "transactional"}
 	result, resp, err := sib.TransactionalSMSApi.SendTransacSms(ctx, sendTransacSms)
