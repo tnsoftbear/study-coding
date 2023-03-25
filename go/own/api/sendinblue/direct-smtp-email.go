@@ -44,9 +44,11 @@ func main() {
 		return
 	}
 
+	apiKey := "...."
+
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("api-key", "<api-key>")
+	req.Header.Set("api-key", apiKey)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
