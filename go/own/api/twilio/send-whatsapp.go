@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	accountSid := "AC672e9488cb511e992de6b028d174e0c3"
-	authToken := "1d272821d78559685d72c62686347f0b"
+	accountSid := "#twilio"
+	authToken := "#twilio"
 	twilio := gotwilio.NewTwilioClient(accountSid, authToken)
 
 	from := "+14344258522" // Twilio phone number
