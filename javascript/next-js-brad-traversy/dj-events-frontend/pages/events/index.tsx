@@ -1,6 +1,10 @@
+import Layout from "@/components/Layout";
+
 export default function MyEvents() {
   return (
-    <div>My Events</div>
+    <Layout>
+      <div>My Events</div>
+    </Layout>
   )
 }
 
