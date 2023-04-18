@@ -1,5 +1,5 @@
-import 'package:CurrencyCalc/modules/conversion/app/CurrencyConversionPage.dart';
 import 'package:flutter/material.dart';
+import 'CurrencyConversionPage.dart';
 
 class CurrencyCalcApp extends StatelessWidget {
   @override

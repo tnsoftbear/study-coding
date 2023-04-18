@@ -1,8 +1,11 @@
+import 'package:CurrencyCalc/modules/conversion/app/config/CurrencyConversionConfig.dart';
+import 'package:CurrencyCalc/modules/conversion/app/fetch/CurrencyRateFetcherFactory.dart';
 import 'package:CurrencyCalc/modules/conversion/domain/calculator/CurrencyConverter.dart';
-import 'package:CurrencyCalc/modules/conversion/infra/CurrencyRateFetchingInput.dart';
+import 'package:CurrencyCalc/modules/conversion/app/fetch/CurrencyRateFetchingInput.dart';
 import 'package:flutter/material.dart';
-// import 'package:CurrencyCalc/modules/conversion/infra/FixerIoCurrencyConversionFetcher.dart';
-import 'package:CurrencyCalc/modules/conversion/infra/FawazAhmedCurrencyConversionFetcher.dart';
+
+// import 'package:CurrencyCalc/modules/conversion/infra/FixerIoCurrencyRateFetcher.dart';
+import 'package:CurrencyCalc/modules/conversion/infra/fetch/FawazAhmedCurrencyRateFetcher.dart';
 
 class CurrencyConversionPage extends StatefulWidget {
   CurrencyConversionPage({Key? key, required this.title}) : super(key: key);
@@ -17,8 +20,8 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
   late String _fromCurrency;
   late String _toCurrency;
   late double _sourceAmount;
-  late String _result;
-  late String _rate;
+  late String _resultMessage;
+  late String _rateMessage;
   late bool _isLoading;
 
   final _amountController = TextEditingController();
@@ -42,16 +45,16 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
     _fromCurrency = _currencies[0];
     _toCurrency = _currencies[1];
     _sourceAmount = 0.0;
-    _result = '';
-    _rate = '';
+    _resultMessage = '';
+    _rateMessage = '';
     _isLoading = false;
   }
 
   void _updateConversion() {
     if (_sourceAmount <= 0) {
       setState(() {
-        _result = 'Enter positive non-zero amount';
-        _rate = '';
+        _resultMessage = 'Enter positive non-zero amount';
+        _rateMessage = '';
       });
       return;
     }
@@ -60,18 +63,22 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
       _isLoading = true;
     });
 
-    final input = CurrencyRateFetchingInput(from: _fromCurrency, to: _toCurrency);
-
-    fetchExchangeRate(input).then((rate) {
+    final input =
+        CurrencyRateFetchingInput(from: _fromCurrency, to: _toCurrency);
+    final rateFetcher =
+        CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
+    rateFetcher.fetchExchangeRate(input).then((rate) {
       setState(() {
         final ccResult = CurrencyConverter.convert(_sourceAmount, rate);
-        _result = 'Result: ' + ccResult.targetAmount.toString() + ' ' + _toCurrency;
-        _rate = _fromCurrency + ' to ' + _toCurrency + ' rate: ' + ccResult.rate.toString();
+        _resultMessage =
+            'Result: ${ccResult.targetAmount.toString()} $_toCurrency';
+        _rateMessage =
+            '$_fromCurrency to $_toCurrency rate: ${ccResult.rate.toString()}';
         _isLoading = false;
       });
     }).catchError((error) {
       setState(() {
-        _result = error.toString();
+        _resultMessage = error.toString();
         _isLoading = false;
       });
     });
@@ -135,23 +142,23 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
             _isLoading
                 ? Center(child: CircularProgressIndicator())
                 : Column(
-              children: [
-                Text(
-                  _result,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
+                    children: [
+                      Text(
+                        _resultMessage,
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        _rateMessage,
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Text(
-                  _rate,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
