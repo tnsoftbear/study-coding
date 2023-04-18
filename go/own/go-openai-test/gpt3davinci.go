@@ -8,7 +8,8 @@ import (
 )
 
 func main() {
-	client := openai.NewClient("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")
+	apiKey := ".."
+	client := openai.NewClient(apiKey)
 
 	resp, err := client.CreateCompletion(
 		context.Background(),
