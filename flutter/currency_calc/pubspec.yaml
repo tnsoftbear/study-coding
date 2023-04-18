@@ -1,5 +1,5 @@
-name: CurrencyCalc
-description: Currency Calculator application with help of ChatGPT
+name: currency_calc
+description: Currency Calculator by tnsoftbear
 publish_to: 'none'
 version: 1.0.0+1
 

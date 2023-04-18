@@ -1,11 +1,9 @@
-import 'package:CurrencyCalc/modules/conversion/app/config/CurrencyConversionConfig.dart';
-import 'package:CurrencyCalc/modules/conversion/app/fetch/CurrencyRateFetcherFactory.dart';
-import 'package:CurrencyCalc/modules/conversion/domain/calculator/CurrencyConverter.dart';
-import 'package:CurrencyCalc/modules/conversion/app/fetch/CurrencyRateFetchingInput.dart';
+import 'package:currency_calc/modules/conversion/app/config/CurrencyConversionConfig.dart';
+import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetcherFactory.dart';
+import 'package:currency_calc/modules/conversion/domain/calculator/CurrencyConverter.dart';
+import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetchingInput.dart';
+import 'package:currency_calc/modules/conversion/domain/constants/CurrencyConstants.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:CurrencyCalc/modules/conversion/infra/FixerIoCurrencyRateFetcher.dart';
-import 'package:CurrencyCalc/modules/conversion/infra/fetch/FawazAhmedCurrencyRateFetcher.dart';
 
 class CurrencyConversionPage extends StatefulWidget {
   CurrencyConversionPage({Key? key, required this.title}) : super(key: key);
@@ -26,24 +24,11 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
 
   final _amountController = TextEditingController();
 
-  final _currencies = [
-    'USD',
-    'EUR',
-    'GBP',
-    'AUD',
-    'CAD',
-    'JPY',
-    'CHF',
-    'NZD',
-    'CNY',
-    'HKD',
-  ];
-
   @override
   void initState() {
     super.initState();
-    _fromCurrency = _currencies[0];
-    _toCurrency = _currencies[1];
+    _fromCurrency = CurrencyConstants.CURRENCIES[0];
+    _toCurrency = CurrencyConstants.CURRENCIES[1];
     _sourceAmount = 0.0;
     _resultMessage = '';
     _rateMessage = '';
@@ -103,7 +88,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
                   _updateConversion();
                 });
               },
-              items: _currencies.map<DropdownMenuItem<String>>((String value) {
+              items: CurrencyConstants.CURRENCIES.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -118,7 +103,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
                   _updateConversion();
                 });
               },
-              items: _currencies.map<DropdownMenuItem<String>>((String value) {
+              items: CurrencyConstants.CURRENCIES.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),

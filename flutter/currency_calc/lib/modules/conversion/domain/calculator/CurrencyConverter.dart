@@ -1,4 +1,4 @@
-import 'package:CurrencyCalc/modules/conversion/domain/calculator/CurrencyConversionResult.dart';
+import 'package:currency_calc/modules/conversion/domain/calculator/CurrencyConversionResult.dart';
 
 class CurrencyConverter {
   static CurrencyConversionResult convert(double amount, double rate) {

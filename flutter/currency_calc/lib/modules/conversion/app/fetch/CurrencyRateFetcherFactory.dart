@@ -1,6 +1,6 @@
-import 'package:CurrencyCalc/modules/conversion/app/config/CurrencyConversionConfig.dart';
-import 'package:CurrencyCalc/modules/conversion/infra/fetch/FawazAhmedCurrencyRateFetcher.dart';
-import 'package:CurrencyCalc/modules/conversion/infra/fetch/FixerIoCurrencyRateFetcher.dart';
+import 'package:currency_calc/modules/conversion/app/config/CurrencyConversionConfig.dart';
+import 'package:currency_calc/modules/conversion/infra/fetch/FawazAhmedCurrencyRateFetcher.dart';
+import 'package:currency_calc/modules/conversion/infra/fetch/FixerIoCurrencyRateFetcher.dart';
 import 'CurrencyRateFetcherConstants.dart';
 import 'CurrencyRateFetcher.dart';
 
@@ -10,10 +10,10 @@ class CurrencyRateFetcherFactory {
       String type = CurrencyRateFetcherConstants.RF_FAWAZ_AHMED}) {
     if (type == CurrencyRateFetcherConstants.RF_FIXER_IO) {
       return FixerIoCurrencyRateFetcher(
-          url: config.FixerIoApiBaseUrl, apiKey: config.FixerIoApiKey);
+          url: config.fixerIoApiBaseUrl, apiKey: config.fixerIoApiKey);
     }
 
     return FawazAhmedCurrencyConversionFetcher(
-        url: config.FawazAhmedApiBaseUrl);
+        url: config.fawazAhmedApiBaseUrl);
   }
 }
