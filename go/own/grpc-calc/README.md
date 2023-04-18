@@ -15,7 +15,7 @@ protoc -I api/proto --go_out=./internal/pb --go_opt=paths=source_relative --go-g
 
 ```sh
 # First terminal
-go run server.go
+go run ./cmd/server.go
 # Second terminal
-go run client.go
+go run ./cmd/client.go
 ```

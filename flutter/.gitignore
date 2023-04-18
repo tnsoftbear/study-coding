@@ -1,0 +1,13 @@
+# Flutter/Dart specific
+**/build/
+**/ios/Pods/
+**/*.lock
+**/android/.gradle/
+**/android/captures/
+**/.dart_tool
+
+# IntelliJ related
+**/*.iml
+**/*.ipr
+**/*.iws
+.idea/
