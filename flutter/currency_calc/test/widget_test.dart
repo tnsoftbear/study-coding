@@ -1,30 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:currency_calc/modules/conversion/app/widget/CurrencyCalcApp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:currency_calc/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Element existence smoke test', (WidgetTester tester) async {
+    await tester.pumpWidget(CurrencyCalcApp());
+    expect(find.text('Enter amount'), findsOneWidget);
+    expect(find.byKey(Key('sourceAmount')), findsOneWidget);
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('Wrong amount validation smoke test', (WidgetTester tester) async {
+    // Arrange
+    await tester.pumpWidget(CurrencyCalcApp());
+    final txtSourceAmount = find.byKey(Key('sourceAmount'));
+    // Act
+    await tester.enterText(txtSourceAmount, 'hello');
     await tester.pump();
+    // Assert
+    expect(find.text('Numeric amount expected'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Act
+    await tester.enterText(txtSourceAmount, '-10');
+    await tester.pump();
+    // Assert
+    expect(find.text('Enter positive non-zero amount'), findsOneWidget);
   });
 }

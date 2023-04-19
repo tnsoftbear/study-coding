@@ -1,8 +1,8 @@
 import 'package:currency_calc/modules/conversion/app/config/CurrencyConversionConfig.dart';
+import 'package:currency_calc/modules/conversion/app/constants/CurrencyConstants.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetcherFactory.dart';
 import 'package:currency_calc/modules/conversion/domain/calculator/CurrencyConverter.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetchingInput.dart';
-import 'package:currency_calc/modules/conversion/domain/constants/CurrencyConstants.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class CurrencyConversionPage extends StatefulWidget {
 class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
   late String _fromCurrency;
   late String _toCurrency;
-  late double _sourceAmount;
+  late String _sourceAmount;
   late String _resultMessage;
   late String _rateMessage;
   late bool _isLoading;
@@ -29,14 +29,23 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
     super.initState();
     _fromCurrency = CurrencyConstants.CURRENCIES[0];
     _toCurrency = CurrencyConstants.CURRENCIES[1];
-    _sourceAmount = 0.0;
+    _sourceAmount = '';
     _resultMessage = '';
     _rateMessage = '';
     _isLoading = false;
   }
 
   void _updateConversion() {
-    if (_sourceAmount <= 0) {
+    double? sourceAmount = double.tryParse(_sourceAmount);
+    if (sourceAmount == null) {
+      setState(() {
+        _resultMessage = 'Numeric amount expected';
+        _rateMessage = '';
+      });
+      return;
+    }
+
+    if (sourceAmount <= 0) {
       setState(() {
         _resultMessage = 'Enter positive non-zero amount';
         _rateMessage = '';
@@ -54,7 +63,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
         CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
     rateFetcher.fetchExchangeRate(input).then((rate) {
       setState(() {
-        final ccResult = CurrencyConverter.convert(_sourceAmount, rate);
+        final ccResult = CurrencyConverter.convert(sourceAmount, rate);
         _resultMessage =
             'Result: ${ccResult.targetAmount.toString()} $_toCurrency';
         _rateMessage =
@@ -111,6 +120,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
               }).toList(),
             ),
             TextField(
+              key: Key('sourceAmount'),
               controller: _amountController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -118,7 +128,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
               ),
               onChanged: (value) {
                 setState(() {
-                  _sourceAmount = double.tryParse(value) ?? 0.0;
+                  _sourceAmount = value;
                   _updateConversion();
                 });
               },
