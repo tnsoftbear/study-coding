@@ -65,7 +65,7 @@ class _CurrencyConversionPageState extends State<CurrencyConversionPage> {
       setState(() {
         final ccResult = CurrencyConverter.convert(sourceAmount, rate);
         _resultMessage =
-            'Result: ${ccResult.targetAmount.toString()} $_toCurrency';
+            'Result: ${ccResult.targetAmount.toStringAsFixed(2)} $_toCurrency';
         _rateMessage =
             '$_fromCurrency to $_toCurrency rate: ${ccResult.rate.toString()}';
         _isLoading = false;
