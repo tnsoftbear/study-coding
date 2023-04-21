@@ -1,5 +1,5 @@
-import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetcher.dart';
-import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetchingInput.dart';
+import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher.dart';
+import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

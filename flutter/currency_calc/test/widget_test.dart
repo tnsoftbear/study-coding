@@ -1,4 +1,4 @@
-import 'package:currency_calc/modules/front/app/widget/CurrencyCalcApp.dart';
+import 'package:currency_calc/modules/front/app/widget/currency_calc_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

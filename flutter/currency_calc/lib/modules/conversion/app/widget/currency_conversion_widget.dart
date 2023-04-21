@@ -1,8 +1,8 @@
-import 'package:currency_calc/modules/conversion/app/config/CurrencyConversionConfig.dart';
-import 'package:currency_calc/modules/conversion/app/constants/CurrencyConstants.dart';
-import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetcherFactory.dart';
-import 'package:currency_calc/modules/conversion/app/fetch/CurrencyRateFetchingInput.dart';
-import 'package:currency_calc/modules/conversion/domain/calculator/CurrencyConverter.dart';
+import 'package:currency_calc/modules/conversion/app/config/currency_conversion_config.dart';
+import 'package:currency_calc/modules/conversion/app/constants/currency_constants.dart';
+import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
+import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
+import 'package:currency_calc/modules/conversion/domain/calculator/currency_converter.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionWidget extends StatefulWidget {

@@ -1,7 +1,7 @@
-import 'package:currency_calc/modules/front/app/widget/HeaderBar.dart';
+import 'package:currency_calc/modules/front/app/widget/header_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'CurrencyConversionWidget.dart';
+import 'currency_conversion_widget.dart';
 
 class CurrencyConversionPage extends StatelessWidget {
   @override
