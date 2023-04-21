@@ -2,7 +2,10 @@ import 'package:currency_calc/modules/conversion/app/config/currency_conversion_
 import 'package:currency_calc/modules/conversion/app/constants/currency_constants.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
+import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
 import 'package:currency_calc/modules/conversion/domain/calculator/currency_converter.dart';
+import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validation_result.dart';
+import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionWidget extends StatefulWidget {
@@ -12,8 +15,8 @@ class CurrencyConversionWidget extends StatefulWidget {
 }
 
 class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
-  late String _fromCurrency;
-  late String _toCurrency;
+  late String _sourceCurrency;
+  late String _targetCurrency;
   late String _sourceAmount;
   late String _resultMessage;
   late String _rateMessage;
@@ -24,8 +27,8 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
   @override
   void initState() {
     super.initState();
-    _fromCurrency = CurrencyConstants.CURRENCIES[0];
-    _toCurrency = CurrencyConstants.CURRENCIES[1];
+    _sourceCurrency = CurrencyConstants.CURRENCIES[0];
+    _targetCurrency = CurrencyConstants.CURRENCIES[1];
     _sourceAmount = '';
     _resultMessage = '';
     _rateMessage = '';
@@ -33,18 +36,15 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
   }
 
   void _updateConversion() {
-    double? sourceAmount = double.tryParse(_sourceAmount);
-    if (sourceAmount == null) {
-      setState(() {
-        _resultMessage = 'Numeric amount expected';
-        _rateMessage = '';
-      });
-      return;
-    }
 
-    if (sourceAmount <= 0) {
+    final validationResult = CurrencyConversionValidator.validate(
+        sourceCurrency: _sourceCurrency,
+        targetCurrency: _targetCurrency,
+        amount: _sourceAmount);
+    if (!validationResult.isSuccess()) {
+      final List<String> errorMessages = CurrencyConversionValidationTranslator.translate(validationResult.errors);
       setState(() {
-        _resultMessage = 'Enter positive non-zero amount';
+        _resultMessage = errorMessages.join("\n");
         _rateMessage = '';
       });
       return;
@@ -55,16 +55,17 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
     });
 
     final input =
-        CurrencyRateFetchingInput(from: _fromCurrency, to: _toCurrency);
+        CurrencyRateFetchingInput(from: _sourceCurrency, to: _targetCurrency);
     final rateFetcher =
         CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
     rateFetcher.fetchExchangeRate(input).then((rate) {
       setState(() {
+        double sourceAmount = double.parse(_sourceAmount);
         final ccResult = CurrencyConverter.convert(sourceAmount, rate);
         _resultMessage =
-            'Result: ${ccResult.targetAmount.toStringAsFixed(2)} $_toCurrency';
+            'Result: ${ccResult.targetAmount.toStringAsFixed(2)} $_targetCurrency';
         _rateMessage =
-            '$_fromCurrency to $_toCurrency rate: ${ccResult.rate.toString()}';
+            '$_sourceCurrency to $_targetCurrency rate: ${ccResult.rate.toString()}';
         _isLoading = false;
       });
     }).catchError((error) {
@@ -83,10 +84,10 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           DropdownButton<String>(
-            value: _fromCurrency,
+            value: _sourceCurrency,
             onChanged: (String? newValue) {
               setState(() {
-                _fromCurrency = newValue!;
+                _sourceCurrency = newValue!;
                 _updateConversion();
               });
             },
@@ -99,10 +100,10 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
             }).toList(),
           ),
           DropdownButton<String>(
-            value: _toCurrency,
+            value: _targetCurrency,
             onChanged: (String? newValue) {
               setState(() {
-                _toCurrency = newValue!;
+                _targetCurrency = newValue!;
                 _updateConversion();
               });
             },
