@@ -8,5 +8,5 @@ class Point<T> {
 
 void main() {
   const point = Point(1, 1);
-  const point2 = Point(DateTime.now(), DateTime.now());
+  // const point2 = Point(DateTime.now(), DateTime.now());
 }
