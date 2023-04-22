@@ -9,8 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   http: ^0.13.5
+  intl: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter:
+  generate: true # Enable generation of localized Strings from arb files.

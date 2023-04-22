@@ -4,9 +4,9 @@ import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
 import 'package:currency_calc/modules/conversion/domain/calculator/currency_converter.dart';
-import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validation_result.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
 class CurrencyConversionWidget extends StatefulWidget {
   @override
@@ -33,47 +33,6 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
     _resultMessage = '';
     _rateMessage = '';
     _isLoading = false;
-  }
-
-  void _updateConversion() {
-
-    final validationResult = CurrencyConversionValidator.validate(
-        sourceCurrency: _sourceCurrency,
-        targetCurrency: _targetCurrency,
-        amount: _sourceAmount);
-    if (!validationResult.isSuccess()) {
-      final List<String> errorMessages = CurrencyConversionValidationTranslator.translate(validationResult.errors);
-      setState(() {
-        _resultMessage = errorMessages.join("\n");
-        _rateMessage = '';
-      });
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    final input =
-        CurrencyRateFetchingInput(from: _sourceCurrency, to: _targetCurrency);
-    final rateFetcher =
-        CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
-    rateFetcher.fetchExchangeRate(input).then((rate) {
-      setState(() {
-        double sourceAmount = double.parse(_sourceAmount);
-        final ccResult = CurrencyConverter.convert(sourceAmount, rate);
-        _resultMessage =
-            'Result: ${ccResult.targetAmount.toStringAsFixed(2)} $_targetCurrency';
-        _rateMessage =
-            '$_sourceCurrency to $_targetCurrency rate: ${ccResult.rate.toString()}';
-        _isLoading = false;
-      });
-    }).catchError((error) {
-      setState(() {
-        _resultMessage = error.toString();
-        _isLoading = false;
-      });
-    });
   }
 
   @override
@@ -120,11 +79,11 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
             controller: _amountController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: 'Enter amount',
+              labelText: AppLocalizations.of(context).conversionEnterAmount,
             ),
-            onChanged: (value) {
+            onChanged: (text) {
               setState(() {
-                _sourceAmount = value;
+                _sourceAmount = text;
                 _updateConversion();
               });
             },
@@ -153,5 +112,48 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
         ],
       ),
     );
+  }
+
+  void _updateConversion() {
+    final validationResult = CurrencyConversionValidator.validate(
+        sourceCurrency: _sourceCurrency,
+        targetCurrency: _targetCurrency,
+        amount: _sourceAmount);
+    if (!validationResult.isSuccess()) {
+      setState(() {
+        _resultMessage = CurrencyConversionValidationTranslator
+            .translateConcatenatedErrorMessage(
+                context: context,
+                validationResult: validationResult);
+        _rateMessage = '';
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final input =
+        CurrencyRateFetchingInput(from: _sourceCurrency, to: _targetCurrency);
+    final rateFetcher =
+        CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
+    rateFetcher.fetchExchangeRate(input).then((rate) {
+      setState(() {
+        double sourceAmount = double.parse(_sourceAmount);
+        final ccResult = CurrencyConverter.convert(sourceAmount, rate);
+        final targetAmount = ccResult.targetAmount.toStringAsFixed(2);
+        _resultMessage = AppLocalizations.of(context)
+            .conversionCalculationResult(targetAmount, _targetCurrency);
+        _rateMessage = AppLocalizations.of(context).conversionRateResult(
+            ccResult.rate.toString(), _sourceCurrency, _targetCurrency);
+        _isLoading = false;
+      });
+    }).catchError((error) {
+      setState(() {
+        _resultMessage = error.toString();
+        _isLoading = false;
+      });
+    });
   }
 }

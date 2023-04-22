@@ -1,0 +1,12 @@
+{
+  "appTitle": "Калькулятор валют (с) github.com/tnsoftbear",
+  "conversionTitle": "Калькулятор валют",
+  "conversionCalculationResult": "Результат: {targetAmount} {targetCurrency}",
+  "conversionRateResult": "Рейт из {sourceCurrency} в {targetCurrency}: {rate}",
+  "conversionValidationErrSourceCurrencyInvalid": "Исходная валюта неправильная",
+  "conversionValidationErrTargetCurrencyInvalid": "Целевая валюта неправильная",
+  "conversionValidationErrSourceAndTargetCurrencySame": "Исходная и целевая валюты не могут быть одинаковыми",
+  "conversionValidationErrSourceAmountNotNumeric": "Исходное значение должно быть числом",
+  "conversionValidationErrSourceAmountNotPositive": "Исходное значение должно быть положительным числом",
+  "conversionEnterAmount" : "Введите сумму"
+}

@@ -1,0 +1,12 @@
+{
+  "appTitle": "Currency Converter (c) github.com/tnsoftbear",
+  "conversionTitle": "Currency Calculator",
+  "conversionCalculationResult": "Result: {targetAmount} {targetCurrency}",
+  "conversionRateResult": "{sourceCurrency} to {targetCurrency} rate: {rate}",
+  "conversionValidationErrSourceCurrencyInvalid": "Source currency is invalid",
+  "conversionValidationErrTargetCurrencyInvalid": "Target currency is invalid",
+  "conversionValidationErrSourceAndTargetCurrencySame": "Source and target currencies cannot be the same",
+  "conversionValidationErrSourceAmountNotNumeric": "Source amount is not numeric",
+  "conversionValidationErrSourceAmountNotPositive": "Source amount must be positive",
+  "conversionEnterAmount" : "Enter amount"
+}
