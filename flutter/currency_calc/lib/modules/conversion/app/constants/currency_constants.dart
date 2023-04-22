@@ -10,5 +10,6 @@ class CurrencyConstants {
     'NZD',
     'CNY',
     'HKD',
+    'RUB',
   ];
 }

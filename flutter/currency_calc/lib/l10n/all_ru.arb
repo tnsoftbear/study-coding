@@ -1,7 +1,7 @@
 {
   "appTitle": "Калькулятор валют (с) github.com/tnsoftbear",
   "conversionTitle": "Калькулятор валют",
-  "conversionCalculationResult": "Результат: {targetAmount} {targetCurrency}",
+  "conversionCalculationResult": "Результат: {targetAmount}",
   "conversionRateResult": "Рейт из {sourceCurrency} в {targetCurrency}: {rate}",
   "conversionValidationErrSourceCurrencyInvalid": "Исходная валюта неправильная",
   "conversionValidationErrTargetCurrencyInvalid": "Целевая валюта неправильная",

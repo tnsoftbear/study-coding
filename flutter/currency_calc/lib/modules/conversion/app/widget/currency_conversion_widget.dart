@@ -7,6 +7,7 @@ import 'package:currency_calc/modules/conversion/domain/calculator/currency_conv
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
+import 'package:intl/intl.dart';
 
 class CurrencyConversionWidget extends StatefulWidget {
   @override
@@ -123,8 +124,7 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
       setState(() {
         _resultMessage = CurrencyConversionValidationTranslator
             .translateConcatenatedErrorMessage(
-                context: context,
-                validationResult: validationResult);
+                context: context, validationResult: validationResult);
         _rateMessage = '';
       });
       return;
@@ -142,11 +142,17 @@ class _CurrencyConversionWidgetState extends State<CurrencyConversionWidget> {
       setState(() {
         double sourceAmount = double.parse(_sourceAmount);
         final ccResult = CurrencyConverter.convert(sourceAmount, rate);
-        final targetAmount = ccResult.targetAmount.toStringAsFixed(2);
+        final currencyFormatter = NumberFormat.simpleCurrency(
+            locale: Localizations.localeOf(context).toString(),
+            name: _targetCurrency);
+        final targetAmount = currencyFormatter.format(ccResult.targetAmount);
         _resultMessage = AppLocalizations.of(context)
-            .conversionCalculationResult(targetAmount, _targetCurrency);
+            .conversionCalculationResult(targetAmount);
+        final numberFormatter = NumberFormat.decimalPattern(
+            Localizations.localeOf(context).toString());
+        final rateFormatted = numberFormatter.format(ccResult.rate);
         _rateMessage = AppLocalizations.of(context).conversionRateResult(
-            ccResult.rate.toString(), _sourceCurrency, _targetCurrency);
+            rateFormatted, _sourceCurrency, _targetCurrency);
         _isLoading = false;
       });
     }).catchError((error) {
