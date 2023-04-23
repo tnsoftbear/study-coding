@@ -20,3 +20,13 @@ dev_dependencies:
 
 flutter:
   generate: true # Enable generation of localized Strings from arb files.
+  assets:
+    - assets/images/portugal-sea.jpg
+  fonts:
+    - family: IndieFlower
+      fonts:
+        - asset: fonts/IndieFlower-Regular.ttf
+    - family: MaterialIcons
+      fonts:
+        - asset: fonts/MaterialIcons-Regular.ttf
+  uses-material-design: true

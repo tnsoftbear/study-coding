@@ -9,6 +9,7 @@ class CurrencyCalcApp extends StatelessWidget {
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        // fontFamily: 'IndieFlower',
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

@@ -13,7 +13,13 @@ class _HeaderBarState extends State<HeaderBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(widget.titleText),
+        title: Text(
+            widget.titleText,
+            style: TextStyle(
+                fontSize: 30,
+                fontFamily: 'IndieFlower'
+            )
+        )
     );
   }
 }
