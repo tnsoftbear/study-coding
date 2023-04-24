@@ -1,14 +1,14 @@
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validation_result.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:currency_calc/modules/conversion/app/constants/currency_constants.dart';
+import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 
 void main() {
   group('CurrencyConversionValidator', () {
     test('validate should return no errors for valid inputs', () {
       final result = CurrencyConversionValidator.validate(
-          sourceCurrency: CurrencyConstants.CURRENCIES[0],
-          targetCurrency: CurrencyConstants.CURRENCIES[1],
+          sourceCurrency: CurrencyConstant.CURRENCIES[0],
+          targetCurrency: CurrencyConstant.CURRENCIES[1],
           amount: '100.00');
       expect(result.errors.length, 0);
     });
@@ -18,7 +18,7 @@ void main() {
             () {
           final result = CurrencyConversionValidator.validate(
               sourceCurrency: 'XYZ',
-              targetCurrency: CurrencyConstants.CURRENCIES[1],
+              targetCurrency: CurrencyConstant.CURRENCIES[1],
               amount: '100.00');
           expect(result.errors.length, 1);
           expect(result.errors[0],
@@ -29,7 +29,7 @@ void main() {
         'validate should return an error when target currency is invalid and others are valid',
             () {
           final result = CurrencyConversionValidator.validate(
-              sourceCurrency: CurrencyConstants.CURRENCIES[0],
+              sourceCurrency: CurrencyConstant.CURRENCIES[0],
               targetCurrency: 'XYZ',
               amount: '100.00');
           expect(result.errors.length, 1);
@@ -41,8 +41,8 @@ void main() {
         'validate should return an error when source and target currencies are same and others are valid',
             () {
           final result = CurrencyConversionValidator.validate(
-              sourceCurrency: CurrencyConstants.CURRENCIES[0],
-              targetCurrency: CurrencyConstants.CURRENCIES[0],
+              sourceCurrency: CurrencyConstant.CURRENCIES[0],
+              targetCurrency: CurrencyConstant.CURRENCIES[0],
               amount: '100.00');
           expect(result.errors.length, 1);
           expect(result.errors[0],
@@ -52,8 +52,8 @@ void main() {
 
     test('validate should return an error when amount is not numeric', () {
       final result = CurrencyConversionValidator.validate(
-          sourceCurrency: CurrencyConstants.CURRENCIES[0],
-          targetCurrency: CurrencyConstants.CURRENCIES[1],
+          sourceCurrency: CurrencyConstant.CURRENCIES[0],
+          targetCurrency: CurrencyConstant.CURRENCIES[1],
           amount: 'not a number');
       expect(result.errors.length, 1);
       expect(result.errors[0],
@@ -62,8 +62,8 @@ void main() {
 
     test('validate should return an error when amount is not positive', () {
       final result = CurrencyConversionValidator.validate(
-          sourceCurrency: CurrencyConstants.CURRENCIES[0],
-          targetCurrency: CurrencyConstants.CURRENCIES[1],
+          sourceCurrency: CurrencyConstant.CURRENCIES[0],
+          targetCurrency: CurrencyConstant.CURRENCIES[1],
           amount: '0.00');
       expect(result.errors.length, 1);
       expect(result.errors[0],

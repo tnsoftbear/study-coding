@@ -1,4 +1,4 @@
-import 'package:currency_calc/modules/conversion/app/constants/currency_constants.dart';
+import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 
 import 'currency_conversion_validation_result.dart';
 
@@ -9,12 +9,12 @@ class CurrencyConversionValidator {
       required String amount}) {
     final result = CurrencyConversionValidationResult();
 
-    if (!CurrencyConstants.CURRENCIES.contains(sourceCurrency)) {
+    if (!CurrencyConstant.CURRENCIES.contains(sourceCurrency)) {
       result.addError(
           CurrencyConversionValidationResult.ERR_SOURCE_CURRENCY_INVALID);
     }
 
-    if (!CurrencyConstants.CURRENCIES.contains(targetCurrency)) {
+    if (!CurrencyConstant.CURRENCIES.contains(targetCurrency)) {
       result.addError(
           CurrencyConversionValidationResult.ERR_TARGET_CURRENCY_INVALID);
     }

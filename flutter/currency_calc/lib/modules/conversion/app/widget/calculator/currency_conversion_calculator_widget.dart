@@ -1,5 +1,5 @@
 import 'package:currency_calc/modules/conversion/app/config/currency_conversion_config.dart';
-import 'package:currency_calc/modules/conversion/app/constants/currency_constants.dart';
+import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
@@ -30,8 +30,8 @@ class _CurrencyConversionCalculatorWidgetState
   @override
   void initState() {
     super.initState();
-    _sourceCurrency = CurrencyConstants.CURRENCIES[0];
-    _targetCurrency = CurrencyConstants.CURRENCIES[1];
+    _sourceCurrency = CurrencyConstant.CURRENCIES[0];
+    _targetCurrency = CurrencyConstant.CURRENCIES[1];
     _sourceAmount = '';
     _resultMessage = '';
     _rateMessage = '';
@@ -41,7 +41,9 @@ class _CurrencyConversionCalculatorWidgetState
 
   @override
   Widget build(BuildContext context) {
+    final appLoc = AppLocalizations.of(context);
     return Padding(
+      key: ValueKey("currencyConversionCalculatorWidget"),
       padding: EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
@@ -59,7 +61,7 @@ class _CurrencyConversionCalculatorWidgetState
                     _updateConversion();
                   });
                 },
-                items: CurrencyConstants.CURRENCIES
+                items: CurrencyConstant.CURRENCIES
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -75,7 +77,7 @@ class _CurrencyConversionCalculatorWidgetState
                     _updateConversion();
                   });
                 },
-                items: CurrencyConstants.CURRENCIES
+                items: CurrencyConstant.CURRENCIES
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -105,7 +107,7 @@ class _CurrencyConversionCalculatorWidgetState
                   decoration: InputDecoration(
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                     labelText:
-                        AppLocalizations.of(context).conversionEnterAmount,
+                        appLoc.conversionEnterAmount,
                   ),
                   onChanged: (text) {
                     setState(() {
@@ -150,6 +152,7 @@ class _CurrencyConversionCalculatorWidgetState
   }
 
   void _updateConversion() {
+    final appLoc = AppLocalizations.of(context);
     final validationResult = CurrencyConversionValidator.validate(
         sourceCurrency: _sourceCurrency,
         targetCurrency: _targetCurrency,
@@ -181,12 +184,12 @@ class _CurrencyConversionCalculatorWidgetState
             locale: Localizations.localeOf(context).toString(),
             name: _targetCurrency);
         final targetAmount = currencyFormatter.format(ccResult.targetAmount);
-        _resultMessage = AppLocalizations.of(context)
+        _resultMessage = appLoc
             .conversionCalculationResult(targetAmount);
         final numberFormatter = NumberFormat.decimalPattern(
             Localizations.localeOf(context).toString());
         final rateFormatted = numberFormatter.format(ccResult.rate);
-        _rateMessage = AppLocalizations.of(context).conversionRateResult(
+        _rateMessage = appLoc.conversionRateResult(
             rateFormatted, _sourceCurrency, _targetCurrency);
         _isLoading = false;
         _isSaveButtonVisible = true;

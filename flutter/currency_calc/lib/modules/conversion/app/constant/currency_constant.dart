@@ -1,4 +1,4 @@
-class CurrencyConstants {
+class CurrencyConstant {
   static const CURRENCIES = [
     'USD',
     'EUR',

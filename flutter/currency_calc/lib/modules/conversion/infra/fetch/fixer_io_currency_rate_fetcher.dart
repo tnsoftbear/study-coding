@@ -17,7 +17,6 @@ class FixerIoCurrencyRateFetcher extends CurrencyRateFetcher {
         await http.get(Uri.parse(url), headers: {'apikey': this.apiKey});
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      // print(data);
       if (data['success'] == false) {
         throw Exception(data['error']['info']);
       }

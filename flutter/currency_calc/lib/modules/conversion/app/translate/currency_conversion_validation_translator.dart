@@ -5,18 +5,18 @@ import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 class CurrencyConversionValidationTranslator {
   static List<String> translateErrorMessages(
       {required BuildContext context, required List<int> errors}) {
-    final appLocalizations = AppLocalizations.of(context);
+    final appLoc = AppLocalizations.of(context);
     final Map<int, String> _translations = {
       CurrencyConversionValidationResult.ERR_SOURCE_CURRENCY_INVALID:
-          appLocalizations.conversionValidationErrSourceCurrencyInvalid,
+          appLoc.conversionValidationErrSourceCurrencyInvalid,
       CurrencyConversionValidationResult.ERR_TARGET_CURRENCY_INVALID:
-          appLocalizations.conversionValidationErrTargetCurrencyInvalid,
+          appLoc.conversionValidationErrTargetCurrencyInvalid,
       CurrencyConversionValidationResult.ERR_SOURCE_AND_TARGET_CURRENCY_SAME:
-          appLocalizations.conversionValidationErrSourceAndTargetCurrencySame,
+          appLoc.conversionValidationErrSourceAndTargetCurrencySame,
       CurrencyConversionValidationResult.ERR_SOURCE_AMOUNT_NOT_NUMERIC:
-          appLocalizations.conversionValidationErrSourceAmountNotNumeric,
+          appLoc.conversionValidationErrSourceAmountNotNumeric,
       CurrencyConversionValidationResult.ERR_SOURCE_AMOUNT_NOT_POSITIVE:
-          appLocalizations.conversionValidationErrSourceAmountNotPositive
+          appLoc.conversionValidationErrSourceAmountNotPositive
     };
 
     final List<String> errorMessages = [];
