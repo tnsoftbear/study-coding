@@ -2,8 +2,6 @@ import 'package:currency_calc/modules/conversion/app/widget/history/currency_con
 import 'package:currency_calc/modules/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/modules/front/app/widget/front_main_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 import 'calculator/currency_conversion_calculator_widget.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 

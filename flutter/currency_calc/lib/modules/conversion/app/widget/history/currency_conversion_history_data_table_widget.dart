@@ -24,54 +24,39 @@ class _CurrencyConversionHistoryDataTableWidget
     final appLoc = AppLocalizations.of(context);
     _loadHistoryRecords(context);
 
-    return DataTable(
-      columnSpacing: 8,
-      horizontalMargin: 16,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 0.5),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      columns: [
-        DataColumn(
-            label: Text(appLoc.conversionHistoryDateColumnTitle),
-            tooltip: appLoc.conversionHistoryDateColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistorySourceColumnTitle),
-            tooltip: appLoc.conversionHistorySourceColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistoryTargetColumnTitle),
-            tooltip: appLoc.conversionHistoryTargetColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistoryRateColumnTitle),
-            tooltip: appLoc.conversionHistoryRateColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistoryActionsColumnTitle),
-            tooltip: appLoc.conversionHistoryActionsColumnTooltip),
-      ],
-      rows: List.generate(
-        _historyRecords.length,
-        (index) => DataRow(
-          cells: [
-            DataCell(Text(_historyRecords[index]['date'].toString(),
-                style: TextStyle(fontSize: 12))),
-            DataCell(Text(_historyRecords[index]['source_amount'].toString())),
-            DataCell(Text(_historyRecords[index]['target_amount'].toString())),
-            DataCell(Text(_historyRecords[index]['rate'].toString())),
-            DataCell(
-              IconButton(
-                icon: Icon(Icons.delete, size: 20, color: Colors.red),
-                onPressed: () => _onDeletePressed(index),
-              ),
-            ),
-          ],
+    return Container(
+        width: 400,
+        height: 200,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(255, 255, 255, 0.5),
+          borderRadius: BorderRadius.circular(20),
         ),
-      ),
-    );
-  }
-
-  _onDeletePressed(int index) async {
-    var box = await Hive.openBox('currencyConversionHistory');
-    box.deleteAt(index);
+        child: Theme(
+            data: Theme.of(context).copyWith(
+                cardColor: Color.fromRGBO(255, 255, 255, 0.5)),
+            child: PaginatedDataTable(
+              rowsPerPage: 5,
+              columnSpacing: 8,
+              horizontalMargin: 8,
+              columns: [
+                DataColumn(
+                    label: Text(appLoc.conversionHistoryDateColumnTitle),
+                    tooltip: appLoc.conversionHistoryDateColumnTooltip),
+                DataColumn(
+                    label: Text(appLoc.conversionHistorySourceColumnTitle),
+                    tooltip: appLoc.conversionHistorySourceColumnTooltip),
+                DataColumn(
+                    label: Text(appLoc.conversionHistoryTargetColumnTitle),
+                    tooltip: appLoc.conversionHistoryTargetColumnTooltip),
+                DataColumn(
+                    label: Text(appLoc.conversionHistoryRateColumnTitle),
+                    tooltip: appLoc.conversionHistoryRateColumnTooltip),
+                DataColumn(
+                    label: Text(appLoc.conversionHistoryActionsColumnTitle),
+                    tooltip: appLoc.conversionHistoryActionsColumnTooltip),
+              ],
+              source: CurrencyConversionHistoryDataTableSource(_historyRecords),
+            )));
   }
 
   Future<void> _loadHistoryRecords(BuildContext context) async {
@@ -104,5 +89,45 @@ class _CurrencyConversionHistoryDataTableWidget
       name: currencyCode,
     );
     return format.format(amount);
+  }
+}
+
+class CurrencyConversionHistoryDataTableSource extends DataTableSource {
+  List<Map<String, String>> _historyRecords;
+
+  CurrencyConversionHistoryDataTableSource(this._historyRecords);
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _historyRecords.length;
+
+  @override
+  int get selectedRowCount => 0;
+
+  DataRow getRow(int index) {
+    index = _historyRecords.length - index - 1;
+    return DataRow(
+      cells: [
+        DataCell(Text(_historyRecords[index]['date'].toString(),
+            style: TextStyle(fontSize: 12))),
+        DataCell(Text(_historyRecords[index]['source_amount'].toString())),
+        DataCell(Text(_historyRecords[index]['target_amount'].toString())),
+        DataCell(Text(_historyRecords[index]['rate'].toString())),
+        DataCell(
+          IconButton(
+            icon: Icon(Icons.delete, size: 20, color: Colors.red),
+            onPressed: () => _onDeletePressed(index),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _onDeletePressed(int index) async {
+    var box = await Hive.openBox('currencyConversionHistory');
+    await box.deleteAt(index);
+    await box.close();
   }
 }

@@ -223,6 +223,9 @@ class _CurrencyConversionCalculatorWidgetState
       ..rate = _rate
       ..date = DateTime.now();
     await box.add(historyRecord);
-    // await historyRecord.save();
+    await box.close();
+    setState(() {
+      _isSaveButtonVisible = false;
+    });
   }
 }
