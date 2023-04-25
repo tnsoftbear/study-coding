@@ -14,6 +14,7 @@ dependencies:
   http: ^0.13.5
   intl: any
   shared_preferences: ^2.1.0
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -23,6 +24,10 @@ flutter:
   generate: true # Enable generation of localized Strings from arb files.
   assets:
     - assets/images/portugal-sea.jpg
+    - assets/images/cloudy-sky-portrait.jpg
+    - assets/images/white-tree-portrait.jpg
+    - assets/images/cloudy-sky-landscape.jpg
+    - assets/images/riga-cloudy-sky-landscape.jpg
   fonts:
     - family: IndieFlower
       fonts:
@@ -30,4 +35,7 @@ flutter:
     - family: MaterialIcons
       fonts:
         - asset: fonts/MaterialIcons-Regular.ttf
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Regular.ttf
   uses-material-design: true

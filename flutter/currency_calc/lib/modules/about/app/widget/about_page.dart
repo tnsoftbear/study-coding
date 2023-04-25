@@ -13,12 +13,25 @@ class AboutPage extends StatelessWidget {
       appBar: FrontHeaderBar(titleText: appLoc.aboutTitle),
       drawer: FrontMainMenu(),
       body: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/white-tree-portrait.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
-          child: Text(
-            appLoc.aboutContent,
-            style: TextStyle(
-              fontSize: 20,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(255, 255, 255, 0.8),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Text(
+              appLoc.aboutContent,
+              style: TextStyle(
+                fontSize: 20,
+              ),
             ),
           ),
         ),

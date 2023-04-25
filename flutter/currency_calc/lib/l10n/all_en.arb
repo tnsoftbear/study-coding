@@ -24,6 +24,7 @@
   "menuTitle": "Menu",
   "settingLocaleEnLabel": "English",
   "settingLocaleRuLabel": "Русский",
+  "settingSelectFontFamily": "Select font family:",
   "settingSelectLanguage": "Select language:",
   "settingTitle": "Settings"
 }

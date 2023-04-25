@@ -1,4 +1,4 @@
-import 'package:currency_calc/modules/front/app/route/constant/route_constant.dart';
+import 'package:currency_calc/modules/front/app/constant/route_constant.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
