@@ -11,13 +11,6 @@ class CurrencyConversionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLoc = AppLocalizations.of(context);
-    final localeName = Localizations.localeOf(context).toString();
-    final nfEur = NumberFormat.simpleCurrency(
-        locale: localeName, name: 'EUR', decimalDigits: 2);
-    final nfUsd = NumberFormat.simpleCurrency(
-        locale: localeName, name: 'USD', decimalDigits: 2);
-    final df = DateFormat.yMd(localeName);
-    final nf = NumberFormat.decimalPattern(localeName);
     return Scaffold(
       appBar: FrontHeaderBar(titleText: appLoc.conversionTitle),
       drawer: FrontMainMenu(),
@@ -37,128 +30,8 @@ class CurrencyConversionPage extends StatelessWidget {
             ),
             Expanded(
                 flex: 2,
-                child: CurrencyConversionHistoryDataTableWidget([
-                  {
-                    'date': df.format(DateTime.now()),
-                    'source_amount': nfEur.format(100),
-                    'target_amount': nfUsd.format(100),
-                    'rate': nf.format(0.91)
-                  },
-                  {
-                    'date': df.format(DateTime.now()),
-                    'source_amount': nfUsd.format(200),
-                    'target_amount': nfEur.format(100),
-                    'rate': nf.format(0.91)
-                  },
-                  {
-                    'date': df.format(DateTime.now()),
-                    'source_amount': nfEur.format(100),
-                    'target_amount': nfUsd.format(100),
-                    'rate': nf.format(0.91)
-                  },
-                  {
-                    'date': df.format(DateTime.now()),
-                    'source_amount': nfUsd.format(200),
-                    'target_amount': nfEur.format(100),
-                    'rate': nf.format(0.91)
-                  },
-                  {
-                    'date': df.format(DateTime.now()),
-                    'source_amount': nfEur.format(100),
-                    'target_amount': nfUsd.format(100),
-                    'rate': nf.format(0.91)
-                  },
-                  {
-                    'date': df.format(DateTime.now()),
-                    'source_amount': nfUsd.format(200),
-                    'target_amount': nfEur.format(100),
-                    'rate': nf.format(0.91)
-                  },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfEur.format(100),
-                  //   'target_amount': nfUsd.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                  // {
-                  //   'date': df.format(DateTime.now()),
-                  //   'source_amount': nfUsd.format(200),
-                  //   'target_amount': nfEur.format(100),
-                  //   'rate': nf.format(0.91)
-                  // },
-                ])),
+                child: CurrencyConversionHistoryDataTableWidget()
+            ),
           ],
         ),
       ),

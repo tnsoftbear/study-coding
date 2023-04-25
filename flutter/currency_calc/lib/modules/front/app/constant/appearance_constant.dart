@@ -9,8 +9,8 @@ class AppearanceConstant {
     LC_RU: {'countryCode': 'RU'},
   };
 
+  // Font Families
   static const String FF_DEFAULT = 'Roboto';
-
   static const List<String> FONT_FAMILIES = [
     'Roboto',
     'Montserrat',
