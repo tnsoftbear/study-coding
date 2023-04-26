@@ -7,7 +7,7 @@ import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetchin
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
 import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_record.dart';
-import 'package:currency_calc/modules/conversion/domain/calculator/currency_converter.dart';
+import 'package:currency_calc/modules/conversion/domain/calculate/currency_converter.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
