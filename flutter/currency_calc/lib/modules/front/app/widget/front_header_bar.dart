@@ -1,4 +1,4 @@
-import 'package:currency_calc/modules/setting/app/widget/primary/setting_primary_page.dart';
+import 'package:currency_calc/modules/setting/app/screen/setting_primary_screen.dart';
 import 'package:flutter/material.dart';
 
 class FrontHeaderBar extends AppBar {
@@ -21,7 +21,7 @@ class _HeaderBarState extends State<FrontHeaderBar> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SettingPrimaryPage())),
+                      builder: (context) => SettingPrimaryScreen())),
             )
           ]
         : <Widget>[];

@@ -3,7 +3,7 @@ import 'package:currency_calc/modules/conversion/app/constant/currency_constant.
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
-import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_page.dart';
+import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_record.dart';
 import 'package:currency_calc/modules/conversion/domain/calculator/currency_converter.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
@@ -121,9 +121,9 @@ class _CurrencyConversionCalculatorWidgetState
                     setState(() {
                       _sourceAmountInput = text;
                       _updateConversion();
-                      CurrencyConversionPageState state =
+                      CurrencyConversionScreenState state =
                           context.findAncestorStateOfType<
-                              CurrencyConversionPageState>()!;
+                              CurrencyConversionScreenState>()!;
                       state.isCurrencyConversionHistoryVisible = false;
                     });
                   },
@@ -235,8 +235,8 @@ class _CurrencyConversionCalculatorWidgetState
       ..date = DateTime.now();
     await box.add(historyRecord);
     await box.close();
-    CurrencyConversionPageState state =
-        context.findAncestorStateOfType<CurrencyConversionPageState>()!;
+    CurrencyConversionScreenState state =
+        context.findAncestorStateOfType<CurrencyConversionScreenState>()!;
     setState(() {
       _areActionButtonsVisible = false;
       state.isCurrencyConversionHistoryVisible = true;
@@ -244,8 +244,8 @@ class _CurrencyConversionCalculatorWidgetState
   }
 
   void _onCancelPressed() {
-    CurrencyConversionPageState state =
-        context.findAncestorStateOfType<CurrencyConversionPageState>()!;
+    CurrencyConversionScreenState state =
+        context.findAncestorStateOfType<CurrencyConversionScreenState>()!;
     setState(() {
       _areActionButtonsVisible = false;
       state.isCurrencyConversionHistoryVisible = true;

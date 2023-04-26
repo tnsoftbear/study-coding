@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import '../calculate/widget/currency_conversion_calculator_widget.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
-class CurrencyConversionPage extends StatefulWidget {
+class CurrencyConversionScreen extends StatefulWidget {
   @override
-  CurrencyConversionPageState createState() => CurrencyConversionPageState();
+  CurrencyConversionScreenState createState() => CurrencyConversionScreenState();
 }
 
-class CurrencyConversionPageState extends State<CurrencyConversionPage> {
+class CurrencyConversionScreenState extends State<CurrencyConversionScreen> {
   late bool _isCurrencyConversionHistoryVisible;
 
   set isCurrencyConversionHistoryVisible(bool enable) =>

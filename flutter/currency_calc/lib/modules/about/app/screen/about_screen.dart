@@ -4,8 +4,8 @@ import 'package:currency_calc/modules/setting/app/constant/appearance_constant.d
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
-class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
-import 'package:currency_calc/modules/about/app/widget/about_page.dart';
-import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_page.dart';
+import 'package:currency_calc/modules/about/app/screen/about_screen.dart';
+import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/modules/front/app/constant/route_constant.dart';
-import 'package:currency_calc/modules/setting/app/manage/SettingManager.dart';
-import 'package:currency_calc/modules/setting/app/widget/primary/setting_primary_page.dart';
+import 'package:currency_calc/modules/setting/app/manage/setting_manager.dart';
+import 'package:currency_calc/modules/setting/app/screen/setting_primary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
@@ -48,11 +48,10 @@ class _FrontMaterialAppState extends State<FrontMaterialApp> {
     SettingManager.detectLocale().then((locale) => _locale = locale);
     SettingManager.detectFontFamily()
         .then((fontFamily) => _fontFamily = fontFamily);
-    final tr = AppLocalizations.of(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => tr.appTitle,
+      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: _fontFamily,
@@ -60,13 +59,13 @@ class _FrontMaterialAppState extends State<FrontMaterialApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
-      home: CurrencyConversionPage(),
+      home: CurrencyConversionScreen(),
       initialRoute: RouteConstant.currencyConversionRoute,
       routes: {
         RouteConstant.currencyConversionRoute: (context) =>
-            CurrencyConversionPage(),
-        RouteConstant.aboutRoute: (context) => AboutPage(),
-        RouteConstant.settingRoute: (context) => SettingPrimaryPage(),
+            CurrencyConversionScreen(),
+        RouteConstant.aboutRoute: (context) => AboutScreen(),
+        RouteConstant.settingRoute: (context) => SettingPrimaryScreen(),
       },
     );
   }
