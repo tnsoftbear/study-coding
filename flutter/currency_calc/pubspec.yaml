@@ -25,6 +25,7 @@ dev_dependencies:
 
 flutter:
   generate: true # Enable generation of localized Strings from arb files.
+  uses-material-design: true
   assets:
     - assets/images/portugal-sea.jpg
     - assets/images/cloudy-sky-portrait.jpg
@@ -41,4 +42,3 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: fonts/Montserrat-Regular.ttf
-  uses-material-design: true

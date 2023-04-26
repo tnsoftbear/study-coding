@@ -3,7 +3,8 @@ import 'package:currency_calc/modules/conversion/app/constant/currency_constant.
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
-import 'package:currency_calc/modules/conversion/app/widget/history/model/currency_conversion_history_record.dart';
+import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_page.dart';
+import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_record.dart';
 import 'package:currency_calc/modules/conversion/domain/calculator/currency_converter.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class CurrencyConversionCalculatorWidget extends StatefulWidget {
 class _CurrencyConversionCalculatorWidgetState
     extends State<CurrencyConversionCalculatorWidget> {
   late bool _isLoading;
-  late bool _isSaveButtonVisible;
+  late bool _areActionButtonsVisible;
   late double _rate;
   late double _sourceAmount;
   late double _targetAmount;
@@ -30,13 +31,13 @@ class _CurrencyConversionCalculatorWidgetState
   late String _sourceCurrency;
   late String _targetCurrency;
 
-  final _amountController = TextEditingController();
+  final _sourceAmountController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _isLoading = false;
-    _isSaveButtonVisible = false;
+    _areActionButtonsVisible = false;
     _rate = 0.0;
     _rateMessage = '';
     _resultMessage = '';
@@ -52,11 +53,11 @@ class _CurrencyConversionCalculatorWidgetState
     final appLoc = AppLocalizations.of(context);
     return Padding(
       key: ValueKey("currencyConversionCalculatorWidget"),
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Container(
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 0.1),
-          borderRadius: BorderRadius.circular(8.0),
+        decoration: const BoxDecoration(
+          color: const Color.fromRGBO(255, 255, 255, 0.1),
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
         child: Column(
           children: [
@@ -97,59 +98,73 @@ class _CurrencyConversionCalculatorWidgetState
             Container(
                 width: 200,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 255, 255, 0.05),
-                  borderRadius: BorderRadius.circular(8.0),
+                decoration: const BoxDecoration(
+                  color: const Color.fromRGBO(255, 255, 255, 0.05),
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                 ),
                 child: TextField(
                   key: Key('sourceAmount'),
                   textAlign: TextAlign.center,
                   textAlignVertical: TextAlignVertical.center,
                   autofocus: true,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),
-                  controller: _amountController,
+                  controller: _sourceAmountController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     floatingLabelAlignment: FloatingLabelAlignment.center,
-                    labelText:
-                        appLoc.conversionEnterAmount,
+                    labelText: appLoc.conversionEnterAmount,
                   ),
                   onChanged: (text) {
                     setState(() {
                       _sourceAmountInput = text;
                       _updateConversion();
+                      CurrencyConversionPageState state =
+                          context.findAncestorStateOfType<
+                              CurrencyConversionPageState>()!;
+                      state.isCurrencyConversionHistoryVisible = false;
                     });
                   },
                 )),
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(child: const CircularProgressIndicator())
                   : Column(
                       children: [
                         Text(
                           _resultMessage,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           _rateMessage,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Visibility(
-                            visible: _isSaveButtonVisible,
-                            child: ElevatedButton(
-                                key: Key('saveCurrencyConversionButton'),
-                                onPressed: _onSavePressed,
-                                child: Text('Save'))),
+                          visible: _areActionButtonsVisible,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  key: Key('saveCurrencyConversionButton'),
+                                  onPressed: _onSavePressed,
+                                  child: Text(appLoc.conversionSaveButtonText)),
+                              ElevatedButton(
+                                  key: Key('cancelCurrencyConversionButton'),
+                                  onPressed: _onCancelPressed,
+                                  child:
+                                      Text(appLoc.conversionCancelButtonText))
+                            ],
+                          ),
+                        ),
                       ],
                     ),
             ),
@@ -171,7 +186,7 @@ class _CurrencyConversionCalculatorWidgetState
             .translateConcatenatedErrorMessage(
                 context: context, validationResult: validationResult);
         _rateMessage = '';
-        _isSaveButtonVisible = false;
+        _areActionButtonsVisible = false;
       });
       return;
     }
@@ -192,8 +207,8 @@ class _CurrencyConversionCalculatorWidgetState
             locale: Localizations.localeOf(context).toString(),
             name: _targetCurrency);
         _targetAmount = ccResult.targetAmount;
-        _resultMessage = appLoc
-            .conversionCalculationResult(currencyFormatter.format(_targetAmount));
+        _resultMessage = appLoc.conversionCalculationResult(
+            currencyFormatter.format(_targetAmount));
         final numberFormatter = NumberFormat.decimalPattern(
             Localizations.localeOf(context).toString());
         _rate = ccResult.rate;
@@ -201,20 +216,19 @@ class _CurrencyConversionCalculatorWidgetState
         _rateMessage = appLoc.conversionRateResult(
             rateFormatted, _sourceCurrency, _targetCurrency);
         _isLoading = false;
-        _isSaveButtonVisible = true;
+        _areActionButtonsVisible = true;
       });
     }).catchError((error) {
       setState(() {
         _resultMessage = error.toString();
         _isLoading = false;
-        _isSaveButtonVisible = false;
+        _areActionButtonsVisible = false;
       });
     });
   }
 
   void _onSavePressed() async {
     var box = await Hive.openBox('currencyConversionHistory');
-    // var box = Hive.box('currencyConversionHistory');
     var historyRecord = CurrencyConversionHistoryRecord()
       ..sourceCurrency = _sourceCurrency
       ..targetCurrency = _targetCurrency
@@ -224,8 +238,23 @@ class _CurrencyConversionCalculatorWidgetState
       ..date = DateTime.now();
     await box.add(historyRecord);
     await box.close();
+    CurrencyConversionPageState state =
+        context.findAncestorStateOfType<CurrencyConversionPageState>()!;
     setState(() {
-      _isSaveButtonVisible = false;
+      _areActionButtonsVisible = false;
+      state.isCurrencyConversionHistoryVisible = true;
+    });
+  }
+
+  void _onCancelPressed() {
+    CurrencyConversionPageState state =
+        context.findAncestorStateOfType<CurrencyConversionPageState>()!;
+    setState(() {
+      _areActionButtonsVisible = false;
+      state.isCurrencyConversionHistoryVisible = true;
+      _sourceAmountController.clear();
+      _resultMessage = '';
+      _rateMessage = '';
     });
   }
 }

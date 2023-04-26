@@ -16,4 +16,9 @@ class AppearanceConstant {
     'Montserrat',
     'IndieFlower',
   ];
+
+  static const String BG_IMAGE_FOR_ABOUT_PAGE = 'assets/images/white-tree-portrait.jpg';
+  static const String BG_IMAGE_FOR_SETTING_PAGE = 'assets/images/riga-cloudy-sky-landscape.jpg';
+  static const String BG_IMAGE_FOR_CURRENCY_CONVERSION_PAGE = 'assets/images/portugal-sea.jpg';
+  static const String BG_IMAGE_FOR_MAIN_MENU_AVATAR = 'assets/images/portugal-sea.jpg';
 }

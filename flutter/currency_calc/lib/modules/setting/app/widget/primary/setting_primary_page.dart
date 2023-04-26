@@ -1,4 +1,4 @@
-import 'package:currency_calc/modules/front/app/constant/appearance_constant.dart';
+import 'package:currency_calc/modules/setting/app/constant/appearance_constant.dart';
 import 'package:currency_calc/modules/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/modules/front/app/widget/front_material_app.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +14,20 @@ class SettingPrimaryPage extends StatelessWidget {
       ),
       body: Container(
         padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/riga-cloudy-sky-landscape.jpg"),
+        decoration: const BoxDecoration(
+          image: const DecorationImage(
+            image:
+                const AssetImage(AppearanceConstant.BG_IMAGE_FOR_SETTING_PAGE),
             fit: BoxFit.cover,
           ),
         ),
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(255, 255, 255, 0.8),
-              borderRadius: BorderRadius.circular(8.0),
+            decoration: const BoxDecoration(
+              color: const Color.fromRGBO(255, 255, 255, 0.8),
+              // instead of BorderRadius.circular(8.0), to make the const constructor call
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -46,12 +48,12 @@ class SettingPrimaryPage extends StatelessWidget {
     languageCode = languageCode ?? AppearanceConstant.LC_DEFAULT;
     final countryCode = AppearanceConstant.CONFIG[languageCode]!['countryCode'];
     final locale = Locale(languageCode, countryCode);
-    FrontMaterialApp.setLocale(context, locale);
+    FrontMaterialApp.assignLocale(context, locale);
   }
 
   _buildLocaleSetting(BuildContext context) {
     final appLoc = AppLocalizations.of(context);
-    List<Map<String, dynamic>> languages = [
+    List<Map<String, String>> languages = [
       {
         'title': appLoc.settingLocaleEnLabel,
         'value': AppearanceConstant.LC_EN,
@@ -64,7 +66,7 @@ class SettingPrimaryPage extends StatelessWidget {
     final List<Widget> localeList = languages.map((language) {
       return Expanded(
         child: RadioListTile(
-          title: Text(language['title']),
+          title: Text(language['title']!),
           value: language['value'],
           groupValue: Localizations.localeOf(context).languageCode,
           onChanged: (languageCode) => _onLocaleChange(context, languageCode),
@@ -83,7 +85,7 @@ class SettingPrimaryPage extends StatelessWidget {
       DropdownButton<String>(
         value: FrontMaterialApp.getFontFamily(context),
         onChanged: (String? fontFamily) =>
-            FrontMaterialApp.setFontFamily(context, fontFamily),
+            FrontMaterialApp.assignFontFamily(context, fontFamily),
         items: AppearanceConstant.FONT_FAMILIES
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(

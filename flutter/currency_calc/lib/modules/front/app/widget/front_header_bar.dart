@@ -17,7 +17,7 @@ class _HeaderBarState extends State<FrontHeaderBar> {
     final actions = widget.isSettingMenu
         ? <Widget>[
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -28,14 +28,14 @@ class _HeaderBarState extends State<FrontHeaderBar> {
 
     return AppBar(
       title: Text(widget.titleText,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 26,
             color: Colors.white,
           )),
       backgroundColor: Colors.blue[300],
       actions: actions,
-      iconTheme: IconThemeData(color: Colors.white),
-      actionsIconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
+      actionsIconTheme: const IconThemeData(color: Colors.white),
     );
   }
 }
