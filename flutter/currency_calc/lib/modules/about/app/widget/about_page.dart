@@ -9,9 +9,9 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     return Scaffold(
-      appBar: FrontHeaderBar(titleText: appLoc.aboutTitle),
+      appBar: FrontHeaderBar(titleText: tr.aboutTitle),
       drawer: const FrontMainMenu(),
       body: Container(
         padding: const EdgeInsets.all(16),
@@ -29,7 +29,7 @@ class AboutPage extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Text(
-              appLoc.aboutContent,
+              tr.aboutContent,
               style: const TextStyle(
                 fontSize: 20,
               ),

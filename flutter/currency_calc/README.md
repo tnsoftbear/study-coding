@@ -12,6 +12,7 @@ I think, the "package by feature" style could look like this :)
 Rate fetchers implement common interface and are provided by factory.
 **Application layer** operates by this interface and provides the currency exchange rate to the UI.
 It translates with help of localization package, and format currency amounts and numbers with help of Intl package.
+It stores currency conversion history in the hive database.
 
 **Domain layer** validates input values and calculates the currency conversion.
 

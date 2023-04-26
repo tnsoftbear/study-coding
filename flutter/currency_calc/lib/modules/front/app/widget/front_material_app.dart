@@ -19,7 +19,8 @@ class FrontMaterialApp extends StatefulWidget {
     SettingManager.saveLanguageCode(newLocale.languageCode);
   }
 
-  static void assignFontFamily(BuildContext context, String? newFontFamily) async {
+  static void assignFontFamily(
+      BuildContext context, String? newFontFamily) async {
     if (newFontFamily == null) {
       return;
     }
@@ -47,10 +48,11 @@ class _FrontMaterialAppState extends State<FrontMaterialApp> {
     SettingManager.detectLocale().then((locale) => _locale = locale);
     SettingManager.detectFontFamily()
         .then((fontFamily) => _fontFamily = fontFamily);
+    final tr = AppLocalizations.of(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+      onGenerateTitle: (context) => tr.appTitle,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: _fontFamily,

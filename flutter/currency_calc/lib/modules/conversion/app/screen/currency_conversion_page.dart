@@ -25,9 +25,9 @@ class CurrencyConversionPageState extends State<CurrencyConversionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     return Scaffold(
-      appBar: FrontHeaderBar(titleText: appLoc.conversionTitle),
+      appBar: FrontHeaderBar(titleText: tr.conversionTitle),
       drawer: FrontMainMenu(),
       body: Container(
         padding: EdgeInsets.only(bottom: 16),

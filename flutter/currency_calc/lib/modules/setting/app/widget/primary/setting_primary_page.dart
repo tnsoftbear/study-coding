@@ -52,14 +52,14 @@ class SettingPrimaryPage extends StatelessWidget {
   }
 
   _buildLocaleSetting(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     List<Map<String, String>> languages = [
       {
-        'title': appLoc.settingLocaleEnLabel,
+        'title': tr.settingLocaleEnLabel,
         'value': AppearanceConstant.LC_EN,
       },
       {
-        'title': appLoc.settingLocaleRuLabel,
+        'title': tr.settingLocaleRuLabel,
         'value': AppearanceConstant.LC_RU,
       },
     ];
@@ -74,14 +74,14 @@ class SettingPrimaryPage extends StatelessWidget {
       );
     }).toList();
     final List<Widget> localeWidgetList =
-        <Widget>[Text(appLoc.settingSelectLanguage)] + localeList;
+        <Widget>[Text(tr.settingSelectLanguage)] + localeList;
     return Row(children: localeWidgetList);
   }
 
   _buildFontFamilySetting(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     final List<Widget> fontFamilyWidgetList = [
-      Text(appLoc.settingSelectFontFamily),
+      Text(tr.settingSelectFontFamily),
       DropdownButton<String>(
         value: FrontMaterialApp.getFontFamily(context),
         onChanged: (String? fontFamily) =>

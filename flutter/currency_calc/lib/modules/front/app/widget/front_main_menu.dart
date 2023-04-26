@@ -9,7 +9,7 @@ class FrontMainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     final menuItemStyle = const TextStyle(
       fontSize: 24,
       color: Colors.white,
@@ -24,8 +24,8 @@ class FrontMainMenu extends StatelessWidget {
               child: Container(
                 height: 100,
                 child: const CircleAvatar(
-                    backgroundImage:
-                        const AssetImage(AppearanceConstant.BG_IMAGE_FOR_MAIN_MENU_AVATAR)),
+                    backgroundImage: const AssetImage(
+                        AppearanceConstant.BG_IMAGE_FOR_MAIN_MENU_AVATAR)),
               ),
             ),
             ListTile(
@@ -35,7 +35,7 @@ class FrontMainMenu extends StatelessWidget {
                 size: 24,
               ),
               title: Text(
-                appLoc.aboutTitle,
+                tr.aboutTitle,
                 style: menuItemStyle,
               ),
               onTap: () {
@@ -52,7 +52,7 @@ class FrontMainMenu extends StatelessWidget {
                 size: 24,
               ),
               title: Text(
-                appLoc.conversionTitle,
+                tr.conversionTitle,
                 style: menuItemStyle,
               ),
               onTap: () {
@@ -70,7 +70,7 @@ class FrontMainMenu extends StatelessWidget {
                 size: 24,
               ),
               title: Text(
-                appLoc.settingTitle,
+                tr.settingTitle,
                 style: menuItemStyle,
               ),
               onTap: () {

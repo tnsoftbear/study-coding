@@ -50,7 +50,7 @@ class _CurrencyConversionCalculatorWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     return Padding(
       key: ValueKey("currencyConversionCalculatorWidget"),
       padding: const EdgeInsets.all(16.0),
@@ -115,7 +115,7 @@ class _CurrencyConversionCalculatorWidgetState
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     floatingLabelAlignment: FloatingLabelAlignment.center,
-                    labelText: appLoc.conversionEnterAmount,
+                    labelText: tr.conversionEnterAmount,
                   ),
                   onChanged: (text) {
                     setState(() {
@@ -156,12 +156,11 @@ class _CurrencyConversionCalculatorWidgetState
                               ElevatedButton(
                                   key: Key('saveCurrencyConversionButton'),
                                   onPressed: _onSavePressed,
-                                  child: Text(appLoc.conversionSaveButtonText)),
+                                  child: Text(tr.conversionSaveButtonText)),
                               ElevatedButton(
                                   key: Key('cancelCurrencyConversionButton'),
                                   onPressed: _onCancelPressed,
-                                  child:
-                                      Text(appLoc.conversionCancelButtonText))
+                                  child: Text(tr.conversionCancelButtonText))
                             ],
                           ),
                         ),
@@ -175,7 +174,7 @@ class _CurrencyConversionCalculatorWidgetState
   }
 
   void _updateConversion() {
-    final appLoc = AppLocalizations.of(context);
+    final tr = AppLocalizations.of(context);
     final validationResult = CurrencyConversionValidator.validate(
         sourceCurrency: _sourceCurrency,
         targetCurrency: _targetCurrency,
@@ -200,20 +199,18 @@ class _CurrencyConversionCalculatorWidgetState
     final rateFetcher =
         CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
     rateFetcher.fetchExchangeRate(input).then((rate) {
+      final localeName = Localizations.localeOf(context).toString();
+      final currencyFormatter = NumberFormat.simpleCurrency(
+          locale: localeName, name: _targetCurrency);
+      final numberFormatter = NumberFormat.decimalPattern(localeName);
       setState(() {
+        _rate = rate;
         _sourceAmount = double.parse(_sourceAmountInput);
-        final ccResult = CurrencyConverter.convert(_sourceAmount, rate);
-        final currencyFormatter = NumberFormat.simpleCurrency(
-            locale: Localizations.localeOf(context).toString(),
-            name: _targetCurrency);
-        _targetAmount = ccResult.targetAmount;
-        _resultMessage = appLoc.conversionCalculationResult(
+        _targetAmount = CurrencyConverter.convert(_sourceAmount, rate);
+        _resultMessage = tr.conversionCalculationResult(
             currencyFormatter.format(_targetAmount));
-        final numberFormatter = NumberFormat.decimalPattern(
-            Localizations.localeOf(context).toString());
-        _rate = ccResult.rate;
         final rateFormatted = numberFormatter.format(_rate);
-        _rateMessage = appLoc.conversionRateResult(
+        _rateMessage = tr.conversionRateResult(
             rateFormatted, _sourceCurrency, _targetCurrency);
         _isLoading = false;
         _areActionButtonsVisible = true;
