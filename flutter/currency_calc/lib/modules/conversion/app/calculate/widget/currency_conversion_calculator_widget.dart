@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:currency_calc/modules/conversion/app/config/currency_conversion_config.dart';
 import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
@@ -32,6 +34,7 @@ class _CurrencyConversionCalculatorWidgetState
   late String _targetCurrency;
 
   final _sourceAmountController = TextEditingController();
+  final _sourceAmountTextFieldFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -107,6 +110,7 @@ class _CurrencyConversionCalculatorWidgetState
                   textAlign: TextAlign.center,
                   textAlignVertical: TextAlignVertical.center,
                   autofocus: true,
+                  focusNode: _sourceAmountTextFieldFocusNode,
                   style: const TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
@@ -237,15 +241,25 @@ class _CurrencyConversionCalculatorWidgetState
     await box.close();
     CurrencyConversionScreenState state =
         context.findAncestorStateOfType<CurrencyConversionScreenState>()!;
+    FocusScope.of(context).requestFocus(_sourceAmountTextFieldFocusNode);
     setState(() {
       _areActionButtonsVisible = false;
       state.isCurrencyConversionHistoryVisible = true;
+      _sourceAmountController.clear();
+      _resultMessage = '';
+      _rateMessage = '';
     });
+    log(
+        'Saved currency conversion record (Source: $_sourceCurrency $_sourceAmount, ' +
+            'Target: $_targetCurrency $_targetAmount, Rate: $_rate)',
+        time: DateTime.now(),
+        name: 'CurrencyConversionScreen');
   }
 
   void _onCancelPressed() {
     CurrencyConversionScreenState state =
         context.findAncestorStateOfType<CurrencyConversionScreenState>()!;
+    FocusScope.of(context).requestFocus(_sourceAmountTextFieldFocusNode);
     setState(() {
       _areActionButtonsVisible = false;
       state.isCurrencyConversionHistoryVisible = true;
