@@ -1,5 +1,6 @@
 import 'package:currency_calc/modules/about/app/screen/about_screen.dart';
-import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_screen.dart';
+import 'package:currency_calc/modules/conversion/app/calculate/screen/currency_conversion_screen.dart';
+import 'package:currency_calc/modules/conversion/app/history/screen/currency_conversion_all_history_screen.dart';
 import 'package:currency_calc/modules/front/app/constant/route_constant.dart';
 import 'package:currency_calc/modules/front/app/theme/theme_builder.dart';
 import 'package:currency_calc/modules/setting/app/constant/appearance_constant.dart';
@@ -82,9 +83,11 @@ class _FrontMaterialAppState extends State<FrontMaterialApp> {
       home: CurrencyConversionScreen(),
       initialRoute: RouteConstant.currencyConversionRoute,
       routes: {
-        RouteConstant.currencyConversionRoute: (context) =>
-            CurrencyConversionScreen(),
         RouteConstant.aboutRoute: (context) => AboutScreen(),
+        RouteConstant.currencyConversionAllHistoryRoute: (context) =>
+            CurrencyConversionAllHistoryScreen(),
+          RouteConstant.currencyConversionRoute: (context) =>
+            CurrencyConversionScreen(),
         RouteConstant.settingRoute: (context) => SettingPrimaryScreen(),
       },
     );

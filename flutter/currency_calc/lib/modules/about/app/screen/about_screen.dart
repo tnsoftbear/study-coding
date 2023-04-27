@@ -17,7 +17,7 @@ class AboutScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           image: const DecorationImage(
-            image: const AssetImage(AppearanceConstant.BG_IMAGE_FOR_ABOUT_PAGE),
+            image: const AssetImage(AppearanceConstant.BG_IMAGE_FOR_ABOUT_SCREEN),
             fit: BoxFit.cover,
           ),
         ),

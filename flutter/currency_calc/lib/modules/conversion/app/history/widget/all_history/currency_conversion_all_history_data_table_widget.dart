@@ -3,16 +3,16 @@ import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
-import 'currency_conversion_history_data_table_source.dart';
+import 'currency_conversion_all_history_data_table_source.dart';
 
-class CurrencyConversionHistoryDataTableWidget extends StatefulWidget {
+class CurrencyConversionAllHistoryDataTableWidget extends StatefulWidget {
   @override
   _CurrencyConversionHistoryDataTableWidget createState() =>
       _CurrencyConversionHistoryDataTableWidget();
 }
 
 class _CurrencyConversionHistoryDataTableWidget
-    extends State<CurrencyConversionHistoryDataTableWidget> {
+    extends State<CurrencyConversionAllHistoryDataTableWidget> {
   late List<Map<String, String>> _historyRecords;
 
   @override
@@ -28,7 +28,7 @@ class _CurrencyConversionHistoryDataTableWidget
 
     return Container(
         width: 400,
-        height: 200,
+        // height: 200,
         decoration: BoxDecoration(
           color: Color.fromRGBO(255, 255, 255, 0.5),
           borderRadius: BorderRadius.circular(20),
@@ -36,29 +36,38 @@ class _CurrencyConversionHistoryDataTableWidget
         child: Theme(
             data: Theme.of(context)
                 .copyWith(cardColor: Color.fromRGBO(255, 255, 255, 0.5)),
-            child: PaginatedDataTable(
-              rowsPerPage: 5,
-              columnSpacing: 8,
-              horizontalMargin: 8,
-              columns: [
-                DataColumn(
-                    label: Text(tr.conversionHistoryDateColumnTitle),
-                    tooltip: tr.conversionHistoryDateColumnTooltip),
-                DataColumn(
-                    label: Text(tr.conversionHistorySourceColumnTitle),
-                    tooltip: tr.conversionHistorySourceColumnTooltip),
-                DataColumn(
-                    label: Text(tr.conversionHistoryTargetColumnTitle),
-                    tooltip: tr.conversionHistoryTargetColumnTooltip),
-                DataColumn(
-                    label: Text(tr.conversionHistoryRateColumnTitle),
-                    tooltip: tr.conversionHistoryRateColumnTooltip),
-                DataColumn(
-                    label: Text(tr.conversionHistoryActionsColumnTitle),
-                    tooltip: tr.conversionHistoryActionsColumnTooltip),
-              ],
-              source: CurrencyConversionHistoryDataTableSource(_historyRecords),
-            )));
+            child: _historyRecords.isEmpty
+                ? Center(
+                    child: Text(
+                    tr.conversionHistoryEmptyMessage,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ))
+                : PaginatedDataTable(
+                    rowsPerPage: 10,
+                    columnSpacing: 8,
+                    horizontalMargin: 8,
+                    columns: [
+                      DataColumn(
+                          label: Text(tr.conversionHistoryDateColumnTitle),
+                          tooltip: tr.conversionHistoryDateColumnTooltip),
+                      DataColumn(
+                          label: Text(tr.conversionHistorySourceColumnTitle),
+                          tooltip: tr.conversionHistorySourceColumnTooltip),
+                      DataColumn(
+                          label: Text(tr.conversionHistoryTargetColumnTitle),
+                          tooltip: tr.conversionHistoryTargetColumnTooltip),
+                      DataColumn(
+                          label: Text(tr.conversionHistoryRateColumnTitle),
+                          tooltip: tr.conversionHistoryRateColumnTooltip),
+                      DataColumn(
+                          label: Text(tr.conversionHistoryActionsColumnTitle),
+                          tooltip: tr.conversionHistoryActionsColumnTooltip),
+                    ],
+                    source: CurrencyConversionAllHistoryDataTableSource(
+                        _historyRecords),
+                  )));
   }
 
   Future<void> _loadHistoryRecords(BuildContext context) async {
@@ -69,7 +78,6 @@ class _CurrencyConversionHistoryDataTableWidget
     List<Map<String, String>> historyRecords = [];
     var box = await Hive.openBox('currencyConversionHistory');
     historyRecords = box.values
-        .toList()
         .map((e) => {
               'date': df.format(e.date) + "\n" + tf.format(e.date),
               'source_amount':
@@ -86,7 +94,7 @@ class _CurrencyConversionHistoryDataTableWidget
 
   String _formatCurrency(double amount, String currencyCode) {
     final localeName = Localizations.localeOf(context).toString();
-    final format = NumberFormat.simpleCurrency(
+    final format = NumberFormat.currency(
       locale: localeName,
       name: currencyCode,
     );

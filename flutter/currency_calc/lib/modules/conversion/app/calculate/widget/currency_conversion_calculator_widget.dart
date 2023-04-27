@@ -1,11 +1,11 @@
 import 'dart:developer';
 
+import 'package:currency_calc/modules/conversion/app/calculate/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/modules/conversion/app/config/currency_conversion_config.dart';
 import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
-import 'package:currency_calc/modules/conversion/app/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_record.dart';
 import 'package:currency_calc/modules/conversion/domain/calculate/currency_converter.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';

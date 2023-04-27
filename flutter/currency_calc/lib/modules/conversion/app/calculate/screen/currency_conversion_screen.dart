@@ -1,9 +1,9 @@
-import 'package:currency_calc/modules/conversion/app/history/widget/currency_conversion_history_data_table_widget.dart';
+import 'package:currency_calc/modules/conversion/app/calculate/widget/currency_conversion_calculator_widget.dart';
+import 'package:currency_calc/modules/conversion/app/history/widget/last_history/currency_conversion_last_history_data_table_widget.dart';
 import 'package:currency_calc/modules/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/modules/front/app/widget/front_main_menu.dart';
 import 'package:currency_calc/modules/setting/app/constant/appearance_constant.dart';
 import 'package:flutter/material.dart';
-import '../calculate/widget/currency_conversion_calculator_widget.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
 class CurrencyConversionScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class CurrencyConversionScreenState extends State<CurrencyConversionScreen> {
         decoration: const BoxDecoration(
           image: const DecorationImage(
             image: const AssetImage(
-                AppearanceConstant.BG_IMAGE_FOR_CURRENCY_CONVERSION_PAGE),
+                AppearanceConstant.BG_IMAGE_FOR_CURRENCY_CONVERSION_SCREEN),
             fit: BoxFit.cover,
           ),
         ),

@@ -64,6 +64,23 @@ class FrontMainMenu extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(
+                Icons.history,
+                color: Colors.white,
+                size: 24,
+              ),
+              title: Text(
+                tr.conversionHistoryTitle,
+                style: menuItemStyle,
+              ),
+              onTap: () {
+                // To close the Drawer
+                Navigator.pop(context);
+                // Navigating to About Page
+                Navigator.pushNamed(context, RouteConstant.currencyConversionAllHistoryRoute);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
                 Icons.settings,
                 color: Colors.white,
                 size: 24,

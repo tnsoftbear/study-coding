@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class CurrencyConversionHistoryDataTableSource extends DataTableSource {
+class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {
   List<Map<String, String>> _historyRecords;
 
-  CurrencyConversionHistoryDataTableSource(this._historyRecords);
+  CurrencyConversionAllHistoryDataTableSource(this._historyRecords);
 
   @override
   bool get isRowCountApproximate => false;

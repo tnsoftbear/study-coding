@@ -17,7 +17,7 @@ class SettingPrimaryScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: const DecorationImage(
             image:
-                const AssetImage(AppearanceConstant.BG_IMAGE_FOR_SETTING_PAGE),
+                const AssetImage(AppearanceConstant.BG_IMAGE_FOR_SETTING_SCREEN),
             fit: BoxFit.cover,
           ),
         ),
