@@ -40,14 +40,13 @@ class CurrencyConversionScreenState extends State<CurrencyConversionScreen> {
         ),
         child: Column(
           children: [
-            Expanded(
-              flex: 1,
+            Container(
               child: CurrencyConversionCalculatorWidget(),
             ),
             Visibility(
               visible: _isCurrencyConversionHistoryVisible,
-              child: Expanded(
-                  flex: 2, child: CurrencyConversionHistoryDataTableWidget()),
+              child: Container(
+                  height: 300, child: CurrencyConversionHistoryDataTableWidget()),
             ),
           ],
         ),

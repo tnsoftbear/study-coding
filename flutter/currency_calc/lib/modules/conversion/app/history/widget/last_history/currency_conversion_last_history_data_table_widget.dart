@@ -1,3 +1,4 @@
+import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -50,7 +51,7 @@ class _CurrencyConversionHistoryDataTableWidget
       ],
       rows: List.generate(
         _historyRecords.length,
-            (index) => DataRow(
+        (index) => DataRow(
           cells: [
             DataCell(Text(_historyRecords[index]['date'].toString(),
                 style: TextStyle(fontSize: 12))),
@@ -71,7 +72,8 @@ class _CurrencyConversionHistoryDataTableWidget
 
   _onDeletePressed(int index) async {
     var box = await Hive.openBox('currencyConversionHistory');
-    box.deleteAt(index);
+    final deleteIndex = box.length - index - 1;
+    box.deleteAt(deleteIndex);
   }
 
   Future<void> _loadHistoryRecords(BuildContext context) async {
@@ -82,17 +84,19 @@ class _CurrencyConversionHistoryDataTableWidget
     List<Map<String, String>> historyRecords = [];
     var box = await Hive.openBox('currencyConversionHistory');
     final totalCount = box.length;
-    final skipCount = totalCount > 5 ? totalCount - 5 : 0;
+    final skipCount = totalCount > CurrencyConstant.LAST_HISTORY_RECORD_COUNT
+        ? totalCount - CurrencyConstant.LAST_HISTORY_RECORD_COUNT
+        : 0;
     historyRecords = box.values
         .skip(skipCount)
         .map((e) => {
-      'date': df.format(e.date) + "\n" + tf.format(e.date),
-      'source_amount':
-      _formatCurrency(e.sourceAmount, e.sourceCurrency),
-      'target_amount':
-      _formatCurrency(e.targetAmount, e.targetCurrency),
-      'rate': nf.format(e.rate)
-    })
+              'date': df.format(e.date) + "\n" + tf.format(e.date),
+              'source_amount':
+                  _formatCurrency(e.sourceAmount, e.sourceCurrency),
+              'target_amount':
+                  _formatCurrency(e.targetAmount, e.targetCurrency),
+              'rate': nf.format(e.rate)
+            })
         .toList()
         .reversed
         .toList();

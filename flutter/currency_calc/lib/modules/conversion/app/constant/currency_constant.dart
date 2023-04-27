@@ -12,4 +12,6 @@ class CurrencyConstant {
     'HKD',
     'RUB',
   ];
+
+  static const LAST_HISTORY_RECORD_COUNT = 5;
 }
