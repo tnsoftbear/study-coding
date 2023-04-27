@@ -1,7 +1,7 @@
-import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validation_result.dart';
-import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
+import 'package:currency_calc/feature/conversion/domain/validate/currency_conversion_validation_result.dart';
+import 'package:currency_calc/feature/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
+import 'package:currency_calc/feature/conversion/app/constant/currency_constant.dart';
 
 void main() {
   group('CurrencyConversionValidator', () {

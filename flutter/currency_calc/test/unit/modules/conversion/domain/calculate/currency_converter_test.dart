@@ -1,4 +1,4 @@
-import 'package:currency_calc/modules/conversion/domain/calculate/currency_converter.dart';
+import 'package:currency_calc/feature/conversion/domain/calculate/currency_converter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
