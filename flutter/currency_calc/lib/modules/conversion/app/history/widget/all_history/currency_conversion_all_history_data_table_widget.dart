@@ -1,6 +1,7 @@
+import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_output_data.dart';
+import 'package:currency_calc/modules/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'currency_conversion_all_history_data_table_source.dart';
@@ -13,7 +14,7 @@ class CurrencyConversionAllHistoryDataTableWidget extends StatefulWidget {
 
 class _CurrencyConversionHistoryDataTableWidget
     extends State<CurrencyConversionAllHistoryDataTableWidget> {
-  late List<Map<String, String>> _historyRecords;
+  late List<CurrencyConversionHistoryOutputData> _historyRecords;
 
   @override
   void initState() {
@@ -75,17 +76,14 @@ class _CurrencyConversionHistoryDataTableWidget
     final df = DateFormat.yMMMd(localeName);
     final tf = DateFormat.Hms(localeName);
     final nf = NumberFormat.decimalPattern(localeName);
-    List<Map<String, String>> historyRecords = [];
-    var box = await Hive.openBox('currencyConversionHistory');
-    historyRecords = box.values
-        .map((e) => {
-              'date': df.format(e.date) + "\n" + tf.format(e.date),
-              'source_amount':
-                  _formatCurrency(e.sourceAmount, e.sourceCurrency),
-              'target_amount':
-                  _formatCurrency(e.targetAmount, e.targetCurrency),
-              'rate': nf.format(e.rate)
-            })
+    final repo = CurrencyConversionHistoryRecordRepository();
+    await repo.init();
+    final historyRecords = repo.loadAll()
+        .map((e) => CurrencyConversionHistoryOutputData(
+            df.format(e.date) + "\n" + tf.format(e.date),
+            _formatCurrency(e.sourceAmount, e.sourceCurrency),
+            _formatCurrency(e.targetAmount, e.targetCurrency),
+            nf.format(e.rate)))
         .toList();
     setState(() {
       _historyRecords = historyRecords;

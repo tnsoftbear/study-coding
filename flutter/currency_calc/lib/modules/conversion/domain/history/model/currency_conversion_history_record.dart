@@ -20,7 +20,7 @@ class CurrencyConversionHistoryRecord extends HiveObject {
   double rate = 0.0;
 
   @HiveField(5)
-  DateTime? date;
+  DateTime date = DateTime.now();
 
   toList() {
     return [

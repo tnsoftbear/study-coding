@@ -1,8 +1,9 @@
+import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_output_data.dart';
+import 'package:currency_calc/modules/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {
-  List<Map<String, String>> _historyRecords;
+  List<CurrencyConversionHistoryOutputData> _historyRecords;
 
   CurrencyConversionAllHistoryDataTableSource(this._historyRecords);
 
@@ -19,11 +20,11 @@ class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {
     index = _historyRecords.length - index - 1;
     return DataRow(
       cells: [
-        DataCell(Text(_historyRecords[index]['date'].toString(),
-            style: TextStyle(fontSize: 12))),
-        DataCell(Text(_historyRecords[index]['source_amount'].toString())),
-        DataCell(Text(_historyRecords[index]['target_amount'].toString())),
-        DataCell(Text(_historyRecords[index]['rate'].toString())),
+        DataCell(
+            Text(_historyRecords[index].date, style: TextStyle(fontSize: 12))),
+        DataCell(Text(_historyRecords[index].from)),
+        DataCell(Text(_historyRecords[index].to)),
+        DataCell(Text(_historyRecords[index].rate)),
         DataCell(
           IconButton(
             icon: Icon(Icons.delete, size: 20, color: Colors.red),
@@ -35,8 +36,8 @@ class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {
   }
 
   _onDeletePressed(int index) async {
-    var box = await Hive.openBox('currencyConversionHistory');
-    await box.deleteAt(index);
-    await box.close();
+    final repo = CurrencyConversionHistoryRecordRepository();
+    await repo.init();
+    repo.deleteByIndex(index);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
+import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_output_data.dart';
+import 'package:currency_calc/modules/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 class CurrencyConversionHistoryDataTableWidget extends StatefulWidget {
@@ -12,7 +13,7 @@ class CurrencyConversionHistoryDataTableWidget extends StatefulWidget {
 
 class _CurrencyConversionHistoryDataTableWidget
     extends State<CurrencyConversionHistoryDataTableWidget> {
-  late List<Map<String, String>> _historyRecords;
+  late List<CurrencyConversionHistoryOutputData> _historyRecords;
 
   @override
   void initState() {
@@ -53,11 +54,11 @@ class _CurrencyConversionHistoryDataTableWidget
         _historyRecords.length,
         (index) => DataRow(
           cells: [
-            DataCell(Text(_historyRecords[index]['date'].toString(),
+            DataCell(Text(_historyRecords[index].date,
                 style: TextStyle(fontSize: 12))),
-            DataCell(Text(_historyRecords[index]['source_amount'].toString())),
-            DataCell(Text(_historyRecords[index]['target_amount'].toString())),
-            DataCell(Text(_historyRecords[index]['rate'].toString())),
+            DataCell(Text(_historyRecords[index].from)),
+            DataCell(Text(_historyRecords[index].to)),
+            DataCell(Text(_historyRecords[index].rate)),
             DataCell(
               IconButton(
                 icon: Icon(Icons.delete, size: 20, color: Colors.red),
@@ -71,9 +72,10 @@ class _CurrencyConversionHistoryDataTableWidget
   }
 
   _onDeletePressed(int index) async {
-    var box = await Hive.openBox('currencyConversionHistory');
-    final deleteIndex = box.length - index - 1;
-    box.deleteAt(deleteIndex);
+    final repo = CurrencyConversionHistoryRecordRepository();
+    await repo.init();
+    final deleteIndex = repo.countAll() - index - 1;
+    await repo.deleteByIndex(deleteIndex);
   }
 
   Future<void> _loadHistoryRecords(BuildContext context) async {
@@ -81,22 +83,19 @@ class _CurrencyConversionHistoryDataTableWidget
     final df = DateFormat.yMMMd(localeName);
     final tf = DateFormat.Hms(localeName);
     final nf = NumberFormat.decimalPattern(localeName);
-    List<Map<String, String>> historyRecords = [];
-    var box = await Hive.openBox('currencyConversionHistory');
-    final totalCount = box.length;
+    final repo = CurrencyConversionHistoryRecordRepository();
+    await repo.init();
+    final totalCount = repo.countAll();
     final skipCount = totalCount > CurrencyConstant.LAST_HISTORY_RECORD_COUNT
         ? totalCount - CurrencyConstant.LAST_HISTORY_RECORD_COUNT
         : 0;
-    historyRecords = box.values
+    final historyRecords = repo.loadAll() // box.values
         .skip(skipCount)
-        .map((e) => {
-              'date': df.format(e.date) + "\n" + tf.format(e.date),
-              'source_amount':
-                  _formatCurrency(e.sourceAmount, e.sourceCurrency),
-              'target_amount':
-                  _formatCurrency(e.targetAmount, e.targetCurrency),
-              'rate': nf.format(e.rate)
-            })
+        .map((e) => CurrencyConversionHistoryOutputData(
+            df.format(e.date) + "\n" + tf.format(e.date),
+            _formatCurrency(e.sourceAmount, e.sourceCurrency),
+            _formatCurrency(e.targetAmount, e.targetCurrency),
+            nf.format(e.rate)))
         .toList()
         .reversed
         .toList();

@@ -23,7 +23,7 @@ class CurrencyConversionHistoryRecordAdapter
       ..targetCurrency = fields[2] as String
       ..targetAmount = fields[3] as double
       ..rate = fields[4] as double
-      ..date = fields[5] as DateTime?;
+      ..date = fields[5] as DateTime;
   }
 
   @override

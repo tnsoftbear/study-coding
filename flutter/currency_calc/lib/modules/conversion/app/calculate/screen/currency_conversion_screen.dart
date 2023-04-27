@@ -8,19 +8,14 @@ import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
 class CurrencyConversionScreen extends StatefulWidget {
   @override
-  CurrencyConversionScreenState createState() => CurrencyConversionScreenState();
+  CurrencyConversionScreenState createState() =>
+      CurrencyConversionScreenState();
 }
 
 class CurrencyConversionScreenState extends State<CurrencyConversionScreen> {
-  late bool _isCurrencyConversionHistoryVisible;
-
-  set isCurrencyConversionHistoryVisible(bool enable) =>
-      setState(() => _isCurrencyConversionHistoryVisible = enable);
-
   @override
   void initState() {
     super.initState();
-    _isCurrencyConversionHistoryVisible = true;
   }
 
   @override
@@ -43,11 +38,9 @@ class CurrencyConversionScreenState extends State<CurrencyConversionScreen> {
             Container(
               child: CurrencyConversionCalculatorWidget(),
             ),
-            Visibility(
-              visible: _isCurrencyConversionHistoryVisible,
-              child: Container(
-                  height: 300, child: CurrencyConversionHistoryDataTableWidget()),
-            ),
+            Container(
+                height: 300,
+                child: CurrencyConversionHistoryDataTableWidget()),
           ],
         ),
       ),

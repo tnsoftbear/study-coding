@@ -1,17 +1,16 @@
 import 'dart:developer';
 
-import 'package:currency_calc/modules/conversion/app/calculate/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/modules/conversion/app/config/currency_conversion_config.dart';
 import 'package:currency_calc/modules/conversion/app/constant/currency_constant.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/modules/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/modules/conversion/app/translate/currency_conversion_validation_translator.dart';
-import 'package:currency_calc/modules/conversion/app/history/model/currency_conversion_history_record.dart';
+import 'package:currency_calc/modules/conversion/domain/history/model/currency_conversion_history_record.dart';
 import 'package:currency_calc/modules/conversion/domain/calculate/currency_converter.dart';
 import 'package:currency_calc/modules/conversion/domain/validate/currency_conversion_validator.dart';
+import 'package:currency_calc/modules/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 class CurrencyConversionCalculatorWidget extends StatefulWidget {
@@ -125,10 +124,6 @@ class _CurrencyConversionCalculatorWidgetState
                     setState(() {
                       _sourceAmountInput = text;
                       _updateConversion();
-                      CurrencyConversionScreenState state =
-                          context.findAncestorStateOfType<
-                              CurrencyConversionScreenState>()!;
-                      state.isCurrencyConversionHistoryVisible = false;
                     });
                   },
                 )),
@@ -178,6 +173,10 @@ class _CurrencyConversionCalculatorWidgetState
   }
 
   void _updateConversion() {
+    if (_sourceAmountInput.isEmpty) {
+      return;
+    }
+
     final tr = AppLocalizations.of(context);
     final validationResult = CurrencyConversionValidator.validate(
         sourceCurrency: _sourceCurrency,
@@ -229,7 +228,6 @@ class _CurrencyConversionCalculatorWidgetState
   }
 
   void _onSavePressed() async {
-    var box = await Hive.openBox('currencyConversionHistory');
     var historyRecord = CurrencyConversionHistoryRecord()
       ..sourceCurrency = _sourceCurrency
       ..targetCurrency = _targetCurrency
@@ -237,18 +235,11 @@ class _CurrencyConversionCalculatorWidgetState
       ..targetAmount = _targetAmount
       ..rate = _rate
       ..date = DateTime.now();
-    await box.add(historyRecord);
-    await box.close();
-    CurrencyConversionScreenState state =
-        context.findAncestorStateOfType<CurrencyConversionScreenState>()!;
+    final repo = CurrencyConversionHistoryRecordRepository();
+    await repo.init();
+    await repo.save(historyRecord);
     FocusScope.of(context).requestFocus(_sourceAmountTextFieldFocusNode);
-    setState(() {
-      _areActionButtonsVisible = false;
-      state.isCurrencyConversionHistoryVisible = true;
-      _sourceAmountController.clear();
-      _resultMessage = '';
-      _rateMessage = '';
-    });
+    _resetInputs();
     log(
         'Saved currency conversion record (Source: $_sourceCurrency $_sourceAmount, ' +
             'Target: $_targetCurrency $_targetAmount, Rate: $_rate)',
@@ -257,15 +248,17 @@ class _CurrencyConversionCalculatorWidgetState
   }
 
   void _onCancelPressed() {
-    CurrencyConversionScreenState state =
-        context.findAncestorStateOfType<CurrencyConversionScreenState>()!;
     FocusScope.of(context).requestFocus(_sourceAmountTextFieldFocusNode);
+    _resetInputs();
+  }
+
+  void _resetInputs() {
     setState(() {
       _areActionButtonsVisible = false;
-      state.isCurrencyConversionHistoryVisible = true;
-      _sourceAmountController.clear();
-      _resultMessage = '';
       _rateMessage = '';
+      _resultMessage = '';
+      _sourceAmountController.clear();
+      _sourceAmountInput = '';
     });
   }
 }
