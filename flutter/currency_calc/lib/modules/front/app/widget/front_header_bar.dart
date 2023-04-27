@@ -27,15 +27,8 @@ class _HeaderBarState extends State<FrontHeaderBar> {
         : <Widget>[];
 
     return AppBar(
-      title: Text(widget.titleText,
-          style: const TextStyle(
-            fontSize: 26,
-            color: Colors.white,
-          )),
-      // backgroundColor: Colors.blue[300],
+      title: Text(widget.titleText),
       actions: actions,
-      iconTheme: const IconThemeData(color: Colors.white),
-      actionsIconTheme: const IconThemeData(color: Colors.white),
     );
   }
 }

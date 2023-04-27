@@ -31,7 +31,7 @@ class FrontMainMenu extends StatelessWidget {
               leading: const Icon(
                 Icons.info,
                 color: Colors.white,
-                size: 24,
+                size: 20,
               ),
               title: Text(
                 tr.aboutTitle,
@@ -48,7 +48,7 @@ class FrontMainMenu extends StatelessWidget {
               leading: const Icon(
                 Icons.calculate,
                 color: Colors.white,
-                size: 24,
+                size: 20,
               ),
               title: Text(
                 tr.conversionTitle,
@@ -66,7 +66,7 @@ class FrontMainMenu extends StatelessWidget {
               leading: const Icon(
                 Icons.history,
                 color: Colors.white,
-                size: 24,
+                size: 20,
               ),
               title: Text(
                 tr.conversionHistoryTitle,
@@ -83,7 +83,7 @@ class FrontMainMenu extends StatelessWidget {
               leading: const Icon(
                 Icons.settings,
                 color: Colors.white,
-                size: 24,
+                size: 20,
               ),
               title: Text(
                 tr.settingTitle,

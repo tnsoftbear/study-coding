@@ -29,7 +29,6 @@ class _CurrencyConversionHistoryDataTableWidget
 
     return Container(
         width: 400,
-        // height: 200,
         decoration: BoxDecoration(
           color: Color.fromRGBO(255, 255, 255, 0.5),
           borderRadius: BorderRadius.circular(20),

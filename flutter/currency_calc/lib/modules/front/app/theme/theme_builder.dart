@@ -2,7 +2,6 @@ import 'package:currency_calc/modules/setting/app/constant/appearance_constant.d
 import 'package:flutter/material.dart';
 
 class ThemeBuilder {
-
   static ThemeData buildTheme(String? themeType, String? fontFamily) {
     fontFamily ??= AppearanceConstant.FF_DEFAULT;
     if (themeType == AppearanceConstant.THEME_GREEN) {
@@ -17,6 +16,11 @@ class ThemeBuilder {
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.green[300],
+          titleTextStyle: TextStyle(
+            fontSize: 26,
+            color: Colors.white,
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
       );
     }
@@ -32,8 +36,12 @@ class ThemeBuilder {
           backgroundColor: Colors.red[300],
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.red[300],
-        ),
+            backgroundColor: Colors.red[300],
+            titleTextStyle: TextStyle(
+              fontSize: 26,
+              color: Colors.white,
+            )),
+        iconTheme: const IconThemeData(color: Colors.white),
       );
     }
 
@@ -47,8 +55,12 @@ class ThemeBuilder {
         backgroundColor: Colors.blue[300],
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.blue[300],
-      ),
+          backgroundColor: Colors.blue[300],
+          titleTextStyle: TextStyle(
+            fontSize: 26,
+            color: Colors.white,
+          )),
+      iconTheme: const IconThemeData(color: Colors.white),
     );
   }
 }
