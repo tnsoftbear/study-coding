@@ -32,4 +32,15 @@ class SettingManager {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("fontFamily", fontFamily);
   }
+
+  static Future<String> detectThemeType() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final themeType = await prefs.getString("themeType") ?? AppearanceConstant.THEME_DEFAULT;
+    return themeType;
+  }
+
+  static Future<void> saveThemeType(String themeType) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("themeType", themeType);
+  }
 }

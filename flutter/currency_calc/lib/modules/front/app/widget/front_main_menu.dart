@@ -11,12 +11,11 @@ class FrontMainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
     final menuItemStyle = const TextStyle(
-      fontSize: 24,
+      fontSize: 20,
       color: Colors.white,
     );
     return Drawer(
       child: Container(
-        color: Theme.of(context).primaryColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[

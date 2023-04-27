@@ -28,5 +28,9 @@
   "settingLocaleRuLabel": "Русский",
   "settingSelectFontFamily": "Select font family:",
   "settingSelectLanguage": "Select language:",
+  "settingSelectTheme": "Select theme:",
+  "settingThemeBlue": "Blue",
+  "settingThemeGreen": "Green",
+  "settingThemeRed": "Red",
   "settingTitle": "Settings"
 }

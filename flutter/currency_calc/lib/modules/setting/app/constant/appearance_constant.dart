@@ -21,4 +21,15 @@ class AppearanceConstant {
   static const String BG_IMAGE_FOR_SETTING_PAGE = 'assets/images/riga-cloudy-sky-landscape.jpg';
   static const String BG_IMAGE_FOR_CURRENCY_CONVERSION_PAGE = 'assets/images/portugal-sea.jpg';
   static const String BG_IMAGE_FOR_MAIN_MENU_AVATAR = 'assets/images/portugal-sea.jpg';
+
+  static const String THEME_BLUE = 'blue';
+  static const String THEME_GREEN = 'green';
+  static const String THEME_RED = 'red';
+  static const String THEME_DEFAULT = THEME_BLUE;
+
+  static const List<String> THEMES = [
+    THEME_BLUE,
+    THEME_GREEN,
+    THEME_RED,
+  ];
 }

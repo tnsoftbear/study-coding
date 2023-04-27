@@ -36,6 +36,7 @@ class SettingPrimaryScreen extends StatelessWidget {
               children: [
                 _buildLocaleSetting(context),
                 _buildFontFamilySetting(context),
+                _buildThemeSetting(context)
               ],
             ),
           ),
@@ -97,6 +98,41 @@ class SettingPrimaryScreen extends StatelessWidget {
     ];
     return Row(
         children: fontFamilyWidgetList,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween);
+  }
+
+  _buildThemeSetting(BuildContext context) {
+    final tr = AppLocalizations.of(context);
+    List<Map<String, String>> themes = [
+      {
+        'title': tr.settingThemeBlue,
+        'value': AppearanceConstant.THEME_BLUE,
+      },
+      {
+        'title': tr.settingThemeGreen,
+        'value': AppearanceConstant.THEME_GREEN,
+      },
+      {
+        'title': tr.settingThemeRed,
+        'value': AppearanceConstant.THEME_RED,
+      },
+    ];
+    final List<Widget> themeWidgetList = [
+      Text(tr.settingSelectTheme),
+      DropdownButton(
+        value: FrontMaterialApp.getThemeType(context),
+        onChanged: (String? themeType) =>
+            FrontMaterialApp.assignThemeType(context, themeType),
+        items: themes.map((options) {
+          return DropdownMenuItem(
+            value: options['value'],
+            child: Text(options['title']!),
+          );
+        }).toList(),
+      ),
+    ];
+    return Row(
+        children: themeWidgetList,
         mainAxisAlignment: MainAxisAlignment.spaceBetween);
   }
 }

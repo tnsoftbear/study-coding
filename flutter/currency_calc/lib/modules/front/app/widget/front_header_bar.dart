@@ -32,7 +32,7 @@ class _HeaderBarState extends State<FrontHeaderBar> {
             fontSize: 26,
             color: Colors.white,
           )),
-      backgroundColor: Colors.blue[300],
+      // backgroundColor: Colors.blue[300],
       actions: actions,
       iconTheme: const IconThemeData(color: Colors.white),
       actionsIconTheme: const IconThemeData(color: Colors.white),
