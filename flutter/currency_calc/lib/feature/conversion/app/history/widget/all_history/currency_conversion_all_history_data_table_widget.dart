@@ -1,4 +1,4 @@
-import 'package:currency_calc/feature/conversion/app/history/model/currency_conversion_history_output_data.dart';
+import 'package:currency_calc/feature/conversion/app/history/dto/currency_conversion_history_output_dto.dart';
 import 'package:currency_calc/feature/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
@@ -14,7 +14,7 @@ class CurrencyConversionAllHistoryDataTableWidget extends StatefulWidget {
 
 class _CurrencyConversionHistoryDataTableWidget
     extends State<CurrencyConversionAllHistoryDataTableWidget> {
-  late List<CurrencyConversionHistoryOutputData> _historyRecords;
+  late List<CurrencyConversionHistoryOutputDto> _historyRecords;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _CurrencyConversionHistoryDataTableWidget
     final repo = CurrencyConversionHistoryRecordRepository();
     await repo.init();
     final historyRecords = repo.loadAll()
-        .map((e) => CurrencyConversionHistoryOutputData(
+        .map((e) => CurrencyConversionHistoryOutputDto(
             df.format(e.date) + "\n" + tf.format(e.date),
             _formatCurrency(e.sourceAmount, e.sourceCurrency),
             _formatCurrency(e.targetAmount, e.targetCurrency),

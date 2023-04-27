@@ -1,10 +1,10 @@
-class CurrencyConversionHistoryOutputData {
+class CurrencyConversionHistoryOutputDto {
   String date = '';
   String from = '';
   String to = '';
   String rate = '';
 
-  CurrencyConversionHistoryOutputData(
+  CurrencyConversionHistoryOutputDto(
     this.date,
     this.from,
     this.to,
