@@ -30,7 +30,6 @@ class FrontMainMenu extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.info,
-                color: Colors.white,
                 size: 20,
               ),
               title: Text(
@@ -47,7 +46,6 @@ class FrontMainMenu extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.calculate,
-                color: Colors.white,
                 size: 20,
               ),
               title: Text(
@@ -65,7 +63,6 @@ class FrontMainMenu extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.history,
-                color: Colors.white,
                 size: 20,
               ),
               title: Text(
@@ -82,7 +79,6 @@ class FrontMainMenu extends StatelessWidget {
             ListTile(
               leading: const Icon(
                 Icons.settings,
-                color: Colors.white,
                 size: 20,
               ),
               title: Text(

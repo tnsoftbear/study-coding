@@ -20,7 +20,11 @@ class ThemeBuilder {
             fontSize: 26,
             color: Colors.white,
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        listTileTheme: const ListTileThemeData(
+          iconColor: Colors.white,
+          style: ListTileStyle.drawer,
         ),
       );
     }
@@ -42,6 +46,10 @@ class ThemeBuilder {
               color: Colors.white,
             )),
         iconTheme: const IconThemeData(color: Colors.white),
+        listTileTheme: const ListTileThemeData(
+          iconColor: Colors.white,
+          style: ListTileStyle.drawer,
+        ),
       );
     }
 
@@ -61,6 +69,10 @@ class ThemeBuilder {
             color: Colors.white,
           )),
       iconTheme: const IconThemeData(color: Colors.white),
+      listTileTheme: const ListTileThemeData(
+        iconColor: Colors.white,
+        style: ListTileStyle.drawer,
+      ),
     );
   }
 }
