@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:currency_calc/feature/conversion/app/config/currency_conversion_config.dart';
-import 'package:currency_calc/feature/conversion/app/constant/currency_constant.dart';
 import 'package:currency_calc/feature/conversion/app/fetch/currency_rate_fetcher_factory.dart';
 import 'package:currency_calc/feature/conversion/app/fetch/currency_rate_fetching_input.dart';
 import 'package:currency_calc/feature/conversion/app/translate/currency_conversion_validation_translator.dart';
-import 'package:currency_calc/feature/conversion/domain/history/model/currency_conversion_history_record.dart';
 import 'package:currency_calc/feature/conversion/domain/calculate/currency_converter.dart';
+import 'package:currency_calc/feature/conversion/domain/constant/currency_constant.dart';
 import 'package:currency_calc/feature/conversion/domain/validate/currency_conversion_validator.dart';
-import 'package:currency_calc/feature/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/history/domain/model/currency_conversion_history_record.dart';
+import 'package:currency_calc/feature/history/infra/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';

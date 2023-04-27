@@ -1,4 +1,4 @@
-import 'package:currency_calc/feature/conversion/domain/history/model/currency_conversion_history_record.dart';
+import 'package:currency_calc/feature/history/domain/model/currency_conversion_history_record.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class CurrencyConversionHistoryRecordRepository {

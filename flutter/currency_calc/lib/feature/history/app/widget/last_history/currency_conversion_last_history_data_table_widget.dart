@@ -1,6 +1,5 @@
-import 'package:currency_calc/feature/conversion/app/constant/currency_constant.dart';
-import 'package:currency_calc/feature/conversion/app/history/dto/currency_conversion_history_output_dto.dart';
-import 'package:currency_calc/feature/conversion/infra/history/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/history/app/dto/currency_conversion_history_output_dto.dart';
+import 'package:currency_calc/feature/history/infra/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +13,8 @@ class CurrencyConversionHistoryDataTableWidget extends StatefulWidget {
 class _CurrencyConversionHistoryDataTableWidget
     extends State<CurrencyConversionHistoryDataTableWidget> {
   late List<CurrencyConversionHistoryOutputDto> _historyRecords;
+
+  static const LAST_HISTORY_RECORD_COUNT = 5;
 
   @override
   void initState() {
@@ -86,8 +87,8 @@ class _CurrencyConversionHistoryDataTableWidget
     final repo = CurrencyConversionHistoryRecordRepository();
     await repo.init();
     final totalCount = repo.countAll();
-    final skipCount = totalCount > CurrencyConstant.LAST_HISTORY_RECORD_COUNT
-        ? totalCount - CurrencyConstant.LAST_HISTORY_RECORD_COUNT
+    final skipCount = totalCount > LAST_HISTORY_RECORD_COUNT
+        ? totalCount - LAST_HISTORY_RECORD_COUNT
         : 0;
     final historyRecords = repo.loadAll() // box.values
         .skip(skipCount)

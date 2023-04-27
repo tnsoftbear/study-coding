@@ -1,4 +1,4 @@
-import 'package:currency_calc/feature/conversion/app/constant/currency_constant.dart';
+import 'package:currency_calc/feature/conversion/domain/constant/currency_constant.dart';
 
 import 'currency_conversion_validation_result.dart';
 

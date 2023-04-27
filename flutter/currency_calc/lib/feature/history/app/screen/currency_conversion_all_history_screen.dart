@@ -1,6 +1,6 @@
-import 'package:currency_calc/feature/conversion/app/history/widget/all_history/currency_conversion_all_history_data_table_widget.dart';
 import 'package:currency_calc/feature/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/feature/front/app/widget/front_main_menu.dart';
+import 'package:currency_calc/feature/history/app/widget/all_history/currency_conversion_all_history_data_table_widget.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';

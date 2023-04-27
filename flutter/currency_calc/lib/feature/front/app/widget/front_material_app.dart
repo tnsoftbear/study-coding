@@ -1,8 +1,8 @@
 import 'package:currency_calc/feature/about/app/screen/about_screen.dart';
-import 'package:currency_calc/feature/conversion/app/calculate/screen/currency_conversion_screen.dart';
-import 'package:currency_calc/feature/conversion/app/history/screen/currency_conversion_all_history_screen.dart';
+import 'package:currency_calc/feature/conversion/app/screen/currency_conversion_screen.dart';
 import 'package:currency_calc/feature/front/app/constant/route_constant.dart';
 import 'package:currency_calc/feature/front/app/theme/theme_builder.dart';
+import 'package:currency_calc/feature/history/app/screen/currency_conversion_all_history_screen.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
 import 'package:currency_calc/feature/setting/app/manage/setting_manager.dart';
 import 'package:currency_calc/feature/setting/app/screen/setting_primary_screen.dart';
