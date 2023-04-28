@@ -1,11 +1,12 @@
-import 'package:currency_calc/feature/history/app/dto/currency_conversion_history_output_dto.dart';
-import 'package:currency_calc/feature/history/infra/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/conversion/app/dto/currency_conversion_history_output_dto.dart';
+import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {
   List<CurrencyConversionHistoryOutputDto> _historyRecords;
+  BuildContext _context;
 
-  CurrencyConversionAllHistoryDataTableSource(this._historyRecords);
+  CurrencyConversionAllHistoryDataTableSource(BuildContext this._context, this._historyRecords);
 
   @override
   bool get isRowCountApproximate => false;
@@ -27,7 +28,8 @@ class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {
         DataCell(Text(_historyRecords[index].rate)),
         DataCell(
           IconButton(
-            icon: Icon(Icons.delete, size: 20, color: Colors.red),
+            icon: Icon(Icons.delete,
+                size: 20, color: Theme.of(_context).colorScheme.primary),
             onPressed: () => _onDeletePressed(index),
           ),
         ),

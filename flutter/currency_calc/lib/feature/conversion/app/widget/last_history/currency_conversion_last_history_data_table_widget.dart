@@ -1,5 +1,5 @@
-import 'package:currency_calc/feature/history/app/dto/currency_conversion_history_output_dto.dart';
-import 'package:currency_calc/feature/history/infra/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/conversion/app/dto/currency_conversion_history_output_dto.dart';
+import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
@@ -27,46 +27,50 @@ class _CurrencyConversionHistoryDataTableWidget
     final appLoc = AppLocalizations.of(context);
     _loadHistoryRecords(context);
 
-    return DataTable(
-      columnSpacing: 8,
-      horizontalMargin: 16,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 0.5),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      columns: [
-        DataColumn(
-            label: Text(appLoc.conversionHistoryDateColumnTitle),
-            tooltip: appLoc.conversionHistoryDateColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistorySourceColumnTitle),
-            tooltip: appLoc.conversionHistorySourceColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistoryTargetColumnTitle),
-            tooltip: appLoc.conversionHistoryTargetColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistoryRateColumnTitle),
-            tooltip: appLoc.conversionHistoryRateColumnTooltip),
-        DataColumn(
-            label: Text(appLoc.conversionHistoryActionsColumnTitle),
-            tooltip: appLoc.conversionHistoryActionsColumnTooltip),
-      ],
-      rows: List.generate(
-        _historyRecords.length,
-        (index) => DataRow(
-          cells: [
-            DataCell(Text(_historyRecords[index].date,
-                style: TextStyle(fontSize: 12))),
-            DataCell(Text(_historyRecords[index].from)),
-            DataCell(Text(_historyRecords[index].to)),
-            DataCell(Text(_historyRecords[index].rate)),
-            DataCell(
-              IconButton(
-                icon: Icon(Icons.delete, size: 20, color: Colors.red),
-                onPressed: () => _onDeletePressed(index),
+    return Visibility(
+      visible: _historyRecords.isNotEmpty,
+      child: DataTable(
+        columnSpacing: 8,
+        horizontalMargin: 16,
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(255, 255, 255, 0.5),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        columns: [
+          DataColumn(
+              label: Text(appLoc.conversionHistoryDateColumnTitle),
+              tooltip: appLoc.conversionHistoryDateColumnTooltip),
+          DataColumn(
+              label: Text(appLoc.conversionHistorySourceColumnTitle),
+              tooltip: appLoc.conversionHistorySourceColumnTooltip),
+          DataColumn(
+              label: Text(appLoc.conversionHistoryTargetColumnTitle),
+              tooltip: appLoc.conversionHistoryTargetColumnTooltip),
+          DataColumn(
+              label: Text(appLoc.conversionHistoryRateColumnTitle),
+              tooltip: appLoc.conversionHistoryRateColumnTooltip),
+          DataColumn(
+              label: Text(appLoc.conversionHistoryActionsColumnTitle),
+              tooltip: appLoc.conversionHistoryActionsColumnTooltip),
+        ],
+        rows: List.generate(
+          _historyRecords.length,
+          (index) => DataRow(
+            cells: [
+              DataCell(Text(_historyRecords[index].date,
+                  style: TextStyle(fontSize: 12))),
+              DataCell(Text(_historyRecords[index].from)),
+              DataCell(Text(_historyRecords[index].to)),
+              DataCell(Text(_historyRecords[index].rate)),
+              DataCell(
+                IconButton(
+                  icon: Icon(Icons.delete,
+                      size: 20, color: Theme.of(context).colorScheme.primary),
+                  onPressed: () => _onDeletePressed(index),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -90,7 +94,8 @@ class _CurrencyConversionHistoryDataTableWidget
     final skipCount = totalCount > LAST_HISTORY_RECORD_COUNT
         ? totalCount - LAST_HISTORY_RECORD_COUNT
         : 0;
-    final historyRecords = repo.loadAll() // box.values
+    final historyRecords = repo
+        .loadAll() // box.values
         .skip(skipCount)
         .map((e) => CurrencyConversionHistoryOutputDto(
             df.format(e.date) + "\n" + tf.format(e.date),

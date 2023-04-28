@@ -1,5 +1,5 @@
-import 'package:currency_calc/feature/history/app/dto/currency_conversion_history_output_dto.dart';
-import 'package:currency_calc/feature/history/infra/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/conversion/app/dto/currency_conversion_history_output_dto.dart';
+import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +66,7 @@ class _CurrencyConversionHistoryDataTableWidget
                           tooltip: tr.conversionHistoryActionsColumnTooltip),
                     ],
                     source: CurrencyConversionAllHistoryDataTableSource(
-                        _historyRecords),
+                        context, _historyRecords),
                   )));
   }
 
@@ -77,7 +77,8 @@ class _CurrencyConversionHistoryDataTableWidget
     final nf = NumberFormat.decimalPattern(localeName);
     final repo = CurrencyConversionHistoryRecordRepository();
     await repo.init();
-    final historyRecords = repo.loadAll()
+    final historyRecords = repo
+        .loadAll()
         .map((e) => CurrencyConversionHistoryOutputDto(
             df.format(e.date) + "\n" + tf.format(e.date),
             _formatCurrency(e.sourceAmount, e.sourceCurrency),
