@@ -17,8 +17,8 @@ class SettingManager {
   }
 
   static Future<void> saveLanguageCode(String languageCode) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("languageCode", languageCode);
+    await SharedPreferences.getInstance()
+      ..setString("languageCode", languageCode);
   }
 
   static Future<String> detectFontFamily() async {
@@ -29,18 +29,19 @@ class SettingManager {
   }
 
   static Future<void> saveFontFamily(String fontFamily) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("fontFamily", fontFamily);
+    await SharedPreferences.getInstance()
+      ..setString("fontFamily", fontFamily);
   }
 
   static Future<String> detectThemeType() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final themeType = await prefs.getString("themeType") ?? AppearanceConstant.THEME_DEFAULT;
+    final themeType =
+        await prefs.getString("themeType") ?? AppearanceConstant.THEME_DEFAULT;
     return themeType;
   }
 
   static Future<void> saveThemeType(String themeType) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("themeType", themeType);
+    await SharedPreferences.getInstance()
+      ..setString("themeType", themeType);
   }
 }

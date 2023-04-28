@@ -6,8 +6,9 @@ class CurrencyConversionHistoryRecordRepository {
 
   Box<CurrencyConversionHistoryRecord>? box;
 
-  Future<void> init() async {
+  Future<CurrencyConversionHistoryRecordRepository> init() async {
     box = await Hive.openBox<CurrencyConversionHistoryRecord>(BOX_NAME);
+    return this;
   }
 
   List<CurrencyConversionHistoryRecord> loadAll() {
