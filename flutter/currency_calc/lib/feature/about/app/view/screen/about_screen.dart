@@ -12,7 +12,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
     final AdditionalColors additionalColors =
-    Theme.of(context).extension<AdditionalColors>()!;
+        Theme.of(context).extension<AdditionalColors>()!;
 
     return Scaffold(
       appBar: FrontHeaderBar(titleText: tr.aboutTitle),
@@ -21,7 +21,8 @@ class AboutScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           image: const DecorationImage(
-            image: const AssetImage(AppearanceConstant.BG_IMAGE_FOR_ABOUT_SCREEN),
+            image:
+                const AssetImage(AppearanceConstant.BG_IMAGE_FOR_ABOUT_SCREEN),
             fit: BoxFit.cover,
           ),
         ),

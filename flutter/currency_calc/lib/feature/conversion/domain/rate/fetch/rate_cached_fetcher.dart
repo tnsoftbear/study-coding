@@ -5,8 +5,7 @@ class RateCachedFetcher implements RateFetcher {
   final RateFetcher _currencyRateFetcher;
   final RateCacher _currencyRateCacher;
 
-  RateCachedFetcher(
-      this._currencyRateFetcher, this._currencyRateCacher);
+  RateCachedFetcher(this._currencyRateFetcher, this._currencyRateCacher);
 
   @override
   Future<double> fetchExchangeRate(String from, String to) async {

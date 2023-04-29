@@ -1,11 +1,11 @@
 import 'package:currency_calc/feature/about/app/view/screen/about_screen.dart';
-import 'package:currency_calc/feature/conversion/app/history/view/screen/currency_conversion_all_history_screen.dart';
-import 'package:currency_calc/feature/conversion/app/rate/view/screen/currency_conversion_screen.dart';
+import 'package:currency_calc/feature/conversion/app/history/view/screen/all_history_screen.dart';
+import 'package:currency_calc/feature/conversion/app/rate/view/screen/calculator_screen.dart';
 import 'package:currency_calc/feature/front/app/constant/route_constant.dart';
 import 'package:currency_calc/feature/front/app/view/theme/theme_builder.dart';
 import 'package:currency_calc/feature/front/app/constant/appearance_constant.dart';
 import 'package:currency_calc/feature/setting/app/manage/setting_manager.dart';
-import 'package:currency_calc/feature/setting/app/view/screen/setting_primary_screen.dart';
+import 'package:currency_calc/feature/setting/app/view/screen/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
@@ -80,15 +80,14 @@ class _FrontMaterialAppState extends State<FrontMaterialApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
-      home: CurrencyConversionScreen(),
+      home: CalculatorScreen(),
       initialRoute: RouteConstant.currencyConversionRoute,
       routes: {
         RouteConstant.aboutRoute: (context) => AboutScreen(),
         RouteConstant.currencyConversionAllHistoryRoute: (context) =>
-            CurrencyConversionAllHistoryScreen(),
-          RouteConstant.currencyConversionRoute: (context) =>
-            CurrencyConversionScreen(),
-        RouteConstant.settingRoute: (context) => SettingPrimaryScreen(),
+            AllHistoryScreen(),
+        RouteConstant.currencyConversionRoute: (context) => CalculatorScreen(),
+        RouteConstant.settingRoute: (context) => SettingScreen(),
       },
     );
   }

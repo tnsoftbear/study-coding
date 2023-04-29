@@ -6,7 +6,7 @@ import 'package:currency_calc/feature/conversion/infra/rate/fetch/cache/rate_hiv
 import 'package:currency_calc/feature/conversion/infra/rate/fetch/load/fawaz_ahmed_rate_fetcher.dart';
 import 'package:currency_calc/feature/conversion/infra/rate/fetch/load/fixer_io_rate_fetcher.dart';
 
-class ExchangeRateFetcherFactory {
+class RateFetcherFactory {
   static RateFetcher create(ConversionConfig config) {
     RateFetcher? fetcher;
     if (config.currencyConversionRateFetcherType ==
@@ -15,16 +15,15 @@ class ExchangeRateFetcherFactory {
           url: config.fixerIoApiBaseUrl, apiKey: config.fixerIoApiKey);
     } else if (config.currencyConversionRateFetcherType ==
         RateFetchingConstant.FT_FAWAZ_AHMED) {
-      fetcher =
-          FawazAhmedExchangeRateFetcher(url: config.fawazAhmedApiBaseUrl);
+      fetcher = FawazAhmedExchangeRateFetcher(url: config.fawazAhmedApiBaseUrl);
     }
 
     if (fetcher == null) {
       throw Exception('Invalid currency rate fetcher type');
     }
 
-    final cacher = RateHiveCacher(
-        config.currencyConversionRateCacheExpiryInSeconds);
+    final cacher =
+        RateHiveCacher(config.currencyConversionRateCacheExpiryInSeconds);
     return RateCachedFetcher(fetcher, cacher);
   }
 }

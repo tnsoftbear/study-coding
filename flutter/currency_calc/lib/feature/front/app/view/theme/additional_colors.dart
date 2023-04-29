@@ -19,7 +19,10 @@ class AdditionalColors extends ThemeExtension<AdditionalColors> {
 
   @override
   AdditionalColors copyWith(
-      {Color? linenColor, Color? linenTurbidColor, Color? linenLucidColor, TextStyle? menuItemStyle}) {
+      {Color? linenColor,
+      Color? linenTurbidColor,
+      Color? linenLucidColor,
+      TextStyle? menuItemStyle}) {
     return AdditionalColors(
       linenColor: linenColor ?? this.linenColor,
       linenTurbidColor: linenTurbidColor ?? this.linenTurbidColor,
@@ -45,7 +48,7 @@ class AdditionalColors extends ThemeExtension<AdditionalColors> {
   @override
   String toString() =>
       'AdditionalColors(linenColor: $linenColor, ' +
-          'linenTurbidColor: $linenTurbidColor, ' +
-          'linenLucidColor: $linenLucidColor), ' +
-          'menuItemStyle: $menuItemStyle';
+      'linenTurbidColor: $linenTurbidColor, ' +
+      'linenLucidColor: $linenLucidColor), ' +
+      'menuItemStyle: $menuItemStyle';
 }

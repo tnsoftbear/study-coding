@@ -1,21 +1,19 @@
-import 'package:currency_calc/feature/conversion/app/history/view/widget/dto/conversion_history_output_dto.dart';
+import 'package:currency_calc/feature/conversion/app/history/view/widget/dto/history_output_row.dart';
 import 'package:currency_calc/feature/conversion/infra/history/repository/conversion_history_record_repository.dart';
 import 'package:currency_calc/feature/front/app/view/theme/additional_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
 
-import 'conversion_all_history_data_table_source.dart';
+import 'all_history_data_table_source.dart';
 
-class ConversionAllHistoryDataTableWidget extends StatefulWidget {
+class AllHistoryDataTableWidget extends StatefulWidget {
   @override
-  _ConversionHistoryDataTableWidget createState() =>
-      _ConversionHistoryDataTableWidget();
+  _HistoryDataTableWidget createState() => _HistoryDataTableWidget();
 }
 
-class _ConversionHistoryDataTableWidget
-    extends State<ConversionAllHistoryDataTableWidget> {
-  late List<ConversionHistoryOutputDto> _historyRecords;
+class _HistoryDataTableWidget extends State<AllHistoryDataTableWidget> {
+  late List<HistoryOutputRow> _historyRecords;
 
   @override
   void initState() {
@@ -68,8 +66,7 @@ class _ConversionHistoryDataTableWidget
                           label: Text(tr.conversionHistoryActionsColumnTitle),
                           tooltip: tr.conversionHistoryActionsColumnTooltip),
                     ],
-                    source: ConversionAllHistoryDataTableSource(
-                        context, _historyRecords),
+                    source: AllHistoryDataTableSource(context, _historyRecords),
                   )));
   }
 
@@ -82,7 +79,7 @@ class _ConversionHistoryDataTableWidget
     await repo.init();
     final historyRecords = repo
         .loadAll()
-        .map((e) => ConversionHistoryOutputDto(
+        .map((e) => HistoryOutputRow(
             df.format(e.date) + "\n" + tf.format(e.date),
             _formatCurrency(e.sourceAmount, e.sourceCurrency),
             _formatCurrency(e.targetAmount, e.targetCurrency),

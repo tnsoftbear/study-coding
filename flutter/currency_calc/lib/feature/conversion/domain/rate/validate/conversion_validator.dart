@@ -10,27 +10,24 @@ class ConversionValidator {
     final result = ConversionValidationResult();
 
     if (!CurrencyConstant.CURRENCIES.contains(sourceCurrency)) {
-      result.addError(
-          ConversionValidationResult.ERR_SOURCE_CURRENCY_INVALID);
+      result.addError(ConversionValidationResult.ERR_SOURCE_CURRENCY_INVALID);
     }
 
     if (!CurrencyConstant.CURRENCIES.contains(targetCurrency)) {
-      result.addError(
-          ConversionValidationResult.ERR_TARGET_CURRENCY_INVALID);
+      result.addError(ConversionValidationResult.ERR_TARGET_CURRENCY_INVALID);
     }
 
     if (sourceCurrency == targetCurrency) {
-      result.addError(ConversionValidationResult
-          .ERR_SOURCE_AND_TARGET_CURRENCY_SAME);
+      result.addError(
+          ConversionValidationResult.ERR_SOURCE_AND_TARGET_CURRENCY_SAME);
     }
 
     double? sourceAmount = double.tryParse(amount);
     if (sourceAmount == null) {
-      result.addError(
-          ConversionValidationResult.ERR_SOURCE_AMOUNT_NOT_NUMERIC);
+      result.addError(ConversionValidationResult.ERR_SOURCE_AMOUNT_NOT_NUMERIC);
     } else if (sourceAmount <= 0) {
-      result.addError(
-          ConversionValidationResult.ERR_SOURCE_AMOUNT_NOT_POSITIVE);
+      result
+          .addError(ConversionValidationResult.ERR_SOURCE_AMOUNT_NOT_POSITIVE);
     }
 
     return result;

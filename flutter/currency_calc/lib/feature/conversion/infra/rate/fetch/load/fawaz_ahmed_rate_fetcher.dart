@@ -10,8 +10,7 @@ class FawazAhmedExchangeRateFetcher extends RateFetcher {
   Future<double> fetchExchangeRate(String from, String to) async {
     to = to.toLowerCase();
     from = from.toLowerCase();
-    final url =
-        this.url + '/currencies/$from/$to.json';
+    final url = this.url + '/currencies/$from/$to.json';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

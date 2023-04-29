@@ -6,8 +6,7 @@ part of 'exchange_rate_record.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ExchangeRateRecordAdapter
-    extends TypeAdapter<ExchangeRateRecord> {
+class ExchangeRateRecordAdapter extends TypeAdapter<ExchangeRateRecord> {
   @override
   final int typeId = 1;
 

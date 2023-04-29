@@ -12,7 +12,7 @@ class FrontMainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
     final AdditionalColors additionalColors =
-      Theme.of(context).extension<AdditionalColors>()!;
+        Theme.of(context).extension<AdditionalColors>()!;
 
     return Drawer(
       child: Container(
@@ -73,7 +73,8 @@ class FrontMainMenu extends StatelessWidget {
                 // To close the Drawer
                 Navigator.pop(context);
                 // Navigating to About Page
-                Navigator.pushNamed(context, RouteConstant.currencyConversionAllHistoryRoute);
+                Navigator.pushNamed(
+                    context, RouteConstant.currencyConversionAllHistoryRoute);
               },
             ),
             ListTile(

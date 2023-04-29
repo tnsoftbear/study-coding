@@ -17,11 +17,16 @@ class AppearanceConstant {
     'IndieFlower',
   ];
 
-  static const String BG_IMAGE_FOR_ABOUT_SCREEN = 'assets/images/white-tree-portrait.jpg';
-  static const String BG_IMAGE_FOR_SETTING_SCREEN = 'assets/images/riga-cloudy-sky-landscape.jpg';
-  static const String BG_IMAGE_FOR_CURRENCY_CONVERSION_SCREEN = 'assets/images/portugal-sea.jpg';
-  static const String BG_IMAGE_FOR_CURRENCY_CONVERSION_ALL_HISTORY_SCREEN = 'assets/images/cloudy-sky-portrait.jpg';
-  static const String BG_IMAGE_FOR_MAIN_MENU_AVATAR = 'assets/images/portugal-sea.jpg';
+  static const String BG_IMAGE_FOR_ABOUT_SCREEN =
+      'assets/images/white-tree-portrait.jpg';
+  static const String BG_IMAGE_FOR_SETTING_SCREEN =
+      'assets/images/riga-cloudy-sky-landscape.jpg';
+  static const String BG_IMAGE_FOR_CURRENCY_CONVERSION_SCREEN =
+      'assets/images/portugal-sea.jpg';
+  static const String BG_IMAGE_FOR_CURRENCY_CONVERSION_ALL_HISTORY_SCREEN =
+      'assets/images/cloudy-sky-portrait.jpg';
+  static const String BG_IMAGE_FOR_MAIN_MENU_AVATAR =
+      'assets/images/portugal-sea.jpg';
 
   static const String THEME_BLUE = 'blue';
   static const String THEME_GREEN = 'green';

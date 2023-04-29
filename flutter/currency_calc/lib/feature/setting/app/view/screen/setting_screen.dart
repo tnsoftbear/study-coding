@@ -5,11 +5,11 @@ import 'package:currency_calc/feature/front/app/constant/appearance_constant.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
-class SettingPrimaryScreen extends StatelessWidget {
+class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AdditionalColors additionalColors =
-      Theme.of(context).extension<AdditionalColors>()!;
+        Theme.of(context).extension<AdditionalColors>()!;
     return Scaffold(
       appBar: FrontHeaderBar(
         titleText: AppLocalizations.of(context).settingTitle,
@@ -19,8 +19,8 @@ class SettingPrimaryScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           image: const DecorationImage(
-            image:
-                const AssetImage(AppearanceConstant.BG_IMAGE_FOR_SETTING_SCREEN),
+            image: const AssetImage(
+                AppearanceConstant.BG_IMAGE_FOR_SETTING_SCREEN),
             fit: BoxFit.cover,
           ),
         ),

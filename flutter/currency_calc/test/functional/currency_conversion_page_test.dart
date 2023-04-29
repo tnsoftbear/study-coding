@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Element existence smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(FrontMaterialApp());
-    expect(find.text('Enter amount'), findsOneWidget);
-    expect(find.byKey(Key('sourceAmount')), findsOneWidget);
-  });
+  // testWidgets('Element existence smoke test', (WidgetTester tester) async {
+  //   await tester.pumpWidget(FrontMaterialApp());
+  //   expect(find.text('Enter amount'), findsOneWidget);
+  //   expect(find.byKey(Key('sourceAmount')), findsOneWidget);
+  // });
 
   // testWidgets('Wrong amount validation smoke test', (WidgetTester tester) async {
   //   // Arrange

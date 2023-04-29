@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:currency_calc/feature/conversion/app/config/conversion_config.dart';
-import 'package:currency_calc/feature/conversion/app/rate/fetch/exchange_rate_fetcher_factory.dart';
+import 'package:currency_calc/feature/conversion/app/rate/fetch/rate_fetcher_factory.dart';
 import 'package:currency_calc/feature/conversion/app/rate/translate/conversion_validation_translator.dart';
 import 'package:currency_calc/feature/conversion/domain/constant/currency_constant.dart';
 import 'package:currency_calc/feature/conversion/domain/history/model/conversion_history_record.dart';
@@ -13,14 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
 
-class ConversionCalculatorWidget extends StatefulWidget {
+class CalculatorWidget extends StatefulWidget {
   @override
-  _ConversionCalculatorWidgetState createState() =>
-      _ConversionCalculatorWidgetState();
+  _CalculatorWidgetState createState() => _CalculatorWidgetState();
 }
 
-class _ConversionCalculatorWidgetState
-    extends State<ConversionCalculatorWidget> {
+class _CalculatorWidgetState extends State<CalculatorWidget> {
   late bool _isLoading;
   late bool _areActionButtonsVisible;
   late double _rate;
@@ -187,8 +185,8 @@ class _ConversionCalculatorWidgetState
         amount: _sourceAmountInput);
     if (!validationResult.isSuccess()) {
       setState(() {
-        _resultMessage = ConversionValidationTranslator
-            .translateConcatenatedErrorMessage(
+        _resultMessage =
+            ConversionValidationTranslator.translateConcatenatedErrorMessage(
                 context: context, validationResult: validationResult);
         _rateMessage = '';
         _areActionButtonsVisible = false;
@@ -200,8 +198,7 @@ class _ConversionCalculatorWidgetState
       _isLoading = true;
     });
 
-    final rateFetcher =
-        ExchangeRateFetcherFactory.create(ConversionConfig());
+    final rateFetcher = RateFetcherFactory.create(ConversionConfig());
     rateFetcher
         .fetchExchangeRate(_sourceCurrency, _targetCurrency)
         .then((rate) {

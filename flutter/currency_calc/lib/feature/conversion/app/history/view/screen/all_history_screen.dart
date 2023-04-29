@@ -1,18 +1,16 @@
-import 'package:currency_calc/feature/conversion/app/history/view/widget/all_history/conversion_all_history_data_table_widget.dart';
+import 'package:currency_calc/feature/conversion/app/history/view/widget/all_history/all_history_data_table_widget.dart';
 import 'package:currency_calc/feature/front/app/view/widget/front_header_bar.dart';
 import 'package:currency_calc/feature/front/app/view/widget/front_main_menu.dart';
 import 'package:currency_calc/feature/front/app/constant/appearance_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 
-class CurrencyConversionAllHistoryScreen extends StatefulWidget {
+class AllHistoryScreen extends StatefulWidget {
   @override
-  _CurrencyConversionAllHistoryScreenState createState() =>
-      _CurrencyConversionAllHistoryScreenState();
+  _AllHistoryScreenState createState() => _AllHistoryScreenState();
 }
 
-class _CurrencyConversionAllHistoryScreenState
-    extends State<CurrencyConversionAllHistoryScreen> {
+class _AllHistoryScreenState extends State<AllHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
@@ -28,7 +26,7 @@ class _CurrencyConversionAllHistoryScreenState
               fit: BoxFit.cover,
             ),
           ),
-          child: Center(child: ConversionAllHistoryDataTableWidget()),
+          child: Center(child: AllHistoryDataTableWidget()),
         ));
   }
 }

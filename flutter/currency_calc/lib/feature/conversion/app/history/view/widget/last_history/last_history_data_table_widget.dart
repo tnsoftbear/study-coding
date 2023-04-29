@@ -1,19 +1,17 @@
-import 'package:currency_calc/feature/conversion/app/history/view/widget/dto/conversion_history_output_dto.dart';
+import 'package:currency_calc/feature/conversion/app/history/view/widget/dto/history_output_row.dart';
 import 'package:currency_calc/feature/conversion/infra/history/repository/conversion_history_record_repository.dart';
 import 'package:currency_calc/feature/front/app/view/theme/additional_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
 
-class ConversionHistoryDataTableWidget extends StatefulWidget {
+class LastHistoryDataTableWidget extends StatefulWidget {
   @override
-  _CurrencyConversionHistoryDataTableWidget createState() =>
-      _CurrencyConversionHistoryDataTableWidget();
+  _LastHistoryDataTableWidget createState() => _LastHistoryDataTableWidget();
 }
 
-class _CurrencyConversionHistoryDataTableWidget
-    extends State<ConversionHistoryDataTableWidget> {
-  late List<ConversionHistoryOutputDto> _historyRecords;
+class _LastHistoryDataTableWidget extends State<LastHistoryDataTableWidget> {
+  late List<HistoryOutputRow> _historyRecords;
 
   static const LAST_HISTORY_RECORD_COUNT = 5;
 
@@ -100,7 +98,7 @@ class _CurrencyConversionHistoryDataTableWidget
     final historyRecords = repo
         .loadAll() // box.values
         .skip(skipCount)
-        .map((e) => ConversionHistoryOutputDto(
+        .map((e) => HistoryOutputRow(
             df.format(e.date) + "\n" + tf.format(e.date),
             _formatCurrency(e.sourceAmount, e.sourceCurrency),
             _formatCurrency(e.targetAmount, e.targetCurrency),
