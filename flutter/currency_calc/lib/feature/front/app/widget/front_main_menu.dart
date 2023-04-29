@@ -1,4 +1,5 @@
 import 'package:currency_calc/feature/front/app/constant/route_constant.dart';
+import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +11,9 @@ class FrontMainMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
-    final menuItemStyle = const TextStyle(
-      fontSize: 20,
-      color: Colors.white,
-    );
+    final AdditionalColors additionalColors =
+      Theme.of(context).extension<AdditionalColors>()!;
+
     return Drawer(
       child: Container(
         child: ListView(
@@ -34,7 +34,7 @@ class FrontMainMenu extends StatelessWidget {
               ),
               title: Text(
                 tr.aboutTitle,
-                style: menuItemStyle,
+                style: additionalColors.menuItemStyle,
               ),
               onTap: () {
                 // To close the Drawer
@@ -50,7 +50,7 @@ class FrontMainMenu extends StatelessWidget {
               ),
               title: Text(
                 tr.conversionTitle,
-                style: menuItemStyle,
+                style: additionalColors.menuItemStyle,
               ),
               onTap: () {
                 // To close the Drawer
@@ -67,7 +67,7 @@ class FrontMainMenu extends StatelessWidget {
               ),
               title: Text(
                 tr.conversionHistoryTitle,
-                style: menuItemStyle,
+                style: additionalColors.menuItemStyle,
               ),
               onTap: () {
                 // To close the Drawer
@@ -83,7 +83,7 @@ class FrontMainMenu extends StatelessWidget {
               ),
               title: Text(
                 tr.settingTitle,
-                style: menuItemStyle,
+                style: additionalColors.menuItemStyle,
               ),
               onTap: () {
                 // To close the Drawer

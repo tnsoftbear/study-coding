@@ -1,3 +1,4 @@
+import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,13 @@ class ThemeBuilder {
           iconColor: Colors.white,
           style: ListTileStyle.drawer,
         ),
+        extensions: <ThemeExtension<dynamic>>[
+          const AdditionalColors(
+            linenColor: const Color.fromRGBO(239, 255, 239, 0.5),
+            linenTurbidColor: const Color.fromRGBO(239, 255, 239, 0.8),
+            linenLucidColor: const Color.fromRGBO(239, 255, 239, 0.1),
+          ),
+        ],
       );
     }
 
@@ -50,6 +58,13 @@ class ThemeBuilder {
           iconColor: Colors.white,
           style: ListTileStyle.drawer,
         ),
+        extensions: <ThemeExtension<dynamic>>[
+          const AdditionalColors(
+            linenColor: const Color.fromRGBO(255, 239, 239, 0.5),
+            linenTurbidColor: const Color.fromRGBO(255, 239, 239, 0.8),
+            linenLucidColor: const Color.fromRGBO(255, 239, 239, 0.1),
+          ),
+        ],
       );
     }
 
@@ -73,6 +88,13 @@ class ThemeBuilder {
         iconColor: Colors.white,
         style: ListTileStyle.drawer,
       ),
+      extensions: <ThemeExtension<dynamic>>[
+        const AdditionalColors(
+          linenColor: const Color.fromRGBO(239, 239, 255, 0.5),
+          linenTurbidColor: const Color.fromRGBO(239, 239, 255, 0.8),
+          linenLucidColor: const Color.fromRGBO(239, 239, 255, 0.1),
+        ),
+      ],
     );
   }
 }

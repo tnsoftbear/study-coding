@@ -1,3 +1,4 @@
+import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
 import 'package:currency_calc/feature/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/feature/front/app/widget/front_main_menu.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
@@ -10,6 +11,9 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
+    final AdditionalColors additionalColors =
+    Theme.of(context).extension<AdditionalColors>()!;
+
     return Scaffold(
       appBar: FrontHeaderBar(titleText: tr.aboutTitle),
       drawer: const FrontMainMenu(),
@@ -24,8 +28,8 @@ class AboutScreen extends StatelessWidget {
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: const Color.fromRGBO(255, 255, 255, 0.8),
+            decoration: BoxDecoration(
+              color: additionalColors.linenTurbidColor,
               borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Text(

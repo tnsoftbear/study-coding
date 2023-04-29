@@ -1,5 +1,6 @@
 import 'package:currency_calc/feature/conversion/app/dto/currency_conversion_history_output_dto.dart';
 import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,8 @@ class _CurrencyConversionHistoryDataTableWidget
   Widget build(BuildContext context) {
     final appLoc = AppLocalizations.of(context);
     _loadHistoryRecords(context);
+    final AdditionalColors additionalColors =
+        Theme.of(context).extension<AdditionalColors>()!;
 
     return Visibility(
       visible: _historyRecords.isNotEmpty,
@@ -33,7 +36,7 @@ class _CurrencyConversionHistoryDataTableWidget
         columnSpacing: 8,
         horizontalMargin: 16,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 0.5),
+          color: additionalColors.linenColor,
           borderRadius: BorderRadius.circular(20),
         ),
         columns: [

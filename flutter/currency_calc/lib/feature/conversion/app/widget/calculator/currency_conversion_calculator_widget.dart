@@ -9,6 +9,7 @@ import 'package:currency_calc/feature/conversion/domain/constant/currency_consta
 import 'package:currency_calc/feature/conversion/domain/model/currency_conversion_history_record.dart';
 import 'package:currency_calc/feature/conversion/domain/validate/currency_conversion_validator.dart';
 import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
@@ -53,12 +54,15 @@ class _CurrencyConversionCalculatorWidgetState
   @override
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
+    final AdditionalColors additionalColors =
+      Theme.of(context).extension<AdditionalColors>()!;
+
     return Padding(
       key: ValueKey("currencyConversionCalculatorWidget"),
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        decoration: const BoxDecoration(
-          color: const Color.fromRGBO(255, 255, 255, 0.1),
+        decoration: BoxDecoration(
+          color: additionalColors.linenLucidColor,
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
         child: Column(
@@ -100,8 +104,8 @@ class _CurrencyConversionCalculatorWidgetState
             Container(
                 width: 200,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: const Color.fromRGBO(255, 255, 255, 0.05),
+                decoration: BoxDecoration(
+                  color: additionalColors.linenLucidColor,
                   borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                 ),
                 child: TextField(

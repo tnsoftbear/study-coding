@@ -1,3 +1,4 @@
+import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
 import 'package:currency_calc/feature/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/feature/front/app/widget/front_material_app.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 class SettingPrimaryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final AdditionalColors additionalColors =
+      Theme.of(context).extension<AdditionalColors>()!;
     return Scaffold(
       appBar: FrontHeaderBar(
         titleText: AppLocalizations.of(context).settingTitle,
@@ -24,8 +27,8 @@ class SettingPrimaryScreen extends StatelessWidget {
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: const Color.fromRGBO(255, 255, 255, 0.8),
+            decoration: BoxDecoration(
+              color: additionalColors.linenTurbidColor,
               // instead of BorderRadius.circular(8.0), to make the const constructor call
               borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
