@@ -1,18 +1,15 @@
-import 'package:currency_calc/feature/conversion/app/fetch/currency_rate_fetcher.dart';
-import 'package:currency_calc/feature/conversion/app/fetch/currency_rate_fetching_input.dart';
+import 'package:currency_calc/feature/conversion/domain/fetch/load/currency_conversion_rate_fetcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class FixerIoCurrencyRateFetcher extends CurrencyRateFetcher {
+class FixerIoCurrencyRateFetcher extends CurrencyConversionRateFetcher {
   final String url;
   final String apiKey;
 
   FixerIoCurrencyRateFetcher({required this.url, required this.apiKey});
 
-  Future<double> fetchExchangeRate(CurrencyRateFetchingInput input) async {
-    final fromCurrency = input.from;
-    final toCurrency = input.to;
-    final url = this.url + '?from=$fromCurrency&to=$toCurrency&amount=1';
+  Future<double> fetchExchangeRate(String from, String to) async {
+    final url = this.url + '?from=$from&to=$to&amount=1';
     final response =
         await http.get(Uri.parse(url), headers: {'apikey': this.apiKey});
     if (response.statusCode == 200) {

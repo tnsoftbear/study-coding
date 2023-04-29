@@ -1,5 +1,5 @@
 import 'package:currency_calc/feature/conversion/app/dto/currency_conversion_history_output_dto.dart';
-import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/conversion/infra/repository/history/currency_conversion_history_record_repository.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyConversionAllHistoryDataTableSource extends DataTableSource {

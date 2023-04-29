@@ -1,4 +1,4 @@
-import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
+import 'package:currency_calc/feature/front/app/theme/additional_colors.dart';
 import 'package:currency_calc/feature/front/app/widget/front_header_bar.dart';
 import 'package:currency_calc/feature/front/app/widget/front_main_menu.dart';
 import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';

@@ -1,15 +1,14 @@
 import 'dart:developer';
 
 import 'package:currency_calc/feature/conversion/app/config/currency_conversion_config.dart';
-import 'package:currency_calc/feature/conversion/app/fetch/currency_rate_fetcher_factory.dart';
-import 'package:currency_calc/feature/conversion/app/fetch/currency_rate_fetching_input.dart';
+import 'package:currency_calc/feature/conversion/app/fetch/currency_conversion_rate_fetcher_factory.dart';
 import 'package:currency_calc/feature/conversion/app/translate/currency_conversion_validation_translator.dart';
 import 'package:currency_calc/feature/conversion/domain/calculate/currency_converter.dart';
 import 'package:currency_calc/feature/conversion/domain/constant/currency_constant.dart';
-import 'package:currency_calc/feature/conversion/domain/model/currency_conversion_history_record.dart';
+import 'package:currency_calc/feature/conversion/domain/model/history/currency_conversion_history_record.dart';
 import 'package:currency_calc/feature/conversion/domain/validate/currency_conversion_validator.dart';
-import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
-import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
+import 'package:currency_calc/feature/conversion/infra/repository/history/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/front/app/theme/additional_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +54,7 @@ class _CurrencyConversionCalculatorWidgetState
   Widget build(BuildContext context) {
     final tr = AppLocalizations.of(context);
     final AdditionalColors additionalColors =
-      Theme.of(context).extension<AdditionalColors>()!;
+        Theme.of(context).extension<AdditionalColors>()!;
 
     return Padding(
       key: ValueKey("currencyConversionCalculatorWidget"),
@@ -176,7 +175,7 @@ class _CurrencyConversionCalculatorWidgetState
     );
   }
 
-  void _updateConversion() {
+  void _updateConversion() async {
     if (_sourceAmountInput.isEmpty) {
       return;
     }
@@ -201,11 +200,11 @@ class _CurrencyConversionCalculatorWidgetState
       _isLoading = true;
     });
 
-    final input =
-        CurrencyRateFetchingInput(from: _sourceCurrency, to: _targetCurrency);
     final rateFetcher =
-        CurrencyRateFetcherFactory.create(config: CurrencyConversionConfig());
-    rateFetcher.fetchExchangeRate(input).then((rate) {
+        CurrencyConversionRateFetcherFactory.create(CurrencyConversionConfig());
+    rateFetcher
+        .fetchExchangeRate(_sourceCurrency, _targetCurrency)
+        .then((rate) {
       final localeName = Localizations.localeOf(context).toString();
       final currencyFormatter = NumberFormat.simpleCurrency(
           locale: localeName, name: _targetCurrency);

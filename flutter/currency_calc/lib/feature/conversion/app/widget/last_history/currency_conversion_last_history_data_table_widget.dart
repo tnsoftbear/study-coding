@@ -1,6 +1,6 @@
 import 'package:currency_calc/feature/conversion/app/dto/currency_conversion_history_output_dto.dart';
-import 'package:currency_calc/feature/conversion/infra/repository/currency_conversion_history_record_repository.dart';
-import 'package:currency_calc/feature/front/app/theme/additiona_colors.dart';
+import 'package:currency_calc/feature/conversion/infra/repository/history/currency_conversion_history_record_repository.dart';
+import 'package:currency_calc/feature/front/app/theme/additional_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/all_localizations.dart';
 import 'package:intl/intl.dart';
