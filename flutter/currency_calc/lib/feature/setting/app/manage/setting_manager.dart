@@ -1,4 +1,4 @@
-import 'package:currency_calc/feature/setting/app/constant/appearance_constant.dart';
+import 'package:currency_calc/feature/front/app/constant/appearance_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
