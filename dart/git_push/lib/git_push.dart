@@ -17,13 +17,13 @@ void commitAndPush(String directory) {
           print('Commit failed. Error: ${commitResult.stderr}');
         }
       }).catchError((error) {
-        print('Error: $error');
+        print('Git Commit caught error: $error');
       });
     } else {
       print('Git add failed. Error: ${addResult.stderr}');
     }
   }).catchError((error) {
-    print('Error: $error');
+    print('Git Add caught error: $error');
   });
 }
 
@@ -35,12 +35,12 @@ void pushChanges() {
       print('Push failed. Error: ${pushResult.stderr}');
     }
   }).catchError((error) {
-    print('Error: $error');
+    print('Git Push caught error: $error');
   });
 }
 
 String getCurrentDateFormatted() {
   DateTime now = DateTime.now();
-  String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+  String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(now);
   return formattedDate;
 }
