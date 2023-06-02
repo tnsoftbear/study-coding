@@ -4,8 +4,6 @@ import (
 	"fmt"
 	_ "math/rand"
 
-	//	"math/rand"
-
 	"github.com/go-vgo/robotgo"
 	hook "github.com/robotn/gohook"
 )
@@ -25,10 +23,8 @@ func processBot() {
 	quitCh := registerHooks()
 
 	for {
-		// Проверяем, сработал ли хук
 		found := findBar()
 		if found != -1 {
-			//fmt.Printf("Found bar# %d in column %d\n", counter, found+1)
 			clickOnBar(found)
 			counter++
 		}
@@ -66,28 +62,44 @@ func isHittedBar(x, y int) bool {
 	return false
 }
 
-func clickOnBar(i int) {
-	x := barXs[i]
+func clickOnBar(column int) {
+	x := barXs[column]
 	y := barY
-	fmt.Printf("%d) Move & click (%d, %d)\n", counter, x, y)
+	column++
+	fmt.Printf("%d) Move & click (%d: %d, %d)\n", counter, column, x, y)
 	robotgo.MoveClick(x, y, "left")
-
-	y += 75
-	var state int = getState(x, y)
-	if state == 1 {
-		fmt.Printf("%d) Repeat-1 (%d, %d)\n", counter, x, y)
-		robotgo.MoveClick(x, y, "left")
-	} else if state == 2 {
-		return
+	if isTargetBar(x, y+50) {
+		robotgo.MoveClick(x, y+50, "left", true)
 	}
+}
 
-	y += 75
-	state = getState(x, y)
-	if state == 1 {
-		fmt.Printf("%d) Repeat-2 (%d, %d)\n", counter, x, y)
-		robotgo.MoveClick(x, y, "left")
-	} else if state == 2 {
-		return
+func clickOnBar2(column int) {
+	x := barXs[column]
+	y := barY
+	column++
+	fmt.Printf("%d) Move & click (%d: %d, %d)\n", counter, column, x, y)
+	robotgo.MoveClick(x, y, "left")
+	inc := 50
+
+	for i := 1; i <= 3; i++ {
+		y += inc
+		xr := x // + rand.Intn(10) - 5
+		robotgo.Move(xr, y)
+		var state int = getState(xr, y)
+		if state == 1 {
+			robotgo.Click("left", i%2 == 1)
+			fmt.Printf("%d) Repeat-%d (%d: %d, %d)\n", counter, i, column, xr, y)
+		} else if state == 2 {
+			fmt.Printf("%d) Hitted found (%d: %d, %d)\n", counter, column, xr, y)
+			return
+		} else {
+			fmt.Printf("%d) Empty found (%d: %d, %d)\n", counter, column, xr, y)
+		}
+
+		if (getState(xr, y - inc) == 2) {
+			fmt.Printf("%d) Re-check previous position and found hitted (%d: %d, %d)\n", counter, column, xr, y - 75)
+			return
+		}
 	}
 }
 
