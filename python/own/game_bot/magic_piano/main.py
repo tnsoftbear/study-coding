@@ -1,16 +1,26 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from pyautogui import *
+import pyautogui
+import time
+import keyboard
+import random
+import win32api, win32con
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def click(x, y):
+    win32api.SetCursorPos((x, y))
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0)
+    time.sleep(0.1)  # This pauses the script for 0.1 seconds
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
+    print("Clicked ", x, y)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+while not keyboard.is_pressed('q'):
+
+    if pyautogui.pixel(750, 400)[0] == 0:
+        click(750, 400)
+    if pyautogui.pixel(890, 400)[0] == 0:
+        click(890, 400)
+    if pyautogui.pixel(1050, 400)[0] == 0:
+        click(1050, 400)
+    if pyautogui.pixel(1140, 400)[0] == 0:
+        click(1140, 400)
