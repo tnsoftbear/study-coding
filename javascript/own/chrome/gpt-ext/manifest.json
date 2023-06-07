@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "OpenAI Prompt Extension",
+  "version": "1.0",
+  "description": "A Chrome extension that generates responses from OpenAI based on user prompts.",
+  "permissions": ["activeTab"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "OpenAI Prompt Extension",
+    "default_icon": {
+      "16": "i/icon16.png",
+      "48": "i/icon48.png",
+      "128": "i/icon128.png"
+    }
+  }
+}
