@@ -29,8 +29,9 @@ async function generateResponse(event) {
     outputArea.innerHTML = "Please enter an API key";
     return;
   }
-  
-  outputArea.innerHTML = "Loading...";
+
+  outputArea.innerHTML = '<div id="loading-text">Loading<span></span></div>';
+  animateLoading(true);
 
   const prompt = promptInput.value;
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -47,6 +48,8 @@ async function generateResponse(event) {
     }),
   });
 
+  animateLoading(false);
+
   // Parse the response and display it in a new window
   let textFormatted = "";
   const data = await response.json();
@@ -62,7 +65,9 @@ async function generateResponse(event) {
 
 function replaceCodeBlocks(text) {
   const regex = /```(\w*)\s([\s\S]+?)```/g;
-  const replacedText = text.replace(regex, "<pre>$2</pre>").replace(/\n/g, "</br>");
+  const replacedText = text
+    .replace(regex, "<pre>$2</pre>")
+    .replace(/\n/g, "</br>");
   return replacedText;
 }
 
@@ -79,6 +84,24 @@ function loadApiKey() {
   if (savedApiKey) {
     apiKeyInput.value = savedApiKey;
   } else {
-    outputArea.innerHTML = "Please enter an API key. You can generate it <a target='_blank' href='https://platform.openai.com/account/api-keys'>here</a>";
+    outputArea.innerHTML =
+      "Please enter an API key. You can generate it <a target='_blank' href='https://platform.openai.com/account/api-keys'>here</a>";
+  }
+}
+
+// Dots loading animation:
+var loadingDotsIntervalId;
+function animateLoading(shouldAnimate) {
+  if (shouldAnimate == false) {
+    clearInterval(loadingDotsIntervalId);
+  } else {
+    loadingDotsIntervalId = window.setInterval(function () {
+      var wait = document.querySelector("#loading-text span");
+      if (wait.innerHTML.length > 3) {
+        wait.innerHTML = "";
+      } else {
+        wait.innerHTML += ".";
+      }
+    }, 500);
   }
 }

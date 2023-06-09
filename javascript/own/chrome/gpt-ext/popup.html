@@ -21,11 +21,21 @@
         padding: 10px;
         border-radius: 4px;
       }
+      #loading-text span {
+        width: 16px;
+        display: inline-block;
+        text-align: left;
+      }
     </style>
   </head>
   <body>
     <form>
-      <input type="text" id="api-key-input" placeholder="API Key" /><button type="button" id="api-key-save-button">save</button><br />
+      <input type="text" id="api-key-input" placeholder="API Key" /><button
+        type="button"
+        id="api-key-save-button"
+      >
+        save</button
+      ><br />
       <textarea id="prompt-input" cols="200" rows="5"></textarea>
       <br />
       <button type="button" id="generate-button">Generate Response</button>

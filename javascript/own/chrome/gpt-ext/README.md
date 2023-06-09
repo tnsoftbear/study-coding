@@ -2,7 +2,7 @@
 
  #chrome #extension #chat-gpt
 
-My first experiment with Chrome extension development in June 2023. No service worker there.
+My first experiment with Chrome extension development in June 2023. No service worker here.
 
 * Open `chrome://extensions`
 * Click "Load unpacked"

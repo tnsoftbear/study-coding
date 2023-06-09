@@ -1,0 +1,21 @@
+<html>
+<head>
+<script>
+const worker = new Worker('worker.js');
+worker.postMessage({ message: 'Hello from the main page' });
+worker.addEventListener('message', (event) => {
+  document.getElementById("out").innerHTML = event.data.message;
+});
+
+var sharedWorker = new SharedWorker('shared_worker.js');
+sharedWorker.port.postMessage('Hello from index.html!');
+sharedWorker.port.onmessage = function(event) {
+  document.getElementById("shared_out").innerHTML = 'Received from shared worker: ' + event.data;
+};
+</script>
+</head>
+<body>
+<div id="out"></div>
+<div id="shared_out"></div>
+</body>
+</html>
