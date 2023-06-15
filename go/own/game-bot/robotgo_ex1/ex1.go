@@ -12,7 +12,6 @@ func main() {
 	fmt.Print("Hello World!\n")
 	robotgo.MouseSleep = 300
 	processBot()
-	systemstack(func() { println("Hello, World!") })
 }
 
 func moveMouse() {
