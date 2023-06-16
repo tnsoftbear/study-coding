@@ -13,12 +13,16 @@
       const header = document.querySelector("#hdr");
       let count = 0;
       const observer = new MutationObserver((mutations) => {
-        ll("Iterate mutations");
+        // Этот пример показывает, что MutationObserver обрабатывается как микрозадача
+        ll("Microtask of MutationObserver: Iterate mutations");
         ll(mutations);
         mutations.forEach((mutation) => {
-          //if (mutation.type === "attributes") {
-          //header.innerHTML = count++;
-          //}
+          // Если внутри MutationObserver происходит изменение DOM, то MutationObserver срабатывает еще раз
+          // Для случая header.innerHTML = count++; будут удалятся все дочерние элементы, а потом добавляться новый
+          // Это будет отображено в MutationRecord в removedNodes и addedNodes
+          //   if (mutation.type === "attributes") {
+          //     header.innerHTML = count++;
+          //   }
         });
       });
       observer.observe(header, {
@@ -27,6 +31,8 @@
         childList: true,
       });
       button.addEventListener("click", () => {
+        queueMicrotask(() => ll("Microtask: Before change by click"));
+        Promise.resolve().then(() => ll("Promise Before change by click"));
         header.setAttribute("style", "color: red");
         const div = document.createElement("div");
         div.innerHTML = count++;
@@ -37,15 +43,13 @@
       });
 
       // After change by click
-      // Iterate mutations
+      // Microtask: Before change by click
+      // Promise Before change by click
+      // Microtask of MutationObserver: Iterate mutations
       // MutationRecord {type: 'attributes', target: h#hdr, attributeName: "style" ...}
       // MutationRecord {type: 'childList', target: h1#hdr, addedNodes: NodeList [div], ...}
       // Promise After change by click
       // Timeout After change by click
-
-      // Если внутри MutationObserver происходит изменение DOM, то MutationObserver срабатывает еще раз
-      // Для случая header.innerHTML = count++; будут удалятся все дочерние элементы, а потом добавляться новый
-      // Это будет отображено в MutationRecord в removedNodes и addedNodes
 
       function ll(...args) {
         console.log(...args);
