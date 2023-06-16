@@ -27,3 +27,21 @@ const pointer_copy = user;
 pointer_copy.address.street = "Kirova"
 pointer_copy.username = "Vladimir"
 console.log(user.address.street, user.username) // "Kirova Vladimir"
+
+// Альтернативная реализация глубокого копирования
+const clone_copy = clone(user);
+clone_copy.address.street = "Krasina"
+clone_copy.username = "Alexey"
+console.log(user.address.street, user.username) // "Kirova Vladimir"
+
+function clone(object) {
+  let result = {};
+  for (let key in object) {
+    let value = object[key];
+    if (typeof value === 'object' && value !== null) {
+      value = clone(value);
+    }
+    result[key] = value;
+  }
+  return result;
+}
