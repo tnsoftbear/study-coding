@@ -47,3 +47,5 @@ Promise.resolve(ll("Console log in resolve W")).then(() => ll("Promise W"));
 // queueMicrotask in setTimeout A
 // setTimeout B
 // setImmediate
+
+// [Event Loop от А до Я. Архитектура браузера и Node JS. Движки и рендер.](https://www.youtube.com/watch?v=zDlg64fsQow)
