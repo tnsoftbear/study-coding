@@ -32,6 +32,8 @@ Promise.resolve("Resolved value Z").then((v) => ll("Promise Z", v));
 
 Promise.resolve(ll("Console log in resolve W")).then(() => ll("Promise W"));
 
+// Броузерный Event Loop возвращает результаты аналогично серверному Node.js (однако, тут нет setImmediate())
+
 // Console log in resolve W
 // Promise X
 // queueMicrotask

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const start = Date.now();
+
+      ll("Start cycle");
+      for (i = 0; i < 20; i++) {
+        profileCb = profileClosure(i);
+        encr(profileCb);
+      }
+      ll("End cycle");
+
+      function profileClosure(i) {
+        return function profile() {
+          ll("call#: %d,\ttime: %d", i, Date.now() - start);
+        };
+      }
+
+      function ll(...args) {
+        console.log(...args);
+      }
+
+      function encr(profileCb) {
+        var encoder = new TextEncoder("utf-8");
+        var clearDataArrayBufferView = encoder.encode(start.toString());
+
+        var aesAlgorithmKeyGen = {
+          name: "AES-CBC",
+          length: 128,
+        };
+
+        var aesAlgorithmEncrypt = {
+          name: "AES-CBC",
+          iv: window.crypto.getRandomValues(new Uint8Array(16)),
+        };
+
+        // Create a key generator to produce a one-time-use AES key to encrypt some data
+        window.crypto.subtle
+          .generateKey(aesAlgorithmKeyGen, false, ["encrypt"])
+          .then(function (aesKey) {
+            return window.crypto.subtle.encrypt(
+              aesAlgorithmEncrypt,
+              aesKey,
+              clearDataArrayBufferView
+            );
+          })
+          .then(function (cipherData) {
+            profileCb();
+            // console.log("The cipher data buffer is: ", cipherData);
+          }, console.error.bind(console, "Unable to encrypt"));
+      }
+
+// call#: 0,	time: 10
+// call#: 1,	time: 10
+// call#: 2,	time: 10
+// call#: 3,	time: 10
+// call#: 4,	time: 11
+// call#: 5,	time: 11
+// call#: 6,	time: 11
+// call#: 7,	time: 12
+// call#: 8,	time: 13
+// call#: 9,	time: 13
+// call#: 10,	time: 15
+// call#: 11,	time: 21
+// call#: 12,	time: 21
+// call#: 13,	time: 21
+// call#: 14,	time: 22
+// call#: 15,	time: 22
+// call#: 16,	time: 22
+// call#: 17,	time: 22
+// call#: 18,	time: 23
+// call#: 19,	time: 23
+    </script>
+  </body>
+</html>
