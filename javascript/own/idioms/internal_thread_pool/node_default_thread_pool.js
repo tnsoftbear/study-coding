@@ -25,7 +25,7 @@ function ll(...args) {
   console.log(...args);
 }
 
-// Пул потоков предоставляет планировщику потоков 4 потока, поэтому первые 4 вызова будут выполнены сразу, а остальные 16 будут ждать освобождения потоков
+// Пул потоков (Worker pool) предоставляет планировщику потоков 4 потока, поэтому первые 4 вызова будут выполнены сразу, а остальные 16 будут ждать освобождения потоков
 
 // Start cycle
 // End cycle
@@ -51,3 +51,4 @@ function ll(...args) {
 // call#: 18,      time: 13008
 
 // https://www.youtube.com/watch?v=zDlg64fsQow 57 :00
+// https://nodejs.org/en/docs/guides/dont-block-the-event-loop
