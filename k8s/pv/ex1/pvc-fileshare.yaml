@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: fileshare # переименовать в pvc-fileshare
+  namespace: pvex1
+spec:
+  storageClassName: local-storage
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

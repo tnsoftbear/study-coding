@@ -12,6 +12,9 @@ spec:
     env:
     - name: APP_NAME
       value: "nginx-app"
+    envFrom:
+    - configMapRef:
+        name: nginx-configmap-2
     volumeMounts:
     - name: nginx-configmap-volume
       mountPath: /etc/nginx/conf.d/
