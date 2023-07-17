@@ -3,10 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="page-visibility-checker.js" defer></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="page-visibility-checker.js"></script>
     <title>Document</title>
   </head>
   <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+
     <main>
       <p>
         <a
@@ -40,15 +45,18 @@
           </p>
         </video>
       </p>
-      <p>
+      <!-- <p>
         <iframe
+          id="youtubeElement"
           width="560"
           height="315"
           src="https://www.youtube.com/embed/UONvpzG7yjo"
           frameborder="0"
           allowfullscreen
         ></iframe>
-      </p>
+      </p> -->
+      <div id="player"></div>
+      <div id="yt_status"></div>
     </main>
   </body>
 </html>
