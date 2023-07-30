@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-for-healthcheck
+  labels:
+    app: healthcheck
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthcheck
+  template:
+    metadata:
+      labels:
+        app: healthcheck
+    spec:
+      containers:
+      - name: health-app
+        image: health-app:local
+        imagePullPolicy: Never
+        command: ["/app/happ", "--startup", "30", "--ready", "60", "--end", "120", "-p", "/tmp"]
+        tty: true
+        startupProbe:
+          exec:
+            command: ["stat", "/tmp/startup-marker"]
+          initialDelaySeconds: 26
+          periodSeconds: 3
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - stat
+            - /tmp/readiness-marker
+          initialDelaySeconds: 56
+          periodSeconds: 3
+          failureThreshold: 3
