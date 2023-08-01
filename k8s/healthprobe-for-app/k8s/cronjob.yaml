@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: one-minute-cronjob
+spec:
+  concurrencyPolicy: Allow
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: health-app-one-min
+            image: health-app:local
+            command: ["/app/happ", "--startup", "30", "--ready", "60", "--end", "120", "-p", "/tmp"]
+          restartPolicy: OnFailure
+      ttlSecondsAfterFinished: 0

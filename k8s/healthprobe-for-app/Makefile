@@ -20,6 +20,10 @@ deploy:
 	kubectl apply -f ./k8s/deployment.yaml
 
 .PHONY:
+cronjob:
+	kubectl apply -f ./k8s/cronjob.yaml
+
+.PHONY:
 build-and-deploy:
 	make build-image
 	make import-image
