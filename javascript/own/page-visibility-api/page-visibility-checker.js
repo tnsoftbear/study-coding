@@ -1,4 +1,4 @@
-var player;
+var ytPlayer;
 
 // Set the name of the hidden property and the change event for visibility
 var hidden, visibilityChange;
@@ -58,23 +58,30 @@ function initVideo() {
 // The API will call this function when the page has finished downloading the JavaScript for the player API
 // https://developers.google.com/youtube/iframe_api_reference
 function onYouTubeIframeAPIReady() {
-  // Создание плеера
-  player = new YT.Player("player", {
+  ytPlayer = new YT.Player("yt_player", {
     events: {
-      onReady: onPlayerReady,
+      onReady: () => {
+        document.getElementById("yt_status").innerHTML = "ready";
+      },
       onStateChange: onPlayerStateChange,
     },
     videoId: "UONvpzG7yjo",
   });
 }
 
-function onPlayerReady(event) {
-  document.getElementById("yt_status").innerHTML = "ready";
-}
-
 function onPlayerStateChange(event) {
-  document.getElementById("yt_status").innerHTML = event.data;
-  console.log(event);
+  var statuses = {
+    "-1": "unstarted",
+    0: "ended",
+    1: "playing",
+    2: "paused",
+    3: "buffering",
+    5: "video cued",
+  };
+
+  document.getElementById("yt_status").innerHTML = statuses[event.data]
+    ? statuses[event.data]
+    : event.data;
 }
 
 // If the page is hidden, pause the video;
@@ -82,9 +89,9 @@ function onPlayerStateChange(event) {
 function handleVisibilityChange() {
   if (document[hidden]) {
     videoElement.pause();
-    player.pauseVideo();
+    ytPlayer.pauseVideo();
   } else {
     videoElement.play();
-    player.playVideo();
+    ytPlayer.playVideo();
   }
 }
