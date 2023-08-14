@@ -1,5 +1,12 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
+
+class Adder {
+public:
+    int operator()(int a, int b) {
+        return a + b;
+    }
+};
 
 void divideToZero() {
     int x = 10;
@@ -24,10 +31,16 @@ int main()
     // divideToZero();
     int v1 = 0;
     int v2 = 1;
-    std::cout << std::to_string(v1) + " " + (existInTable(v1) ? "exists\n" : "not exists\n");
-    std::cout << std::to_string(v2) + " " + (existInTable(v2) ? "exists\n" : "not exists\n");
+    std::cout << std::to_string(v1) + " " + (existInTable(v1) ? "exists" : "not exists") << std::endl;
+    std::cout << std::to_string(v2) + " " + (existInTable(v2) ? "exists" : "not exists") << std::endl;
     for (int i = 0; i < 6; ++i) {
         printf("%d ", table[i]);
     }
+    std::cout << std::endl;
+
+    Adder add;
+    std::cout << "Result: " << add(5, 3) << std::endl; // Вызываем объект add как функцию
+
     std::cout << "Game over!\n";
+    system("pause>0");
 }
