@@ -39,7 +39,7 @@ class SpinLockOptimized : public SpinLockInterface {
   public:
     void Lock() override {
         while (locked_.exchange(true, std::memory_order_acquire)) {    // <-- cache ping-pong
-            while (locked_.load()) {        // mitigate cache ping-pong (не вижу разницы, проверить на большем CPU)
+            while (locked_.load(std::memory_order_relaxed)) {        // mitigate cache ping-pong (не вижу разницы, проверить на большем CPU)
                 SpinLockPause();
             }
         }
@@ -56,7 +56,7 @@ void Stress(SpinLockInterface& spinlock) {
     size_t counter = 0; // Guarded by spinlock
     std::vector<std::thread> threads;
 
-    for (size_t i = 0; i < 10050; ++i) {
+    for (size_t i = 0; i < 10000; ++i) {
         threads.emplace_back([&]() {
             spinlock.Lock();
             ++counter;
