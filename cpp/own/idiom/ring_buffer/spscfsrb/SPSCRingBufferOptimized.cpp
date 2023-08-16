@@ -82,11 +82,11 @@ class SPSCRingBufferOptimized : public SPSCRingBufferInterface<T> {
         // Можно попробовать разнести значения по разным кэш-линиям, добавив между ними 64-байта пустых данных
         // Эта оптимизация-А обретает смысл только с учётом оптимизации-Б
         // Потому что без оптимизации-Б, к этим полям обращаются оба - как продюсер, так и консьюмер, что приводит к синхронизации их кэш-линий.
-        char padding_1[kCacheLineSize]; // оптимизация-А
-        std::atomic<size_t> head_{0}; // Owned by consumer
+        // char padding_1[kCacheLineSize]; // оптимизация-А (альтернативный паддинг)
+        alignas(kCacheLineSize) std::atomic<size_t> head_{0}; // оптимизация-А (alignas)
         size_t head_cached_{0};
 
-        char padding_2[kCacheLineSize]; // оптимизация-А
-        std::atomic<size_t> tail_{0}; // Owned by producer
+        // char padding_2[kCacheLineSize]; // оптимизация-А (альтернативный паддинг)
+        alignas(kCacheLineSize) std::atomic<size_t> tail_{0}; // оптимизация-А
         size_t tail_cached_{0};
 };
