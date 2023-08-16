@@ -2,9 +2,10 @@
 #include <iostream>
 
 #include "helpers.hpp"
-#include "SPSCRingBufferOptimized.cpp"
-#include "SPSCRingBufferNaive.cpp"
 #include "SPSCRingBufferInterface.hpp"
+#include "SPSCRingBufferNaive.cpp"
+#include "SPSCRingBufferOptimized.cpp"
+#include "SPSCRingBufferOptimizedMemoryOrdering.cpp"
 
 /**
  * Single-Producer/Single-Consumer Fixed-Size Ring Buffer
@@ -72,8 +73,9 @@ void Stress(SPSCRingBufferInterface<int>& buffer) {
 }
 
 int main() {
-    SPSCRingBufferOptimized<int> bufferOpt(256);
     SPSCRingBufferNaive<int> bufferNaive(256);
+    SPSCRingBufferOptimized<int> bufferOpt(256);
+    SPSCRingBufferOptimizedMemoryOrdering<int> bufferOptMemOrd(256);
     StopWatch stop_watch;
     while (true)
     {
@@ -84,5 +86,9 @@ int main() {
         stop_watch = StopWatch();
         Stress(bufferOpt);
         std::cout << "Elapsed for Optimized: " << stop_watch.ElapsedMillis() << "ms" << std::endl;
+
+        stop_watch = StopWatch();
+        Stress(bufferOptMemOrd);
+        std::cout << "Elapsed for Optimized with Memory Ordering: " << stop_watch.ElapsedMillis() << "ms" << std::endl;
     }
 };
