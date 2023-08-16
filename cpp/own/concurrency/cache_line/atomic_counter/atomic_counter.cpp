@@ -6,7 +6,7 @@
 #include "helpers.hpp"
 
 static const size_t kCacheLineSize = 64;
-static const size_t kShards = 4;
+static const size_t kShards = 8;
 
 class CounterInterface {
   public:
@@ -79,7 +79,7 @@ void Stress(CounterInterface& counter) {
     std::vector<std::thread> threads;
     for (size_t i = 0; i < kShards; ++i) {
         threads.emplace_back([&counter]() {
-            for (size_t j = 0; j < 10'000'000; ++j) {
+            for (size_t j = 0; j < 1'000'000; ++j) {
                 counter.Increment();
             }
         });
