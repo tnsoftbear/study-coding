@@ -2,6 +2,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <unistd.h>
+
+// g++ -o git_push git_push.cpp -static
+// sudo mv git_push /usr/bin
+// crontab -e
+// 5 0,12 * * * /usr/bin/git_push /home/manjaro/zettelkaster
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -10,6 +16,11 @@ int main(int argc, char* argv[]) {
     }
 
     std::string directoryPath = argv[1];
+
+    if (chdir(directoryPath.c_str()) != 0) {
+        std::cerr << "Error changing directory to " << directoryPath << std::endl;
+        return 1;
+    }    
 
     // Проверка наличия измененных файлов
     std::string gitStatusCmd = "git status --porcelain " + directoryPath;
@@ -43,6 +54,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     std::cout << "Committed changes with comment: " << commitComment << std::endl;
+
+    std::string gitPullRebaseCmd = "git pull --rebase";
+    std::cout << gitPullRebaseCmd << std::endl;
+    if (system(gitPullRebaseCmd.c_str()) != 0) {
+        std::cerr << "Error pulling changes with rebase" << std::endl;
+        return 1;
+    }
 
     // Пуш в удаленный репозиторий
     std::string gitPushCmd = "git push origin main";
