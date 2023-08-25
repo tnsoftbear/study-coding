@@ -12,7 +12,14 @@ void commitAndPush(String directory) {
           .then((commitResult) {
         if (commitResult.exitCode == 0) {
           print('Commit successful.');
-          pushChanges();
+          Process.run('git', ['pull', '--rebase'], runInShell: true).then((pullResult) {
+            if (pullResult.exitCode == 0) {
+              print('Pull with rebase successful.');
+              pushChanges();
+            } else {
+              print('Pull with rebase failed. Error: ${pullResult.stderr}');
+            }
+          });
         } else {
           print('Commit failed. Error: ${commitResult.stderr}');
         }
