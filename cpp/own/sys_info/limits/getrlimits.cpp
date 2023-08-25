@@ -1,7 +1,7 @@
 #include <iostream>
 #include <map>
 #include <sys/resource.h>
-#include <limits>
+// #include <limits>
 #include <cstdint>
 
 /**
@@ -10,7 +10,7 @@
  */
 
 int main() {
-    uint64_t maxValue = std::numeric_limits<uint64_t>::max();
+    // uint64_t maxValue = std::numeric_limits<uint64_t>::max();
     // Создаем мапу с именами ресурсов и их идентификаторами
     std::map<int, std::string> resourceNames = {
         {RLIMIT_CPU, "RLIMIT_CPU - Per-process CPU limit, in seconds"},
@@ -29,7 +29,6 @@ int main() {
         {RLIMIT_NICE, "RLIMIT_NICE - Maximum nice priority allowed to raise to"},
         {RLIMIT_RTPRIO, "RLIMIT_RTPRIO - Maximum realtime priority allowed for non-priviledged processes"},
         {RLIMIT_RTTIME, "RLIMIT_RTTIME - Maximum CPU time in microseconds that a process scheduled under a real-time"},
-        {RLIM_INFINITY, "RLIM_INFINITY"},
     };
 
     // Выводим информацию о лимитах для всех ресурсов
@@ -40,8 +39,8 @@ int main() {
         struct rlimit limit;
         if (getrlimit(resource, &limit) == 0) {
             std::cout << "Resource: " << resourceName << std::endl;
-            std::cout << "  Soft Limit: " << (limit.rlim_cur == maxValue ? "Unlimited" : std::to_string(limit.rlim_cur)) << std::endl;
-            std::cout << "  Hard Limit: " << (limit.rlim_max == maxValue ? "Unlimited" : std::to_string(limit.rlim_max)) << std::endl;
+            std::cout << "  Soft Limit: " << (limit.rlim_cur == RLIM_INFINITY ? "Unlimited" : std::to_string(limit.rlim_cur)) << std::endl;
+            std::cout << "  Hard Limit: " << (limit.rlim_max == RLIM_INFINITY ? "Unlimited" : std::to_string(limit.rlim_max)) << std::endl;
         } else {
             std::cerr << "Failed to get resource limit for: " << resourceName << std::endl;
         }
