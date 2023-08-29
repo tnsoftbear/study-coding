@@ -2,11 +2,18 @@
 
 int x = 1;
 
-int main() {
+namespace N {
     int x = 2;
-    std::cout << "local x: " << x << "; global x: " << ::x << std::endl;
+}
+
+int main() {
+    // scope resolution
+    using namespace N;
+    using std::cout;
+    int x = 3;
+    cout << "local x: " << x << "; N::x: " << N::x << "; global ::x: " << ::x << std::endl;
     {
-        int x = 3;
-        std::cout << "local x: " << x << "; global x: " << ::x << std::endl;
+        int x = 4;
+        cout << "local x: " << x << "; N::x: " << N::x << "; global ::x: " << ::x << std::endl;
     }
 }
