@@ -19,3 +19,9 @@ int main()
 // a 
 // b 
 // c 
+
+
+    // int x = 0;
+    // ++x = x++;
+    // std::cout << "++x = x++ -> " << x << std::endl;
+    // // ++x = ++x; // 2 in c++03, 1 in c++17
