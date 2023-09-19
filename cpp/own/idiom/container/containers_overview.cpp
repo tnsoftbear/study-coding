@@ -2,6 +2,8 @@
 #include <stack>
 #include <queue>
 #include <map>
+#include <list>
+#include <forward_list>
 
 int main() {
     // https://en.cppreference.com/w/cpp/container/stack
@@ -30,6 +32,10 @@ int main() {
         << "; q.empty(): " << q.empty()
         << "; sizeof(q): " << sizeof(q) << std::endl;
 
+    // https://en.cppreference.com/w/cpp/container/priority_queue
+    // provides constant time lookup of the largest element, at the expense of logarithmic insertion and extraction.
+    std::priority_queue<int> pq;
+
     std::vector<int> v(10); // sizeof(v): 24
     v[0] = 1;
     v[5] = 2;
@@ -44,6 +50,13 @@ int main() {
         std::cout << v[i] << " ";
     }
     std::cout << std::endl;
+
+    std::string str = "abc";
+    str.pop_back();
+    str.push_back('d');
+    str.shrink_to_fit();
+    std::cout << "String: str.size: " << str.size() << "; str.capacity: " << str.capacity()
+        << "; sizeof(str): " << sizeof(str) << std::endl;
     
     // https://en.cppreference.com/w/cpp/container/map
     std::map<std::string, int> m; // sizeof(m): 24
@@ -54,4 +67,7 @@ int main() {
         // << "; m.contains(\"a\"): " << m.contains("a") // g++ -std=c++2a containers_overview.cpp
         << "; m.size: " << m.size() << "; sizeof(v): " << sizeof(v)
         << "; m.empty(): " << m.empty() << std::endl;
+
+    std::list<int> l;
+    std::forward_list<int> fl;
 }
