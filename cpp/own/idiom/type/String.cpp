@@ -59,9 +59,28 @@ class String {
 
         ~String();
 
-        // Передача аргумента по значению вместо ссылки (copy elision), т.е. вместо `operator=(const String& other)`:
-        // "if you're going to make a copy of something in a function, let the compiler do it in the parameter list"
-        String& operator=(String other) {
+        // Move assignment
+        String& operator=(String&& other) noexcept {
+            ll_("Move assignment operator - String& operator=(String&& other)");
+            if (this == &other) return *this;
+            delete[] str;
+            str = std::exchange(other.str, nullptr);
+            size = std::exchange(other.size, 0);
+            cap = std::exchange(other.cap, 0);
+            return *this;
+        }
+
+        /**
+         * Когда нет move assignment оператора, тогда copy assignment оператор реализуется таким образом
+         * Здесь происходит передача аргумента по значению вместо ссылки, с целью оптимизации copy elision 
+         * и т.к. нам всё равно необходимо делать копию other для свопа.
+         * "if you're going to make a copy of something in a function, let the compiler do it in the parameter list"
+         * 
+         * Но т.к. у нас реализован move assignment оператор и его сигнатура совпадает с этой, то возникает CE "ambiguous overload for ‘operator=’"
+         * поэтому copy assignment оператор реализован с другой сигнатурой
+         * 
+        String& operator=(String other) noexcept {
+            ll_("Copy assignment operator - String& operator=(String other)");
             if (this == &other) return *this;  // не имеет большого смысла при использовании Copy-and-swap().
             // this->~String(); // вызов деструктора это UB. После его вызова компилятор может считать, что объект всё.
             // Вместо такого применим Copy-and-Swap idiom
@@ -69,16 +88,64 @@ class String {
             Swap_(other);    // подменяем себя на copy, локальная переменная copy уничтожается по окончанию ф-ции (она на стеке).
             return *this;
         }
+         */
 
-        String operator+(const String& s) {
-            char* new_str = new char[size + s.size];
+        // Copy assignment operator
+        String& operator=(const String& other) noexcept {
+            ll_("Copy assignment operator - String& operator=(String other)");
+            if (this == &other) return *this;  // не имеет большого смысла при использовании Copy-and-swap().
+            // this->~String(); // вызов деструктора это UB. После его вызова компилятор может считать, что объект всё.
+            // Вместо такого применим Copy-and-Swap idiom
+            // delete[] str; size = s.size; str = new char[size]; memcpy(str, s.str, size);
+            String copy = other;
+            Swap_(copy);    // подменяем себя на copy, локальная переменная copy уничтожается по окончанию ф-ции (она на стеке).
+            return *this;
+        }
+
+        String operator+(const String& other) {
+            char* new_str = new char[size + other.size];
             strcat(new_str, str);
-            strcat(new_str, s.str);
+            strcat(new_str, other.str);
             return String(new_str);
         }
 
         String& operator+=(const String& s) {
             *this = *this + s;
+            return *this;
+        }
+
+        inline bool operator<(const String& other) const {
+            if (size < other.size) return true;
+            if (size > other.size) return false;
+            return memcmp(str, other.str, size) < 0;
+        }
+
+        inline bool operator>(const String& other) const { 
+            return other < *this; 
+        }
+
+        inline bool operator<=(const String& other) const {
+            return !(*this > other);
+        }
+
+        inline bool operator>=(const String& other) const {
+            return !(*this < other);
+        }
+
+        inline bool operator==(const String& other) const {
+            return memcmp(str, other.str, size) == 0;
+        }
+
+        inline bool operator!=(const String& other) const {
+            return !(*this == other);
+        }
+
+        inline char operator[](const int index) {
+            return str[index];
+        }
+
+        String& operator->() {
+            ll_("String& operator->()");
             return *this;
         }
 
@@ -98,7 +165,7 @@ class String {
         }
 
         void ll_(std::string info) {
-            cout << info << endl;
+            cout << info << " - " << DebugInfo2_() << endl;
         }
 
         // Пишем свой своп, потому что std::swap(*this, copy) всебе вызывает присваивание.
@@ -123,15 +190,29 @@ int main() {
     String s2 = s1;         // Copy constructor
     String s3{'s', '3'};    // Initializer list constructor
     String s4;
-    s4 = s2 + s3;
+    s4 = s2 + s3;           // s4.operator=(s2.operator+(s3));
     String s5("s5");
-    s5 += s3;
-    printf("s0: %s, s1: %s, s2: %s, s3: %s, s4: %s, s5: %s\n",
-        s0.data(), s1.data(), s2.data(), s3.data(), s4.data(), s5.data());
-    // std::cout << s2 << std::endl;
+    s5 += s3;               // s5.operator+=(s3);
+    String s6(3, '6');
+    s6 = std::move(s5);
+    String* s7 = new String("s7");
+    
+    printf("s0: %s, s1: %s, s2: %s, s3: %s, s4: %s, s5: %s, s6: %s, s6[2]: %c, s7: %s\n",
+        s0.data(), s1.data(), s2.data(), s3.data(), s4.data(), s5.data(), s6.data(), s6[2], s7->data());
+    
+    String sc1("sc1");
+    String sc2("sc2");
+    String sc1again("sc1");
+    printf("sc1 < sc2: %d, sc1 > sc2: %d, sc1 <= sc2: %d, sc1 >= sc2: %d, sc1 >= sc1again: %d, sc1 == sc1again: %d, sc1 != sc1again: %d\n",
+        sc1 < sc2, sc1 > sc2, sc1 <= sc2, sc1 >= sc2, sc1 >= sc1again, sc1 == sc1again, sc1 != sc1again);
 }
 
 /**
      * The rule of three:
      * If you need to explicitly declare either the destructor, copy constructor or copy assignment operator yourself, you probably need to explicitly declare all three of them.
+     * https://stackoverflow.com/questions/4172722/what-is-the-rule-of-three
+     * 
+     * https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
+     * 
+     * https://en.cppreference.com/w/cpp/language/operators
  */
