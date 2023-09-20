@@ -3,16 +3,7 @@
 
 class FutexMutex {
  public:
-
   void lock() {
-    Lock();
-  }
-
-  void unlock() {
-    Unlock();
-  }
-
-  void Lock() {
     uint32_t c;
     if ((c = Cmpxchg(Status::Unlocked, Status::Locked)) != Status::Unlocked) {
       do {
@@ -25,7 +16,7 @@ class FutexMutex {
     }
   }
 
-  void Unlock() {
+  void unlock() {
     if (m_.exchange(Status::Unlocked) != Status::Locked) {
       m_.notify_one();
     }
