@@ -5,16 +5,16 @@
 #include <condition_variable>
  
 std::mutex m;
-std::condition_variable cv;
+std::condition_variable condVar;
 std::string data;
 bool ready = false;
 bool processed = false;
  
-void worker_thread()
+void workerThread()
 {
     // Wait until main() sends data
     std::unique_lock lk(m);
-    cv.wait(lk, []{return ready;});
+    condVar.wait(lk, []{return ready;});
  
     // after the wait, we own the lock.
     std::cout << "Worker thread is processing data\n";
@@ -27,12 +27,12 @@ void worker_thread()
     // Manual unlocking is done before notifying, to avoid waking up
     // the waiting thread only to block again (see notify_one for details)
     lk.unlock();
-    cv.notify_one();
+    condVar.notify_one();
 }
  
 int main()
 {
-    std::thread worker(worker_thread);
+    std::thread worker(workerThread);
  
     data = "Example data";
     // send data to the worker thread
@@ -41,12 +41,12 @@ int main()
         ready = true;
         std::cout << "main() signals data ready for processing\n";
     }
-    cv.notify_one();
+    condVar.notify_one();
  
     // wait for the worker
     {
         std::unique_lock lk(m);
-        cv.wait(lk, [] {return processed;});
+        condVar.wait(lk, [] {return processed;});
     }
     std::cout << "Back in main(), data = " << data << '\n';
  
