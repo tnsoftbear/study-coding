@@ -36,7 +36,8 @@ void workerThread() {
             std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << makePrefix() << "Before cv.wait" << std::endl;
             // Здесь сначала мьютекс освобождается тем самым второй поток продолжается на After lock(mtx),
-            // в первом потоке проверяется условие предиката wait(), и т.к. оно false, то мьютекс захватывается вновь первым потоком.
+            // в первом потоке проверяется условие предиката wait(), и т.к. оно false, то поток ждёт пока предикат не станет true.
+            // После пробуждения поток снова захватывает мьютекс.
             condVar.wait(lock, [] { return isReady; });
             std::cout << makePrefix() << "After cv.wait" << std::endl;
         }
