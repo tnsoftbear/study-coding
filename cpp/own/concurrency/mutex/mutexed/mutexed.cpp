@@ -3,9 +3,9 @@
 #include <chrono>
 #include <cassert>
 
-//////////////////////////////////////////////////////////////////////
+#include "../futex_mutex/futex_mutex.cpp" // Мой мьютекс в деле
 
-/*
+/**
  * Safe API for mutual exclusion
  *
  * Usage:
@@ -81,7 +81,8 @@ class Counter {
 };
 
 int main() {
-    Mutexed<Counter> counter;
+    // Mutexed<Counter> counter;
+    Mutexed<Counter, FutexMutex> counter; // Работает так же с моим мьютексом
 
     std::thread t1([&] {
       counter.Acquire()->Increment();

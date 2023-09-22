@@ -2,6 +2,12 @@
 
 Mutex implemented on the base of the 2nd algorithm described in the paper [Futexes are Tricky](https://cis.temple.edu/~giorgio/cis307/readings/futex.pdf)
 
+Compile for c++20
+
+```sh
+g++ -std=c++20 main.cpp && ./a.out
+```
+
 ## More links
 
 * [Basics of Futexes](https://eli.thegreenplace.net/2018/basics-of-futexes/)
