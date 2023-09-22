@@ -4,6 +4,8 @@
 #include <map>
 #include <list>
 #include <forward_list>
+#include <set>
+#include <algorithm>
 
 int main() {
     // https://en.cppreference.com/w/cpp/container/stack
@@ -70,4 +72,18 @@ int main() {
 
     std::list<int> l;
     std::forward_list<int> fl;
+
+    // https://en.cppreference.com/w/cpp/container/set/
+    struct Less {   // переопределим оператор сравнения
+        bool operator()(const std::string& a, const std::string& b) const {
+            return a > b;
+        }
+    };
+    std::set<std::string, Less> set{"def", "jkl", "abc", "ghi", "xyz"};
+    std::cout << "Set: ";
+    std::for_each(set.cbegin(), set.cend(), [](const std::string& s) {
+        std::cout << s << " ";
+    });
+    std::cout << std::endl;
+    
 }
