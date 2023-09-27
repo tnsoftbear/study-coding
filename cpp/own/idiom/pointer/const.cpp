@@ -30,10 +30,11 @@ int main() {
     // ++ppp;           // error: increment of read-only variable ‘ppp’
     // *ppp = 3;        // error: assignment of read-only location ‘*(const int*)ppp’
 
-    // int& p0 = x;         // error: binding reference of type ‘int&’ to ‘const int’ discards qualifiers
-    const int& ry = y;      // Cсылка на константу
-    // int& const rry = y;  // error: ‘const’ qualifiers cannot be applied to ‘int&’
-    // ++ry;                // error: increment of read-only reference ‘ry’
+    // int& p0 = x;              // error: binding reference of type ‘int&’ to ‘const int’ discards qualifiers
+    const int& ry = y;           // Cсылка на константу
+    // int& const rry = y;       // error: ‘const’ qualifiers cannot be applied to ‘int&’
+    // const int& const rry = y; // error: ‘const’ qualifiers cannot be applied to ‘const int&’
+    // ++ry;                     // error: increment of read-only reference ‘ry’
     ++y;
     printf("ry: %d\n", ry);
 
