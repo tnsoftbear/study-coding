@@ -6,6 +6,8 @@
 #include "../futex_mutex/futex_mutex.cpp" // Мой мьютекс в деле
 
 /**
+ * Compile: g++ -std=c++20 mutexed.cpp
+ *
  * Safe API for mutual exclusion
  *
  * Usage:
