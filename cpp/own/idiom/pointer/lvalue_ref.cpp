@@ -29,7 +29,9 @@ int main() {
     int &a5 = x5;
     int const &b5 = x5;
     int const &c5 = x5 + 1;
-    // int &d5 = x5 + 1; // error: cannot bind non-const lvalue reference of type ‘int&’ to an rvalue of type ‘int’
+    // c5 += 1;             // error: assignment of read-only reference ‘c5’
+    // int &d5 = x5 + 1;    // error: cannot bind non-const lvalue reference of type ‘int&’ to an rvalue of type ‘int’
+    // int &d5 = 1;         // error: cannot bind non-const lvalue reference of type ‘int&’ to an rvalue of type ‘int’
     cout << "a5: " << x5 << "; a6: " << a5 << "; a7: " << b5 << "; a8: " << c5 << endl;
     cout << "x5: " << x5 << "; a5: " << a5 << "; b5: " << b5 << "; c5: " << c5 << endl;
     // x5: 1; a5: 1; b5: 1; c5: 2
@@ -40,4 +42,6 @@ int main() {
     // На самоме деле ссылка с5 была связана с временным объектом и автоматически продлила время его жизни.
     // Важно, что для левых ссылок так работают только константные левые ссылки
     // и получившийся временный объект является неизменяемым без специальных хаков.
+
+
 }

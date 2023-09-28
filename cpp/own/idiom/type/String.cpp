@@ -57,6 +57,19 @@ class String {
             ll_("Parameterized Constructor - String(const char*)");
         }
 
+        String(String&& other) noexcept
+            : size(other.size)
+            , cap(other.cap)
+        {
+            if (this == &other) return;
+            delete[] str;
+            str = std::move(other.str);
+            ll_("other.str != nullptr %s", other.str);
+            other.size = 0;
+            other.cap = 0;
+            ll_("Move Constructor - String(String&&)");
+        }
+
         ~String();
 
         // Move assignment
@@ -185,20 +198,21 @@ String::~String() {
 
 
 int main() {
-    String s0;              // Default constructor
-    String s1(3, '1');      // Parameterized constructor
-    String s2 = s1;         // Copy constructor
-    String s3{'s', '3'};    // Initializer list constructor
+    String s0;                // Default constructor
+    String s1(3, '1');        // Parameterized constructor
+    String s2 = s1;           // Copy constructor
+    String s3{'s', '3'};      // Initializer list constructor
     String s4;
-    s4 = s2 + s3;           // s4.operator=(s2.operator+(s3));
+    s4 = s2 + s3;             // s4.operator=(s2.operator+(s3));
     String s5("s5");
-    s5 += s3;               // s5.operator+=(s3);
+    s5 += s3;                 // s5.operator+=(s3);
     String s6(3, '6');
-    s6 = std::move(s5);
-    String* s7 = new String("s7");
+    String s7(std::move(s6)); // Move constructor
+    s6 = std::move(s5);       // Move assignment
+    String* s8 = new String("s8");
     
-    printf("s0: %s, s1: %s, s2: %s, s3: %s, s4: %s, s5: %s, s6: %s, s6[2]: %c, s7: %s\n",
-        s0.data(), s1.data(), s2.data(), s3.data(), s4.data(), s5.data(), s6.data(), s6[2], s7->data());
+    printf("s0: %s, s1: %s, s2: %s, s3: %s, s4: %s, s5: %s, s6: %s, s6[2]: %c, s7: %s, s8: %s\n",
+        s0.data(), s1.data(), s2.data(), s3.data(), s4.data(), s5.data(), s6.data(), s6[2], s7.data(), s8->data());
     
     String sc1("sc1");
     String sc2("sc2");
@@ -215,4 +229,6 @@ int main() {
      * https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom
      * 
      * https://en.cppreference.com/w/cpp/language/operators
+     * 
+     * https://learn.microsoft.com/ru-ru/cpp/cpp/constructors-cpp?view=msvc-170
  */
