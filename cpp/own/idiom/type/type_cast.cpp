@@ -10,7 +10,7 @@ int main() {
     std::cout << d2 << std::endl;
 
     double d3 = 3.14;
-    std::cout << std::hex << reinterpret_cast<int*>(&d4) << std::endl;
+    std::cout << std::hex << reinterpret_cast<int*>(&d3) << std::endl;
 
     // Const cast (обход защиты константности)
     {
