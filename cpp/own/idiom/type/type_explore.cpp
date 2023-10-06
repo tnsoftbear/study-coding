@@ -69,4 +69,6 @@ int main () {
     // echo "9Type2TypeIRKPN2ec20NamespacedEmptyClassEE" | c++filt -t
     // Вывод:
     // Type2Type<ec::NamespacedEmptyClass* const&>
+
+    // [C++ lectures at MIPT (in Russian). Lecture 6. Rvalue references, part 1](https://www.youtube.com/watch?v=pjo8iZQWLMY&ab_channel=KonstantinVladimirov)
 }
