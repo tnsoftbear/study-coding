@@ -31,12 +31,15 @@ int main() {
     // *ppp = 3;        // error: assignment of read-only location ‘*(const int*)ppp’
 
     // int& p0 = x;              // error: binding reference of type ‘int&’ to ‘const int’ discards qualifiers
-    const int& ry = y;           // Cсылка на константу
+    const int& ry = y;           // Константная ссылка на переменную является read-only ссылкой.
     // int& const rry = y;       // error: ‘const’ qualifiers cannot be applied to ‘int&’
     // const int& const rry = y; // error: ‘const’ qualifiers cannot be applied to ‘const int&’
     // ++ry;                     // error: increment of read-only reference ‘ry’
     ++y;
     printf("ry: %d\n", ry);
+
+    const int& сrx = x;          // Cсылка на константу x
+    // int& rx = x;              // error: binding reference of type ‘int&’ to ‘const int’ discards qualifiers
 
     find("abcde", "abc");
     const int& r = 0;       // Разрешается инициализировать константную ссылку литералом
