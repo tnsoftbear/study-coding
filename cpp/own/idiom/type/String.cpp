@@ -62,9 +62,8 @@ class String {
             , cap(other.cap)
         {
             if (this == &other) return;
-            delete[] str;
             str = std::move(other.str);
-            ll_("other.str != nullptr %s", other.str);
+            other.str = nullptr;
             other.size = 0;
             other.cap = 0;
             ll_("Move Constructor - String(String&&)");
@@ -74,12 +73,12 @@ class String {
 
         // Move assignment
         String& operator=(String&& other) noexcept {
-            ll_("Move assignment operator - String& operator=(String&& other)");
             if (this == &other) return *this;
             delete[] str;
             str = std::exchange(other.str, nullptr);
             size = std::exchange(other.size, 0);
             cap = std::exchange(other.cap, 0);
+            ll_("Move assignment operator - String& operator=(String&& other)");
             return *this;
         }
 
