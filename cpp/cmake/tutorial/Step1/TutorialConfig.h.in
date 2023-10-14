@@ -1,0 +1,2 @@
+#define Tutorial_VMAJ "@Tutorial_VERSION_MAJOR@"
+#define Tutorial_VMIN "@Tutorial_VERSION_MINOR@"
