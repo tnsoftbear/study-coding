@@ -10,9 +10,9 @@ if(USE_MYMATH)
     # USE_MYMATH as a precompiled definition to our source files
     target_compile_definitions(MathFunctions PRIVATE "USE_MYMATH")
     # Add a library for SqrtLibrary with source mysqrt.cxx
-    add_library(SqrtLibrary mysqrt.cxx)
+    add_library(SqrtLibrary STATIC mysqrt.cxx)
     # Link SqrtLibrary to the MathFunctions Library
-    target_link_libraries(MathFunctions PUBLIC SqrtLibrary)
+    target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
 endif()
 
 
