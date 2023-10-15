@@ -1,24 +1,19 @@
 add_library(MathFunctions MathFunctions.cxx)
+target_link_libraries(MathFunctions PUBLIC tutorial_compiler_flags)
 
-# TODO 1: State that anybody linking to MathFunctions needs to include the
-# current source directory, while MathFunctions itself doesn't.
-# Hint: Use target_include_directories with the INTERFACE keyword
+# By INTERFACE usage requirement we state that anybody linking to MathFunctions 
+# needs to include the current source directory, while MathFunctions itself doesn't.
+# INTERFACE means things that consumers require but the producer doesn't.
 target_include_directories(MathFunctions INTERFACE "$(CMAKE_CURRENT_SOURCE_DIR)")
 
 # should we use our own math functions
 option(USE_MYMATH "Use tutorial provided math implementation" ON)
-if (USE_MYMATH)
+
+if(USE_MYMATH)
   target_compile_definitions(MathFunctions PRIVATE "USE_MYMATH")
-
-  # library that just does sqrt
-  add_library(SqrtLibrary STATIC
-              mysqrt.cxx
-              )
-
-  # TODO 7: Link SqrtLibrary to tutorial_compiler_flags
-  target_link_libraries(SqrtLibrary PUBLIC tutorial_compiler_flags)
   target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
-endif()
 
-# Link MathFunctions to tutorial_compiler_flags
-target_link_libraries(MathFunctions PUBLIC tutorial_compiler_flags)
+  # Add library that just does sqrt and link it to tutorial_compiler_flags
+  add_library(SqrtLibrary STATIC mysqrt.cxx) 
+  target_link_libraries(SqrtLibrary PUBLIC tutorial_compiler_flags)
+endif(USE_MYMATH)

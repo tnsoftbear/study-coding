@@ -1,9 +1,9 @@
 #include "MathFunctions.h"
 
-#include <cmath>
-
 #ifdef USE_MYMATH
-#  include "mysqrt.h"
+  #include "mysqrt.h"
+#else
+  #include <cmath>
 #endif
 
 namespace mathfunctions {

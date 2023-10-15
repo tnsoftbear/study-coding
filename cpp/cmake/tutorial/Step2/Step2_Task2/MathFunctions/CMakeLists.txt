@@ -1,12 +1,11 @@
-# TODO 1: Add a library called MathFunctions with sources MathFunctions.cxx
-# and mysqrt.cxx
+# Add a library called MathFunctions with sources MathFunctions.cxx
 add_library(MathFunctions MathFunctions.cxx)
 
-# TODO 7: Create a variable USE_MYMATH using option and set default to ON
+# Create a variable USE_MYMATH using option and set default to ON
 option(USE_MYMATH "Use tutorial provided math implementatio" On)
 
 if(USE_MYMATH)
-    # TIf USE_MYMATH is ON, use target_compile_definitions to pass
+    # If USE_MYMATH is ON, use target_compile_definitions to pass
     # USE_MYMATH as a precompiled definition to our source files
     target_compile_definitions(MathFunctions PRIVATE "USE_MYMATH")
     # Add a library for SqrtLibrary with source mysqrt.cxx
