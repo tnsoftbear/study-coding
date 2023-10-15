@@ -1,3 +1,5 @@
+include(MakeTable.cmake)
+
 add_library(MathFunctions MathFunctions.cxx)
 
 # should we use our own math functions
@@ -8,34 +10,14 @@ if (USE_MYMATH)
   # library that just does sqrt
   add_library(SqrtLibrary STATIC
               mysqrt.cxx
-              )
+  # сообщить CMake, что это mysqrt.cxxзависит от сгенерированного файла Table.h
+              ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+  )
+  # добавить текущий двоичный каталог в список подключаемых каталогов, чтобы его Table.h можно было найти и включить с помощью mysqrt.cxx
+  target_include_directories(SqrtLibrary PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
   # link SqrtLibrary to tutorial_compiler_flags
   target_link_libraries(SqrtLibrary PUBLIC tutorial_compiler_flags)
-
-  # does this system provide the log and exp functions?
-  include(CheckCXXSourceCompiles)
-  check_cxx_source_compiles("
-    #include <cmath>
-    int main() {
-      std::log(1.0);
-      return 0;
-    }
-  " HAVE_LOG)
-  check_cxx_source_compiles("
-    #include <cmath>
-    int main() {
-      std::exp(1.0);
-      return 0;
-    }
-  " HAVE_EXP)
-
-  # add compile definitions
-  if(HAVE_LOG AND HAVE_EXP)
-    target_compile_definitions(SqrtLibrary
-                               PRIVATE "HAVE_LOG" "HAVE_EXP"
-                               )
-  endif()
 
   target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
 endif()

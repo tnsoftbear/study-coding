@@ -56,3 +56,6 @@ install(TARGETS ${installable_libs}
         DESTINATION lib)
 # install include headers
 install(FILES MathFunctions.h DESTINATION include)
+
+set_property(TARGET MathFunctions PROPERTY VERSION "1.0.0")
+set_property(TARGET MathFunctions PROPERTY SOVERSION "1")

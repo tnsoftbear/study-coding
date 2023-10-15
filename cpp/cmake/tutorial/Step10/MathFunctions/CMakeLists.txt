@@ -29,6 +29,11 @@ if(USE_MYMATH)
   # link SqrtLibrary to tutorial_compiler_flags
   target_link_libraries(SqrtLibrary PUBLIC tutorial_compiler_flags)
 
+  # state that SqrtLibrary need PIC when the default is shared libraries
+  set_target_properties(SqrtLibrary PROPERTIES 
+      POSITION_INDEPENDENT_CODE "${BUILD_SHARED_LIBS}"
+  )
+
   target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
 endif()
 
@@ -43,3 +48,7 @@ endif()
 install(TARGETS ${installable_libs} DESTINATION lib)
 # install include headers
 install(FILES MathFunctions.h DESTINATION include)
+
+# define the symbol stating we are using the declspec(dllexport) when
+# building on windows
+target_compile_definitions(MathFunctions PRIVATE "EXPORTING_MYMATH")
