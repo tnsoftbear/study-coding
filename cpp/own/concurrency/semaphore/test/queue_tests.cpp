@@ -5,7 +5,7 @@
 #include <thread>
 #include <vector>
 
-#include "../src/queue.hpp"
+#include "../src/queue.cpp"
 #include "assert_macros.hpp"
 
 using namespace std::chrono_literals;

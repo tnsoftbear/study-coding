@@ -1,7 +1,7 @@
 #include <chrono>
 #include <thread>
 
-#include "../src/semaphore.hpp"
+#include "../src/semaphore.cpp"
 #include "assert_macros.hpp"
 
 using namespace std::chrono_literals;
