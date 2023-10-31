@@ -7,8 +7,6 @@ size_t find(const std::string& text, const std::string& str) {
   return 0;
 }
 
-const int& f(const int& a) { return a; }
-
 int main() {
   // Non-const operations: =, op=, ++, --
 
@@ -65,6 +63,18 @@ int main() {
     // v3 уничтожается при выходе из ОВ
   }
 
-  int r0 = f(0); // UB: dangling reference
-  printf("r0: %d\n", r0);
+  // Константные lvalue ссылки (и только они) продлевают жизнь временных объектов
+  const int &la = 0; // Она взяла временый объект на стеке (0) и продлила ему жизнь
+  int a = la;
+
+  // Временный объект живёт до конца полного выражения
+  struct S {
+    int x;
+    const int &y;
+  };
+  S b{1, 2}; // ok, lifetime extendedю. Это постоянный объект
+  // Это временный объект. Здесь висячая ссылка, потому что временный объект продлявший жизнь константе закончился в конце выражения.
+  // Temporary bound to reference member of allocated object will be destroyed at the end of the full-expressionclang(-Wdangling-field)
+  S *pb = new S{1, 2};
+  // Вывод: не использовать в классах членов ссылок.
 }
