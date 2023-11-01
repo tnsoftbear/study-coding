@@ -76,5 +76,5 @@ int main() {
   // Это временный объект. Здесь висячая ссылка, потому что временный объект продлявший жизнь константе закончился в конце выражения.
   // Temporary bound to reference member of allocated object will be destroyed at the end of the full-expressionclang(-Wdangling-field)
   S *pb = new S{1, 2};
-  // Вывод: не использовать в классах членов ссылок.
+  // Вывод: не использовать в классах членов константных ссылок.
 }

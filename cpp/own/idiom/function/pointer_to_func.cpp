@@ -22,4 +22,9 @@ int main() {
   r3 += 100; // auto режет константность
 
   printf("r1: %d, r2: %s, r3: %d\n", r1, r2, r3);
+
+  // -- Ссылки и cdecl --
+  char* (*arrayOfFunctionPointers[10])(int*&);
+  // Ссылка на массив из 10 указателей на функцию принимающую ссылку на указатель и возвращающую указатель на char.
+  char* (*(&c)[10])(int*& p) = arrayOfFunctionPointers;
 }
