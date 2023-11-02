@@ -3,7 +3,7 @@
 // https://en.wikipedia.org/wiki/Copy_elision
 
 struct C {
-  C() = default;
+  C() { std::cout << "Default ctor\n"; };
   C(const C&) { std::cout << "Hello World!\n"; }
 };
 
