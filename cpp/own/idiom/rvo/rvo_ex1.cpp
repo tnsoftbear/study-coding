@@ -23,9 +23,9 @@ foo rvo() { return foo(); }
 
 int main() {
   cout << "rvo:" << endl;
-  foo f1 = rvo();
+  foo f1 = rvo(); // для этого примера не вижу разницы с флагом и без.
   cout << "nrvo:" << endl;
-  foo f2 = nrvo();
+  foo f2 = nrvo(); // копи-конструирование пропускается благодаря NRVO (если без флага -fno-elide-constructors)
 }
 
 /**
