@@ -45,10 +45,15 @@ int main() {
   int* xptr = &xref; // тоже самое, что &x
   // Ссылки не имеют адреса. Нельзя сделать указатель на ссылку.
   // int&* xrefptr = &xref; // error: cannot declare pointer to ‘int&’
-  int*& xptrref = xptr; // ок, ссылка на указатель
+  int*& xptrref = xptr; // ок, ссылка на указатель xptr. Напр. можно: xptr = new int(5); delete xptrref;
   printf("x: %d, y: %d, xref: %d, xptr: %d, xptrref: %d\n", x, y, xref, *xptr, *xptrref);
 
   // Неконстантные левые ссылки не создают временных объектов и просто отказываются связываться с литералами
   // foo(1); // error: cannot bind non-const lvalue reference of type ‘int&’ to an rvalue of type ‘int’
   // int& x1 = 1; // error: cannot bind non-const lvalue reference of type ‘int&’ to an rvalue of type ‘int’
+
+  int arr[10];
+  int(&arrref)[10] = arr; // Ссылка на массив arr
+
+  int (&fooref)(int&) = foo; // Ссылка на функцию foo. Скобочки нужны, чтобы отличать от объявлении ф-ции foo.
 }
