@@ -7,12 +7,12 @@ class Bar {
 public:
   Bar() { cout << "Bar::Bar() - def-ctor" << endl; }
   Bar(const Bar& b) { cout << "Bar::Bar(const Bar& b) - copy-ctor" << endl; }
-  Bar(Bar&& b) { cout << "Bar::Bar(Bar&& b) - move-ctor" << endl; }
+  Bar(Bar&& b) noexcept { cout << "Bar::Bar(Bar&& b) - move-ctor" << endl; }
   Bar& operator=(const Bar& b) {
     cout << "Bar::operator=(const Bar& b) - copy-assign" << endl;
     return *this;
   }
-  Bar& operator=(Bar&& b) {
+  Bar& operator=(Bar&& b) noexcept {
     cout << "Bar::operator=(Bar&& b) - move-assign" << endl;
     return *this;
   }
