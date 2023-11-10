@@ -1,4 +1,8 @@
 BasedOnStyle: LLVM
+PackConstructorInitializers: Never
+BreakConstructorInitializers: BeforeComma
 IndentWidth: 2
 PointerAlignment: Left
-ColumnLimit: 200
+InsertBraces: True
+InsertNewlineAtEOF: True
+ColumnLimit: 160
