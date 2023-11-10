@@ -21,31 +21,29 @@ public:
   // String(String&&) = default;
   // ~String() = default;
 
+  ~String(); // Деструктор определим вне класса (просто так)
+
   String() {
     char* info = DebugInfo2();
     printf("String::String() - Default Constructor, %s\n", info);
     free(info);
   };
 
-  String(size_t sz, const char c = '\0')
+  String(const size_t sz, const char c = '\0')
       : size(sz)
       , cap(RoundUpToPowerOfTwo(sz + 1))
       , str(new char[cap]) // member initializer list
   {
-    // memset(str, c, sz);
-    std::fill(str, str + size, c);
-    str[size] = '\0'; // Препод говорит, что нет гарантии завершающего нулевого символа
-    printf("String::String(size_t, const char) - Parameterized Constructor, %s\n", DebugInfo2());
+    std::fill(str, str + size, c); // Или: memset(str, c, sz);
+    str[size] = '\0';              // Препод говорит, что нет гарантии завершающего нулевого символа
+    printf("String::String(size_t, const char) - Parameterized Constructor (Delegating), %s\n", DebugInfo2());
   }
 
-  String(const String& s)
-  //    : String(s.size, '\0') // delegating constructor (since c++11) // убрал, чтобы не путал при дебаге
+  // Copy constructor
+  String(const String& other)
+      : String(other.size) // delegating constructor (since c++11)
   {
-    size = s.size;
-    cap = s.cap;
-    str = new char[cap];
-    memcpy(str, s.str, size);
-    str[size] = '\0';
+    std::copy(other.str, other.str + size + 1, str); // Или: memcpy(str, s.str, size + 1); // + 1 для завершающего нуля
     printf("String::String(const String&) - Copy Constructor, %s\n", DebugInfo2());
   }
 
@@ -55,23 +53,20 @@ public:
    * Это такая захардкоженная легковестная обёртка реализованная компилятором.
    */
   String(std::initializer_list<const char> lst)
-      : cap(RoundUpToPowerOfTwo(lst.size() + 1))
-      , size(lst.size())
-      , str(new char[cap]) {
+      : String(lst.size()) // delegating constructor
+  {
     std::copy(lst.begin(), lst.end(), str);
-    str[size] = '\0';
     printf("String::String(std::initializer_list<const char>) - Initializer List Constructor, %s\n", DebugInfo2());
   }
 
-  String(const char* str) {
-    size = strlen(str);
-    cap = RoundUpToPowerOfTwo(size + 1);
-    this->str = new char[cap];
+  String(const char* str)
+      : String(strlen(str)) // delegating constructor
+  {
     memcpy(this->str, str, size);
-    this->str[size] = '\0';
     printf("String::String(const char*) - Parameterized Constructor, %s\n", DebugInfo2());
   }
 
+  // Move constructor
   String(String&& other) noexcept
       : size(other.size)
       , cap(other.cap) {
@@ -85,20 +80,7 @@ public:
     printf("String::String(String&&) - Move Constructor, %s\n", DebugInfo2());
   }
 
-  ~String();
-
-  // Move assignment
-  String& operator=(String&& other) noexcept {
-    if (this == &other) {
-      return *this;
-    }
-    delete[] str;
-    str = std::exchange(other.str, nullptr);
-    size = std::exchange(other.size, 0);
-    cap = std::exchange(other.cap, 0);
-    printf("String::operator=(String&& other) - Move assignment operator, %s\n", DebugInfo2());
-    return *this;
-  }
+  // --- Operators ---
 
   /**
    * Когда нет move assignment оператора, тогда copy assignment оператор реализуется таким образом
@@ -119,9 +101,12 @@ public:
       Swap(other);    // подменяем себя на copy, локальная переменная copy уничтожается по окончанию ф-ции (она на стеке).
       return *this;
   }
-   */
+  */
 
   // Copy assignment operator
+  // Возвращает String&, чтобы мы могли писать цепочку присваивания. Если бы был void, то не могли бы.
+  // Без ссылок вызывался бы конструктор копирования (и присваивание происходило уже в адрес другой переменной).
+  // Параметр константная ссылка, чтобы ф-ция работала как с неконстантными, так и с константными аргументами.
   String& operator=(const String& other) noexcept {
     if (this == &other) {
       return *this; // не имеет большого смысла при использовании Copy-and-swap().
@@ -135,6 +120,19 @@ public:
     return *this;
   }
 
+  // Move assignment
+  String& operator=(String&& other) noexcept {
+    if (this == &other) {
+      return *this;
+    }
+    delete[] str;
+    str = std::exchange(other.str, nullptr);
+    size = std::exchange(other.size, 0);
+    cap = std::exchange(other.cap, 0);
+    printf("String::operator=(String&& other) - Move assignment operator, %s\n", DebugInfo2());
+    return *this;
+  }
+
   String operator+(const String& other) {
     size_t cap = RoundUpToPowerOfTwo(size + other.size + 1);
     char* new_str = new char[cap];
@@ -144,8 +142,8 @@ public:
     return String(new_str);
   }
 
-  String& operator+=(const String& s) {
-    *this = *this + s;
+  String& operator+=(const String& other) {
+    *this = *this + other;
     return *this;
   }
 
@@ -189,12 +187,11 @@ private:
 
   void Ll(std::string info) { cout << info << " - " << DebugInfo2() << endl; }
 
-  // Пишем свой своп, потому что std::swap(*this, copy) всебе вызывает
-  // присваивание.
-  void Swap(String& s) {
-    std::swap(str, s.str);
-    std::swap(size, s.size);
-    std::swap(cap, s.cap);
+  // Пишем свой своп, потому что std::swap(*this, copy) в себе вызывает присваивание.
+  void Swap(String& other) {
+    std::swap(str, other.str);
+    std::swap(size, other.size);
+    std::swap(cap, other.cap);
   }
 
   size_t RoundUpToPowerOfTwo(size_t n) {
@@ -271,3 +268,5 @@ int main() {
  *
  * https://learn.microsoft.com/ru-ru/cpp/cpp/constructors-cpp?view=msvc-170
  */
+
+// https://www.youtube.com/watch?v=FrCt1jcpXLA
