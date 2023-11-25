@@ -28,6 +28,13 @@ int main() {
     cout << "product of numbers: " << product << endl;
 
     int sp = std::accumulate(numbers.begin(), numbers.end(), 0, sum_and_power<int>{});
+
+    // Нужно подсчитать положительные элементы контейнера. Второй аргумент std::greater<int>{} фиксирован и равен нулю.
+    // Ф-ция bind строит новую ф-цию, единственный аргумент которой подаётся в объект-функцию сравнения первым, вторым аргументом подаётся 0.
+    std::vector<int> numbers2{1, -2, 3, -4, 5, -6, 7, -8};
+    auto const is_positive = std::bind(std::greater<int>{}, std::placeholders::_1, 0);
+    auto const count_of_positive = std::count_if(numbers2.begin(), numbers2.end(), is_positive);
+    cout << "count of positive numbers: " << count_of_positive << endl;
 }
 
 /**
