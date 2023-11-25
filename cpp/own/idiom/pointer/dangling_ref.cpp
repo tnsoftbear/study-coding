@@ -27,7 +27,7 @@ int main() {
   printf("r1: %d, r2: %d, r3: %d\n", r1, r2, r3);
 
   int& h1 = g1();
-  delete &h1;         // ok
+  delete &h1; // ok
   // int h11 = g1();  // Здесь мы скопировали *p полученное из g1(), это значение лежит на стеке main(), а не в динамической памяти выделенной через new int(1).
-  // delete &h11;     // munmap_chunk(): invalid pointer. 
+  // delete &h11;     // munmap_chunk(): invalid pointer.
 }

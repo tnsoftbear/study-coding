@@ -3,6 +3,7 @@
 #include <initializer_list>
 #include <iostream>
 #include <utility>
+#include <cassert>
 
 using std::cout;
 using std::endl;
@@ -158,16 +159,20 @@ public:
   }
 
   inline bool operator>(const String& other) const { return other < *this; }
-
   inline bool operator<=(const String& other) const { return !(*this > other); }
-
   inline bool operator>=(const String& other) const { return !(*this < other); }
-
   inline bool operator==(const String& other) const { return memcmp(str, other.str, size) == 0; }
-
   inline bool operator!=(const String& other) const { return !(*this == other); }
-
-  inline char operator[](const int index) { return str[index]; }
+  
+  inline char& operator[](const size_t index) { 
+    printf("String::operator[%lu] (non-const), return: %c (full: %s)\n", index, str[index], str);
+    return str[index];
+  }
+  inline const char& operator[](const size_t index) const { 
+    printf("String::operator[%lu] const, return: %c (full: %s)\n", index, str[index], str);
+    return str[index];
+  }
+  // inline char operator[](const size_t index) const { return str[index]; }
 
   String& operator->() {
     Ll("String& operator->()");
@@ -253,6 +258,24 @@ int main() {
   printf("sc1 < sc2: %d, sc1 > sc2: %d, sc1 <= sc2: %d, sc1 >= sc2: %d, sc1 >= "
          "sc1again: %d, sc1 == sc1again: %d, sc1 != sc1again: %d\n",
          sc1<sc2, sc1> sc2, sc1 <= sc2, sc1 >= sc2, sc1 >= sc1again, sc1 == sc1again, sc1 != sc1again);
+
+  String nc_str("nc_str");
+  const String c_str("c_str");
+  nc_str[1] = 'C';
+  // c_str[1] = 'C'; // error: assignment of read-only location ‘c_str.String::operator[](1)’
+  char& nc_char = nc_str[2];
+  nc_char = '-';
+  // char& c_char = c_str[2]; // error: binding reference of type ‘char&’ to ‘const char’ discards qualifiers
+  const char& c_char = c_str[2];
+  // c_char = '-'; // error: assignment of read-only reference ‘c_char’
+  
+  // Пример показывает, почему ф-ция возвращает char&, а не char,
+  // eg: inline char operator[](const size_t index) const { return str[index]; }
+  // изменение в строке должно влиять на переменную-ссылку с символом.
+  const String& cr_str = nc_str;
+  const char& c_char2 = cr_str[3];
+  nc_str[3] = 'S';
+  assert(c_char2 == 'S');
 }
 
 /**
