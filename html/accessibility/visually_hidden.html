@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <style type="text/css">
+      .visually-hidden {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+      .dog-image {
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 600px;
+        width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        background-image: url(https://assets.codepen.io/68133/dog-breed-graph.jpg);
+      "
+      role="img"
+      class="dog-image"
+      aria-labelledby="dog-background-text"
+    >
+      <div class="visually-hidden" id="dog-background-text">
+        <h2>Most popular licensed dog breeds in town</h2>
+        <p>Source: Hutchinson Police Department</p>
+        <p>
+          Graph with six bars, showing different dog breeds: Labrador retriever,
+          at 54; Mixed breed, at 36; Chihuahua, at 20; Shih-tzu, at 19; German
+          Shepard, at 14; and Golden Retriever, at 13.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
