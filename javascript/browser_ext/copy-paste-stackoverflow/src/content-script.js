@@ -1,0 +1,50 @@
+const preEls = document.querySelectorAll("pre");
+
+[...preEls].forEach((preEl) => {
+  const btnCopy = document.createElement("button");
+  btnCopy.innerText = "Copy";
+  btnCopy.type = "button";
+
+  // Обернём в шадоу рут, чтобы на кнопку распространялись только браузерные стили
+  const divRoot = document.createElement("div");
+  divRoot.style.position = "relative";
+  const divShadowRoot = divRoot.attachShadow({ mode: "open" });
+  const cssUrl = chrome.runtime.getURL("content-script.css");
+  divShadowRoot.innerHTML = "<link rel='stylesheet' href='" + cssUrl + "' />";
+  //divShadowRoot.innerHTML = '<style>button { background: red; color: black; }</style>';
+  divShadowRoot.append(btnCopy);
+  preEl.prepend(divRoot);
+
+  const codeEl = preEl.querySelector("code");
+  btnCopy.addEventListener("click", () => {
+    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+        notify();
+    });
+  });
+});
+
+chrome.runtime.onMessage.addListener((req, info, cb) => {
+    if (req.action == "copy-all") {
+        const allCode = getAllCode();
+        navigator.clipboard.writeText(allCode).then(() => {
+            notify();
+            cb(allCode);
+        });
+        return true;
+    }
+})
+
+function notify() {
+    const scriptEl = document.createElement("script");
+    scriptEl.src = chrome.runtime.getURL("execute.js");
+    document.body.appendChild(scriptEl);
+    scriptEl.onload = () => {
+        scriptEl.remove();
+    }
+}
+
+function getAllCode() {
+    return [...preEls].map((preEl) => {
+        return preEl.querySelector("code").innerText;
+    }).join("");
+}
