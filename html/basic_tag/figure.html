@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: #fff;
+        color: #333;
+        font: 1em / 1.4 Helvetica Neue, Helvetica, Arial, sans-serif;
+        padding: 1em;
+        margin: 0;
+      }
+
+      .figure-sm {
+        border: thin #c0c0c0 solid;
+        display: flex;
+        flex-flow: column;
+        padding: 5px;
+        max-width: 220px;
+        margin: auto;
+      }
+
+      img {
+        max-width: 220px;
+        max-height: 150px;
+      }
+
+      figcaption {
+        font: italic smaller sans-serif;
+      }
+
+      .figcaption-sm {
+        background-color: #222;
+        color: #fff;
+        padding: 3px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>&lt;figure&gt;: The Figure with Optional Caption element</h1>
+
+    <h2>Images</h2>
+
+    <figure class="figure-sm">
+      <img
+        src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/elephant-660-480.jpg"
+        alt="Elephant at sunset"
+      />
+      <figcaption class="figcaption-sm">>An elephant at sunset</figcaption>
+    </figure>
+
+    <h2>Code snippets</h2>
+
+    <figure>
+        <figcaption>Get browser details using <code>navigator</code>.</figcaption>
+        <pre>
+      function NavigatorExample() {
+        var txt;
+        txt = "Browser CodeName: " + navigator.appCodeName + "; ";
+        txt+= "Browser Name: " + navigator.appName + "; ";
+        txt+= "Browser Version: " + navigator.appVersion  + "; ";
+        txt+= "Cookies Enabled: " + navigator.cookieEnabled  + "; ";
+        txt+= "Platform: " + navigator.platform  + "; ";
+        txt+= "User-agent header: " + navigator.userAgent  + "; ";
+        console.log("NavigatorExample", txt);
+      }
+        </pre>
+      </figure>
+
+      <h2>Quotations</h2>
+      <figure>
+        <figcaption><b>Edsger Dijkstra:</b></figcaption>
+        <blockquote>
+          If debugging is the process of removing software bugs, then programming must
+          be the process of putting them in.
+        </blockquote>
+      </figure>
+
+      <h2>Poems</h2>
+      <figure>
+        <p style="white-space:pre">
+          Bid me discourse, I will enchant thine ear, Or like a fairy trip upon the
+          green, Or, like a nymph, with long dishevelled hair, Dance on the sands, and
+          yet no footing seen: Love is a spirit all compact of fire, Not gross to
+          sink, but light, and will aspire.
+        </p>
+        <figcaption><cite>Venus and Adonis</cite>, by William Shakespeare</figcaption>
+      </figure>
+  </body>
+</html>
