@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navbar-item {
+  @apply block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent;
+}
+
+.navbar-item-active {
+  @apply block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent;
+}
+
+@layer components {
+  .pagination-item {
+    @apply dark:text-slate-400 transition duration-300 inline-block py-1 px-3 border border-blue-400 text-blue-700;
+  }
+
+  .pagination-inactive {
+    @apply hover:bg-blue-100 hover:text-blue-700;
+  }
+}
+
+.footer-link {
+  @apply dark:text-slate-400 transition duration-300 inline-block text-gray-500 py-2 hover:underline decoration-gray-700 underline-offset-2;
+}
+
+.tag-link {
+    @apply px-2 py-0 bg-violet-400 rounded-md text-white hover:bg-violet-800;
+}

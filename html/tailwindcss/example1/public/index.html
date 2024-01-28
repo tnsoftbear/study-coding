@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Example 1</title>
+    <link rel="stylesheet" href="dist/main.css" />
+  </head>
+  <body class="text-grey bg-mainColor dark:bg-slate-800">
+    <div class="container mx-auto max-w-screen-xl">
+      <header class="flex items-center justify-between border-b">
+        <a class="font-bold text-purple-800 uppercase" href="#"
+          >Chilly Software</a
+        >
+        <nav class="flex items-center">
+          <ul class="inline-flex items-center">
+            <li class="header-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819"
+                />
+              </svg>
+            </li>
+            <li class="header-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
+                />
+              </svg>
+            </li>
+            <li class="header-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                />
+              </svg>
+            </li>
+          </ul>
+          <ul class="flex items-center">
+            <li><button class="header-btn">Sign In</button></li>
+            <li><button class="header-btn">Sing Up</button></li>
+          </ul>
+        </nav>
+      </header>
+
+      <header
+        class="p-0 border-b-8 border-dashed mg:py-5 lg:px-5 xl:m-10 border-b-yellow-900 dark:border-b-yellow-500"
+      >
+        <div class="flex justify-between">
+          <span class="text-black dark:text-white">Tailwind</span>
+          <span class="text-black dark:text-white">(c) 2024</span>
+        </div>
+        <div class="container mx-auto bg-red-300">
+          <div class="text-center">
+            <h1 class="text-3xl font-bold underline dark:text-yellow-700">
+              Main title h1
+            </h1>
+          </div>
+          <div class="flex justify-around pt-big">
+            <span class="font-bold">Apple</span>
+            <span class="font-bold">Banana</span>
+            <span class="font-bold">Orange</span>
+            <div class="space-x-5">
+              <a href="#" class="font-bold hover:underline">Mango</a>
+              <a
+                href="#"
+                class="px-4 py-2 bg-blue-500 rounded-3xl hover:bg-blue-100"
+                >Peach</a
+              >
+            </div>
+            <span class="font-bold">Kiwi</span>
+            <span class="font-bold">Lemon</span>
+          </div>
+        </div>
+      </header>
+      <h2 class="text-2xl dark:text-yellow-500">Sub-title h2</h2>
+      <p class="mt-5 bg-green-500 dark:bg-green-900 dark:text-white">
+        <abbr title="hello">hello &lt;abbr title=&quot;hello&quot;&gt;</abbr>
+        <b>Lorem</b> ipsum <strong>dolor</strong> sit
+        <span class="text-red-500">amet</span> consectetur, adipisicing elit.
+        Aut omnis error natus illum minus. Adipisci magnam illo porro, corrupti
+        repudiandae cupiditate quod laborum error tempore, aliquam itaque a ea
+        aspernatur?
+        <a
+          href=""
+          class="px-4 py-2 bg-red-500 rounded-full hover:bg-red-950 hover:text-white"
+          >link</a
+        >
+      </p>
+      <h3 class="mt-10 text-white bg-blue-500 dark:text-white">
+        Sub-sub-title h3
+      </h3>
+      <p class="dark:text-yellow-200">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <a
+          href="https://www.youtube.com/watch?v=xS4ISh6ZehU"
+          class="px-4 py-2 bg-red-500 rounded-full hover:bg-red-950 hover:text-white"
+          >youtube lesson</a
+        >
+      </p>
+      <main class="container mx-auto bg-red-100 py-big">
+        <h1 class="text-3xl font-bold text-center">Main title again</h1>
+        <p class="pt-6 md:w-[450px] mx-5 md:mx-auto">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae,
+          voluptatum. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Beatae, voluptatum. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Beatae, voluptatum.
+        </p>
+        <div
+          class="flex flex-col pt-6 space-x-2 space-y-2 justify-evenly md:space-x-10 md:space-y-10 md:flex-row"
+        >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 1</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 2</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 3</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 4</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 1</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 2</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 3</a
+          >
+          <a
+            href=""
+            class="px-4 py-2 bg-yellow-500 rounded-full hover:bg-yellow-950 hover:text-white"
+            >link 4</a
+          >
+        </div>
+      </main>
+
+      <div
+        class="container flex mx-auto bg-white flew-row dark:bg-slate-800 dark:text-white"
+      >
+        <article class="mx-2">
+          <a href="#" class="block mb-10">
+            <div class="flex">
+              <div>
+                <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                  Lorem ipsum dolor
+                </h3>
+                <p class="text-gray-700 dark:text-white">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                  quibusdam laudantium, explicabo impedit est, quidem eligendi
+                  error accusamus exercitationem doloremque quas repudiandae
+                  cupiditate architecto!
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="mx-2">
+          <a href="#" class="block mb-10">
+            <div class="flex">
+              <div>
+                <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                  Lorem ipsum dolor
+                </h3>
+                <p class="text-gray-700 dark:text-white">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                  quibusdam laudantium, explicabo impedit est, quidem eligendi
+                  error accusamus exercitationem doloremque quas repudiandae
+                  cupiditate architecto!
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="mx-2">
+          <a href="#" class="block mb-10">
+            <div class="flex">
+              <div>
+                <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                  Lorem ipsum dolor
+                </h3>
+                <p class="text-gray-700 dark:text-white">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                  quibusdam laudantium, explicabo impedit est, quidem eligendi
+                  error accusamus exercitationem doloremque quas repudiandae
+                  cupiditate architecto!
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+      </div>
+      <div class="container flex mx-auto bg-white flew-row dark:bg-slate-800">
+        <article class="mx-2">
+          <a href="#" class="block mb-10">
+            <div class="flex">
+              <div>
+                <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                  Lorem ipsum dolor
+                </h3>
+                <p class="text-gray-700 dark:text-white">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                  quibusdam laudantium, explicabo impedit est, quidem eligendi
+                  error accusamus exercitationem doloremque quas repudiandae
+                  cupiditate architecto!
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="mx-2">
+          <a href="#" class="block mb-10">
+            <div class="flex">
+              <div>
+                <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                  Lorem ipsum dolor
+                </h3>
+                <p class="text-gray-700 dark:text-white">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                  quibusdam laudantium, explicabo impedit est, quidem eligendi
+                  error accusamus exercitationem doloremque quas repudiandae
+                  cupiditate architecto!
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="mx-2">
+          <a href="#" class="block mb-10">
+            <div class="flex">
+              <div>
+                <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                  Lorem ipsum dolor
+                </h3>
+                <p class="text-gray-700 dark:text-white">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                  quibusdam laudantium, explicabo impedit est, quidem eligendi
+                  error accusamus exercitationem doloremque quas repudiandae
+                  cupiditate architecto!
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+      </div>
+
+      <section class="flex px-2 space-x-2 bg-gray-300 dark:bg-slate-800">
+        <a href="#" class="block w-1/5 mb-10">
+          <div class="">
+            <div>
+              <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                Lorem ipsum dolor
+              </h3>
+              <p class="text-gray-700 dark:text-white">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                quibusdam laudantium, explicabo impedit est, quidem eligendi
+                error accusamus exercitationem doloremque quas repudiandae
+                cupiditate architecto!
+              </p>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="block w-3/5 mb-10">
+          <div class="">
+            <div>
+              <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                Lorem ipsum dolor
+              </h3>
+              <p class="text-gray-700 dark:text-white">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                quibusdam laudantium, explicabo impedit est, quidem eligendi
+                error accusamus exercitationem doloremque quas repudiandae
+                cupiditate architecto!
+              </p>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="block w-1/5 mb-10">
+          <div class="">
+            <div>
+              <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                Lorem ipsum dolor
+              </h3>
+              <p class="text-gray-700 dark:text-white">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                quibusdam laudantium, explicabo impedit est, quidem eligendi
+                error accusamus exercitationem doloremque quas repudiandae
+                cupiditate architecto!
+              </p>
+            </div>
+          </div>
+        </a>
+      </section>
+
+      <section class="px-2 lg:flex lg:space-x-2">
+        <a
+          href="#"
+          class="w-full lg:w-2/3 bg-gradient-to-tr from-red-500 via-purple-500 to-blue-500 hover:to-green-500 bg-violet-300 h-48 mb-4 relative rounded inline-block overflow-hidden"
+        >
+          <div class="p-4 absolute bottom-0 left-0 z-20">
+            <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+              Title 1 Title 1 Title
+            </h2>
+          </div>
+        </a>
+        <a
+          href="#"
+          class="w-full lg:w-1/3 bg-indigo-300 h-48 mb-4 relative rounded inline-block overflow-hidden"
+        >
+          <div class="p-4 absolute bottom-0 left-0 z-20">
+            <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+              Title 2 Title 2 Title
+            </h2>
+          </div>
+        </a>
+      </section>
+
+      <section class="px-2 lg:flex lg:space-x-2">
+        <a
+          href="#"
+          class="w-full lg:w-2/3 bg-gradient-to-tr from-red-500 via-purple-500 to-blue-500 hover:via-purple-500/50 hover:to-green-500 bg-violet-300 h-48 mb-4 relative rounded inline-block overflow-hidden"
+        >
+          <div class="p-4 absolute bottom-0 left-0 z-20">
+            <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+              Title 3 Title 3 Title
+            </h2>
+          </div>
+        </a>
+        <a
+          href="#"
+          class="w-full lg:w-1/3 bg-gradient-to-tr from-red-500 via-purple-500 to-blue-500 hover:via-purple-500/50 bg-violet-300 h-48 mb-4 relative rounded inline-block overflow-hidden"
+        >
+          <div class="p-4 absolute bottom-0 left-0 z-20">
+            <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+              Title 4 Title 4 Title
+            </h2>
+          </div>
+        </a>
+      </section>
+
+      <section class="px-2 lg:flex lg:space-x-2">
+        <a
+          href="#"
+          class="w-full lg:w-2/3 h-96 mb-4 bg-violet-300 relative rounded inline-block"
+        >
+          <!-- Затемнение картинки -->
+          <div
+            class="absolute left-0 top-0 w-full h-full z-10 bg-gradient-to-b from-black/10 to-black/70"
+          ></div>
+          <img
+            src="i/bet-football-1.jpeg"
+            alt=""
+            class="absolute left-0 top-0 z-0 w-full h-full object-cover"
+          />
+          <div class="p-4 absolute bottom-0 left-0 z-20">
+            <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            </h2>
+            <!-- Категория -->
+            <span
+              class="bg-gradient-to-bl from-blue-600 to-indigo-600 text-white inline-flex items-center justify-center px-4 py-1 mb-2"
+              >Football</span
+            >
+            <!-- Автор -->
+            <div class="flex mt-3">
+              <img
+                class="h-10 w-10 rounded-full mr-2 object-cover"
+                src="https://randomuser.me/api/portraits/men/7.jpg"
+                alt="author"
+              />
+              <div>
+                <p class="font-semibold text-gray-200 text-sm">John Doe</p>
+                <time class="text-gray-400 text-xs">14 March</time>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a
+          href="#"
+          class="w-full lg:w-1/3 h-96 mb-4 relative rounded inline-block"
+        >
+          <!-- Затемнение картинки -->
+          <div
+            class="absolute left-0 top-0 w-full h-full z-10 bg-gradient-to-b from-black/10 to-black/70"
+          ></div>
+          <img
+            src="i/bet-football-2.jpeg"
+            alt=""
+            class="absolute left-0 top-0 z-0 w-full h-full object-cover"
+          />
+          <div class="p-4 absolute bottom-0 left-0 z-20">
+            <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+            </h2>
+            <!-- Категория -->
+            <span
+              class="bg-yellow-300 text-black inline-flex items-center justify-center px-4 py-1 mb-2"
+              >Football</span
+            >
+            <!-- Автор -->
+            <div class="flex mt-3">
+              <img
+                class="h-10 w-10 rounded-full mr-2 object-cover"
+                src="https://randomuser.me/api/portraits/men/8.jpg"
+                alt="author"
+              />
+              <div>
+                <p class="font-semibold text-gray-200 text-sm">John Doe</p>
+                <time class="text-gray-400 text-xs">18 March</time>
+              </div>
+            </div>
+          </div>
+        </a>
+      </section>
+
+      <main class="lg:flex">
+        <div
+          class="w-full lg:w-2/3 lg:space-x-2 mx-2 px-2 bg-white dark:bg-slate-800"
+        >
+          <article class="m-2 w-full lg:flex">
+              <img  
+                class="w-full h-48 lg:w-48 opacity-80 object-cover lg:mr-4"
+                src="i/bet-hockey-germany-1.jpeg"
+                alt="img"
+              />
+              <div class="flex flex-col justify-between">
+                <section>
+                  <h3
+                    class="m-2 text-2xl font-bold text-gray-700 dark:text-white"
+                  >
+                    Lorem ipsum dolor
+                  </h3>
+                  <p class="text-gray-700 dark:text-white">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                    quibusdam laudantium, explicabo impedit est, quidem eligendi
+                    error accusamus exercitationem doloremque quas repudiandae
+                    cupiditate architecto!
+                  </p>
+                </section>
+                <section class="flex mt-3">
+                  <img
+                    class="h-10 w-10 rounded-full mr-2 object-cover"
+                    src="https://randomuser.me/api/portraits/women/8.jpg"
+                    alt="author"
+                  />
+                  <div class="flex flex-col">
+                    <a href="#" class="font-semibold text-gray-400 text-sm hover:underline">Jane Doe</a>
+                    <time class="text-gray-400 text-xs">13 March</time>
+                  </div>
+                </section>
+              </div>
+          </article>
+
+          <article class="m-2">
+            <a href="#" class="w-full lg:flex">
+              <div class="flex flex-col justify-between">
+                <section>
+                  <h3 class="mt-3 mb-2 text-2xl font-bold text-gray-700">
+                    Lorem ipsum dolor
+                  </h3>
+                  <p class="text-gray-700 dark:text-white">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                    quibusdam laudantium, explicabo impedit est, quidem eligendi
+                    error accusamus exercitationem doloremque quas repudiandae
+                    cupiditate architecto!
+                  </p>
+                </section>
+                <section class="flex mt-3">
+                    <img
+                      class="h-10 w-10 rounded-full mr-2 object-cover"
+                      src="https://randomuser.me/api/portraits/women/6.jpg"
+                      alt="author"
+                    />
+                    <div>
+                      <p class="font-semibold text-gray-400 text-sm">Jane Doe</p>
+                      <time class="text-gray-400 text-xs">15 March</time>
+                    </div>
+                  </section>
+              </div>
+            </a>
+          </article>
+
+          <article class="m-2">
+            <a href="#" class="w-full lg:flex">
+              <img
+                class="w-full h-48 lg:w-48 opacity-80 object-cover lg:mr-4"
+                src="i/bet-hockey-germany-2.jpeg"
+                alt="img"
+              />
+              <div class="flex flex-col justify-between">
+                <section>
+                  <h3
+                    class="m-2 text-2xl font-bold text-gray-700 dark:text-white"
+                  >
+                    Lorem ipsum dolor
+                  </h3>
+                  <p class="text-gray-700 dark:text-white">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Dignissimos voluptatem, corrupti fugiat ratione saepe nisi
+                    quibusdam laudantium, explicabo impedit est, quidem eligendi
+                    error accusamus exercitationem doloremque quas repudiandae
+                    cupiditate architecto!
+                  </p>
+                </section>
+                <section class="flex mt-3">
+                  <img
+                    class="h-10 w-10 rounded-full mr-2 object-cover"
+                    src="https://randomuser.me/api/portraits/women/9.jpg"
+                    alt="author"
+                  />
+                  <div>
+                    <p class="font-semibold text-gray-400 text-sm">Jane Doe</p>
+                    <time class="text-gray-400 text-xs">13 March</time>
+                  </div>
+                </section>
+              </div>
+            </a>
+          </article>
+
+          <section class="mt-20 mb-10">
+            <ul class="flex justify-center">
+              <li>
+                <a href="#" class="rounded-l-lg pagination-item">Previous</a>
+              </li>
+              <li><a href="#" class="pagination-item">1</a></li>
+              <li><a href="#" class="pagination-item">2</a></li>
+              <li>
+                <a
+                  href="#"
+                  class="font-bold text-green-600 pagination-item hover:bg-green-900 hover:text-blue-200"
+                  >3</a
+                >
+              </li>
+              <li><a href="#" class="pagination-item">4</a></li>
+              <li><a href="#" class="pagination-item">5</a></li>
+              <li><a href="#" class="rounded-r-lg pagination-item">Next</a></li>
+            </ul>
+          </section>
+        </div>
+
+        <div
+          class="w-full lg:w-1/3 px-2 md:flex md:space-x-6 lg:block lg:space-x-0 bg-blue-300"
+        >
+          <!-- topics -->
+          <div class="w-full md:w-1/2 lg:w-full mb-5">
+            <h5
+              class="dark:text-white font-bold text-lg uppercase text-gray-700 mb-2"
+            >
+              Popular News
+            </h5>
+            <ul>
+              <li
+                class="dark:border-transparent dark:hover:border-gray-200 px-1 py-4 border-y border-white hover:border-gray-200 transition-all duration-300"
+              >
+                <a
+                  class="dark:text-slate-400 flex items-center text-gray-600"
+                  href="#"
+                >
+                  <span
+                    class="inline-block w-4 h-4 mr-3 bg-gradient-to-tr from-green-500 to-green-700"
+                  ></span>
+                  Vue
+                  <span class="dark:text-slate-400 text-gray-500 ml-auto"
+                    >23 articles</span
+                  >
+                </a>
+              </li>
+              <li
+                class="dark:border-transparent dark:hover:border-gray-200 px-1 py-4 border-y border-white hover:border-gray-200 transition-all duration-300"
+              >
+                <a
+                  class="dark:text-slate-400 flex items-center text-gray-600"
+                  href="#"
+                >
+                  <span
+                    class="inline-block w-4 h-4 mr-3 bg-gradient-to-tr from-orange-500 to-orange-700"
+                  ></span>
+                  Svelte
+                  <span class="dark:text-slate-400 text-gray-500 ml-auto"
+                    >20 articles</span
+                  >
+                </a>
+              </li>
+              <li
+                class="dark:border-transparent dark:hover:border-gray-200 px-1 py-4 border-y border-white hover:border-gray-200 transition-all duration-300"
+              >
+                <a
+                  class="dark:text-slate-400 flex items-center text-gray-600"
+                  href="#"
+                >
+                  <span
+                    class="inline-block w-4 h-4 mr-3 bg-gradient-to-tr from-red-500 to-red-700"
+                  ></span>
+                  Angular
+                  <span class="dark:text-slate-400 text-gray-500 ml-auto"
+                    >15 articles</span
+                  >
+                </a>
+              </li>
+              <li
+                class="dark:border-transparent dark:hover:border-gray-200 px-1 py-4 border-y border-white hover:border-gray-200 transition-all duration-300"
+              >
+                <a
+                  class="dark:text-slate-400 flex items-center text-gray-600"
+                  href="#"
+                >
+                  <span
+                    class="inline-block w-4 h-4 mr-3 bg-gradient-to-tr from-blue-500 to-blue-700"
+                  ></span>
+                  React
+                  <span class="dark:text-slate-400 text-gray-500 ml-auto"
+                    >7 articles</span
+                  >
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="w-full md:w-1/2 lg:w-full">
+            <!-- divider -->
+            <div class="border border-dotted md:hidden lg:block"></div>
+
+            <!-- subscribe -->
+            <div class="my-5 md:my-0 lg:my-5">
+              <h5
+                class="dark:text-white font-bold text-lg uppercase text-gray-700 mb-2"
+              >
+                Subscribe
+              </h5>
+              <p class="dark:text-slate-400 text-gray-600 mb-4">
+                Subscribe to our newsletter.
+              </p>
+              <input
+                placeholder="your email address"
+                type="email"
+                class="text-gray-700 bg-gray-100 p-2 w-full border rounded-t hover:border-gray-600 transition-all duration-300"
+              />
+              <button
+                class="px-4 py-2 bg-indigo-600 text-white rounded-b w-full hover:bg-indigo-800 transition-all duration-300"
+              >
+                Subscribe
+              </button>
+            </div>
+
+            <!-- divider -->
+            <div class="border border-dotted md:hidden lg:block"></div>
+          </div>
+        </div>
+      </main>
+
+      <div
+        class="grid grid-flow-col gap-4 mx-auto bg-green-200 containter py-big grid-columns-4"
+      >
+        <div class="bg-purple-400 w-1/2 h-[100px]"></div>
+        <div class="bg-purple-400 w-3/5 h-[100px]"></div>
+        <div class="bg-purple-400 w-1/6 h-[100px]"></div>
+        <div
+          class="bg-gradient-to-r from-yellow-400 to-red-500 via-pink-500 w-full h-[100px]"
+        ></div>
+      </div>
+      <div class="dark:text-white">
+        <ul>
+          <li>
+            <a
+              href=""
+              class="inline-block py-1 hover:underline decoration-2 decoration-green-500 decoration-slice"
+              >link item 1</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="inline-block py-2 hover:underline decoration-4 decoration-green-500 decoration-wavy"
+              >link item 2</a
+            >
+          </li>
+          <li>
+            <a
+              href=""
+              class="inline-block py-3 hover:underline decoration-8 decoration-gray-500 underline-offset-8"
+              >link item 3</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="border border-dotted"></div>
+      <div class="my-5">
+        <h5
+          class="mb-2 text-lg font-bold text-gray-700 uppercase dark:text-white"
+        >
+          Subscribe
+        </h5>
+        <p class="mb-4 text-gray-600 dark:text-white">Enter your email</p>
+        <input
+          placeholder="Enter email"
+          type="email"
+          class="w-full p-2 text-gray-700 bg-gray-100 border rounded-t hover:border-gray-6"
+        />
+        <button
+          class="w-full px-4 py-2 text-white bg-indigo-600 rounded-b hover:bg-indigo-800"
+        >
+          Subscribe
+        </button>
+      </div>
+      <div class="border border-dotted"></div>
+      <nav>
+        <ul class="py-2">
+          <li class="py-2">
+            <button
+              class="px-3 py-1 text-indigo-600 border-2 border-indigo-600 rounded-full hover:text-white hover:bg-indigo-800"
+            >
+              Login
+            </button>
+          </li>
+          <li class="py-2">
+            <button
+              class="px-3 py-1 text-indigo-600 border-2 border-indigo-600 rounded-full shadow-xl hover:text-white hover:bg-indigo-800 shadow-indigo-600 focus:outline-none focus:ring-violet-300"
+            >
+              Register
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <footer class="flex border-t mt-10 py-10 px-2">
+        <div class="mb-5 w-2/5">Footer text 1</div>
+        <div class="w-2/5">Footer text 2</div>
+        <div class="w-2/5">Footer text 3</div>
+      </footer>
+    </div>
+  </body>
+</html>
