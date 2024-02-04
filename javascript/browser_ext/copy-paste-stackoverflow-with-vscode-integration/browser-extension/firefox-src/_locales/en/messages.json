@@ -1,0 +1,14 @@
+{
+    "name": {
+        "message": "Copypaster",
+        "description": "extension name"
+    },
+    "description": {
+        "message": "Copy faster from stackoverflow",
+        "description": "extension description"
+    },
+    "copy_all": {
+        "message": "Copy all text",
+        "description": "Copy all text from stackoverflow"
+    }
+}

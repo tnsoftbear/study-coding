@@ -1,0 +1,14 @@
+{
+    "name": {
+        "message": "Копипастер",
+        "description": "Имя расширения"
+    },
+    "description": {
+        "message": "Быстрое копирование из stackoverflow",
+        "description": "Описание расширения"
+    },
+    "copy_all": {
+        "message": "Скопировать весь текст",
+        "description": "Описание хот-кея"
+    }
+}
