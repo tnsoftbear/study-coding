@@ -7,7 +7,7 @@ set +x
 input_file="english-adjectives.txt"
 
 # Путь к файлу, в который будут сохранены доступные домены 
-output_file=".results/available_adjectives.domain.lv.txt"
+output_file=".results/available_adjectives.domaincasinos.com.txt"
 
 # Проверка существования файла со списком слов 
 if [ ! -f "$input_file" ]; then   
@@ -32,7 +32,7 @@ check_domain_availability() {
 
 while IFS= read -r word; do
 	word=`echo "$word" | tr -d '[:space:]'`
-	domains=("${word}casino.com" "${word}-casino.com")
+	domains=("${word}casinos.com" "${word}-casinos.com")
 	for domain in "${domains[@]}"; do
 		check_domain_availability "$domain" "$output_file"
 	done
