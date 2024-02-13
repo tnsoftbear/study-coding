@@ -1,10 +1,18 @@
 package org.example.trading_demo.service;
 
+import lombok.AllArgsConstructor;
 import org.example.trading_demo.model.Order;
+import org.example.trading_demo.model.Security;
+import org.example.trading_demo.model.User;
+import org.example.trading_demo.repository.SecurityRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 final public class ExchangeService {
+    private UserService userService;
+    private SecurityRepository securityRepository;
+
     public Order exchange(Order buyOrder, Order sellOrder){
         Order result = new Order();
         result.quantity = Math.min(buyOrder.quantity, sellOrder.quantity);
@@ -31,6 +39,19 @@ final public class ExchangeService {
         if (sellOrder.price <= 0) {
             return "Sell price must be positive";
         }
+        User buyer = this.userService.findByUsername(buyOrder.userName);
+        if (buyer == null) {
+            return "Buyer not found by username: " + buyOrder.userName;
+        }
+        User seller = this.userService.findByUsername(sellOrder.userName);
+        if (seller == null) {
+            return "Seller not found by username: " + sellOrder.userName;
+        }
+        Security security = this.securityRepository.findByName(buyOrder.securityName);
+        if (security == null) {
+            return "Security not found by name: " + buyOrder.securityName;
+        }
+
         return "";
     }
 }

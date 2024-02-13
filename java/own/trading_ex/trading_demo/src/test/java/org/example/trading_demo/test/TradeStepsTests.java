@@ -7,6 +7,11 @@ import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.example.trading_demo.model.ExchangeRequest;
 import org.example.trading_demo.model.Order;
+import org.example.trading_demo.model.Security;
+import org.example.trading_demo.model.User;
+import org.example.trading_demo.repository.SecurityRepository;
+import org.example.trading_demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -19,9 +24,20 @@ public class TradeStepsTests {
 
     private ExchangeRequest exchangeRequest;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SecurityRepository securityRepository;
+
     @Given("^one security \"([^\"]*)\" and two users \"([^\"]*)\" and \"([^\"]*)\" exist$")
-    public void one_security_and_two_users_exist(String security, String user1, String user2) {
-        // Implementation to create security and users
+    public void one_security_and_two_users_exist(String securityName, String username1, String username2) {
+        User user1 = User.builder().id(1).username(username1).password("").build();
+        User user2 = User.builder().id(2).username(username2).password("").build();
+        userService.saveUser(user1);
+        userService.saveUser(user2);
+        Security security = new Security(1, securityName);
+        securityRepository.save(security);
     }
 
     @When("^user \"([^\"]*)\" puts a buy order for security \"([^\"]*)\" with a price of (\\d+) and quantity of (\\d+)$")
