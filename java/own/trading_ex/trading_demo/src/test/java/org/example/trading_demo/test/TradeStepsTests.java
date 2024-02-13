@@ -40,7 +40,7 @@ public class TradeStepsTests {
     // Метод для проверки текущего ответа на торговлю
     @Then("^a trade occurs with the price of (\\d+) and quantity of (\\d+)$")
     public void trade_occurs(int expectedPrice, int expectedQuantity) {
-        String url = "http://localhost:8080/exchange";
+        String url = "http://localhost:8080/api/v1/exchange";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<ExchangeRequest> request = new HttpEntity<>(this.exchangeRequest, headers);
