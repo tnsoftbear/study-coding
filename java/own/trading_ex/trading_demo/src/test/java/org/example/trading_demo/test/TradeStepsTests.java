@@ -5,7 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
-import org.example.trading_demo.TradingDemoApplication;
 import org.example.trading_demo.model.ExchangeRequest;
 import org.example.trading_demo.model.Order;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,7 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 @CucumberContextConfiguration
-@SpringBootTest(classes = TradingDemoApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class TradeStepsTests {
 
     private final RestTemplate restTemplate = new RestTemplate();

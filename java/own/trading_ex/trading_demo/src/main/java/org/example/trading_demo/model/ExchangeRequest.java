@@ -1,7 +1,5 @@
 package org.example.trading_demo.model;
 
-import org.example.trading_demo.model.Order;
-
 public class ExchangeRequest {
     private Order buyerOrder;
     private Order sellerOrder;
