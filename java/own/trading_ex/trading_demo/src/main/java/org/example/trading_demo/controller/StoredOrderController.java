@@ -2,8 +2,9 @@ package org.example.trading_demo.controller;
 
 import lombok.AllArgsConstructor;
 import org.example.trading_demo.model.CustomerOrder;
-import org.example.trading_demo.model.StoredOrder;
+import org.example.trading_demo.model.stored_order.StoredOrder;
 import org.example.trading_demo.model.Trade;
+import org.example.trading_demo.model.stored_order.Type;
 import org.example.trading_demo.repository.StoredOrderRepository;
 import org.example.trading_demo.service.OrderService;
 import org.example.trading_demo.service.TradeService;
@@ -31,12 +32,12 @@ public class StoredOrderController {
 
     @PostMapping("sell")
     public StoredOrder registerSellOrder(@RequestBody CustomerOrder customerOrder) {
-        return orderService.create(customerOrder, true);
+        return orderService.create(customerOrder, Type.SELLER);
     }
 
     @PostMapping("buy")
     public StoredOrder registerBuyOrder(@RequestBody CustomerOrder customerOrder) {
-        return orderService.create(customerOrder, false);
+        return orderService.create(customerOrder, Type.BUYER);
     }
 
     /**
@@ -50,7 +51,7 @@ public class StoredOrderController {
      */
     @PostMapping("sell_and_trade")
     public Trade registerSellOrderAndTrade(@RequestBody CustomerOrder customerOrder) {
-        StoredOrder sellOrder = orderService.create(customerOrder, true);
+        StoredOrder sellOrder = orderService.create(customerOrder, Type.SELLER);
         return tradeService.tradeWithSeller(sellOrder);
     }
 
@@ -65,7 +66,7 @@ public class StoredOrderController {
      */
     @PostMapping("buy_and_trade")
     public Trade registerBuyOrderAndTrade(@RequestBody CustomerOrder customerOrder) {
-        StoredOrder buyOrder = orderService.create(customerOrder, false);
+        StoredOrder buyOrder = orderService.create(customerOrder, Type.BUYER);
         return tradeService.tradeWithBuyer(buyOrder);
     }
 

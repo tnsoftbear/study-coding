@@ -1,10 +1,11 @@
-package org.example.trading_demo.model;
+package org.example.trading_demo.model.stored_order;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Table(name = "stored_order")
@@ -21,7 +22,7 @@ public class StoredOrder {
     @Column(name = "quantity")
     private int quantity;
     @Column(name = "type")
-    private int type;
+    private Type type;
     @Column(name = "fulfilled")
     private Boolean fulfilled;
     @Column(name = "security_id")

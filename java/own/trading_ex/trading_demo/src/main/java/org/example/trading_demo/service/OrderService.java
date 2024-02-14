@@ -3,8 +3,9 @@ package org.example.trading_demo.service;
 import lombok.AllArgsConstructor;
 import org.example.trading_demo.model.CustomerOrder;
 import org.example.trading_demo.model.Security;
-import org.example.trading_demo.model.StoredOrder;
+import org.example.trading_demo.model.stored_order.StoredOrder;
 import org.example.trading_demo.model.User;
+import org.example.trading_demo.model.stored_order.Type;
 import org.example.trading_demo.repository.SecurityRepository;
 import org.example.trading_demo.repository.StoredOrderRepository;
 import org.example.trading_demo.service.user.UserService;
@@ -19,7 +20,7 @@ public class OrderService {
     private UserService userService;
     private SecurityRepository securityRepository;
 
-    public StoredOrder create(int price, int quantity, int type, long securityId, long userId) {
+    public StoredOrder create(int price, int quantity, Type type, long securityId, long userId) {
         StoredOrder order = new StoredOrder();
         order.setPrice(price);
         order.setQuantity(quantity);
@@ -30,7 +31,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public StoredOrder create(CustomerOrder customerOrder, Boolean isSellOrder) {
+    public StoredOrder create(CustomerOrder customerOrder, Type type) {
         User user = userService.findByUsername(customerOrder.getUserName());
         if (user == null) {
             throw new IllegalArgumentException("User not found");
@@ -40,10 +41,10 @@ public class OrderService {
             throw new IllegalArgumentException("Security not found");
         }
 
-        return this.create(customerOrder.getPrice(), customerOrder.getQuantity(), isSellOrder ? 1 : 0, security.getId(), user.getId());
+        return this.create(customerOrder.getPrice(), customerOrder.getQuantity(), type, security.getId(), user.getId());
     }
 
-    public StoredOrder findFirstByTypeAndSecurityId(int type, long securityId) {
+    public StoredOrder findFirstByTypeAndSecurityId(Type type, long securityId) {
         List<StoredOrder> orders = orderRepository.findByTypeAndSecurityIdAndFulfilledIsFalse(type, securityId);
         if (orders.isEmpty()) {
             return null;

@@ -1,10 +1,11 @@
 package org.example.trading_demo.service;
 
 import lombok.AllArgsConstructor;
-import org.example.trading_demo.model.StoredOrder;
+import org.example.trading_demo.model.stored_order.StoredOrder;
 import org.example.trading_demo.model.Trade;
 import org.example.trading_demo.repository.TradeRepository;
 import org.springframework.stereotype.Service;
+import org.example.trading_demo.model.stored_order.Type;
 
 @Service
 @AllArgsConstructor
@@ -13,7 +14,7 @@ public class TradeService {
     OrderService orderService;
     public Trade tradeWithSeller(StoredOrder sellerOrder) {
         int opType = 0;
-        StoredOrder buyerOrder = orderService.findFirstByTypeAndSecurityId(opType, sellerOrder.getSecurityId());
+        StoredOrder buyerOrder = orderService.findFirstByTypeAndSecurityId(Type.BUYER, sellerOrder.getSecurityId());
         if (buyerOrder == null) {
             return null;
         }
@@ -22,7 +23,7 @@ public class TradeService {
     }
 
     public Trade tradeWithBuyer(StoredOrder buyerOrder) {
-        StoredOrder sellerOrder = orderService.findFirstByTypeAndSecurityId(1, buyerOrder.getSecurityId());
+        StoredOrder sellerOrder = orderService.findFirstByTypeAndSecurityId(Type.SELLER, buyerOrder.getSecurityId());
         if (sellerOrder == null) {
             return null;
         }

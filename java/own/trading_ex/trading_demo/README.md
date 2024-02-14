@@ -1,7 +1,7 @@
 # RestAPI by Spring Boot
 
 * Model: User, Security, Order, Trade
-* H2 memory DB
+* H2 memory DB. Console at <http://localhost:8080/h2-ui>
 * Cucumber BDD test
 
 ## Run BDD test
