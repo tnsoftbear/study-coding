@@ -39,12 +39,30 @@ public class StoredOrderController {
         return orderService.create(customerOrder, false);
     }
 
+    /**
+     * http://localhost:8080/api/v1/order/sell_and_trade
+     * {
+     *     "price": 150,
+     *     "quantity": 40,
+     *     "securityName": "Apple",
+     *     "userName": "user3"
+     * }
+     */
     @PostMapping("sell_and_trade")
     public Trade registerSellOrderAndTrade(@RequestBody CustomerOrder customerOrder) {
         StoredOrder sellOrder = orderService.create(customerOrder, true);
         return tradeService.tradeWithSeller(sellOrder);
     }
 
+    /**
+     * http://localhost:8080/api/v1/order/buy_and_trade
+     * {
+     *     "price": 100,
+     *     "quantity": 80,
+     *     "securityName": "Apple",
+     *     "userName": "user4"
+     * }
+     */
     @PostMapping("buy_and_trade")
     public Trade registerBuyOrderAndTrade(@RequestBody CustomerOrder customerOrder) {
         StoredOrder buyOrder = orderService.create(customerOrder, false);

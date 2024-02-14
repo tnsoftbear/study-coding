@@ -1,9 +1,9 @@
-package org.example.trading_demo.service.impl;
+package org.example.trading_demo.service.user.impl;
 
 import lombok.AllArgsConstructor;
 import org.example.trading_demo.model.User;
-import org.example.trading_demo.repository.InMemoryUserRepository;
-import org.example.trading_demo.service.UserService;
+import org.example.trading_demo.repository.user.InMemoryUserRepository;
+import org.example.trading_demo.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

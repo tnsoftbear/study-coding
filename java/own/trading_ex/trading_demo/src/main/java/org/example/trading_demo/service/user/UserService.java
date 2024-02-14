@@ -1,4 +1,4 @@
-package org.example.trading_demo.service;
+package org.example.trading_demo.service.user;
 
 import org.example.trading_demo.model.User;
 

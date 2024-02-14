@@ -10,7 +10,7 @@
 //import org.example.trading_demo.model.Security;
 //import org.example.trading_demo.model.User;
 //import org.example.trading_demo.repository.SecurityRepository;
-//import org.example.trading_demo.service.UserService;
+//import org.example.trading_demo.service.user.UserService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.http.*;

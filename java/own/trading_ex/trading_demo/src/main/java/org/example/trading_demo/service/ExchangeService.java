@@ -5,8 +5,10 @@ import org.example.trading_demo.model.CustomerOrder;
 import org.example.trading_demo.model.Security;
 import org.example.trading_demo.model.User;
 import org.example.trading_demo.repository.SecurityRepository;
+import org.example.trading_demo.service.user.UserService;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Service
 @AllArgsConstructor
 final public class ExchangeService {

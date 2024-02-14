@@ -1,0 +1,59 @@
+# RestAPI by Spring Boot
+
+* Model: User, Security, Order, Trade
+* H2 memory DB
+* Cucumber BDD test
+
+## Run BDD test
+
+```
+mvn test
+```
+
+## Manual requests
+
+* post buy order and trade: POST: http://localhost:8080/api/v1/order/buy_and_trade
+
+```json
+{
+  "price": 100,
+  "quantity": 80,
+  "securityName": "Apple",
+  "userName": "user4"
+}
+```
+
+* post sell order and trade: POST: http://localhost:8080/api/v1/order/sell_and_trade
+
+```json
+{
+  "price": 150,
+  "quantity": 40,
+  "securityName": "Apple",
+  "userName": "user3"
+}
+```
+* list orders: GET: http://localhost:8080/api/v1/order
+
+* list users: GET: http://localhost:8080/api/v1/users
+
+* add user: POST: http://localhost:8080/api/v1/users/save
+
+```json
+{
+    "username": "user5",
+    "password": "pw5"
+}
+```
+
+* list securities: GET: http://localhost:8080/api/v1/security
+* find by name: GET: http://localhost:8080/api/v1/security/Apple
+* add security: POST: http://localhost:8080/api/v1/security/save
+
+```json
+{
+    "name": "sec-name"
+}
+```
+
+* delete security: DELETE: http://localhost:8080/api/v1/security/delete/sec-name

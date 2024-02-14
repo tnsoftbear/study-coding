@@ -7,6 +7,7 @@ import org.example.trading_demo.model.StoredOrder;
 import org.example.trading_demo.model.User;
 import org.example.trading_demo.repository.SecurityRepository;
 import org.example.trading_demo.repository.StoredOrderRepository;
+import org.example.trading_demo.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
