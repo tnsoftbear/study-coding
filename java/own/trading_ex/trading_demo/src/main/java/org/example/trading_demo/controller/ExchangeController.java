@@ -1,14 +1,13 @@
 package org.example.trading_demo.controller;
 
 import org.example.trading_demo.model.ExchangeRequest;
-import org.example.trading_demo.model.Order;
+import org.example.trading_demo.model.CustomerOrder;
 import org.example.trading_demo.service.ExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,7 +26,7 @@ public class ExchangeController {
         if (!errorMessage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
-        Order resultOrder = this.exchangeService.exchange(request.getBuyerOrder(), request.getSellerOrder());
+        CustomerOrder resultOrder = this.exchangeService.exchange(request.getBuyerOrder(), request.getSellerOrder());
         return ResponseEntity.ok(resultOrder);
     }
 }

@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class ExchangeRequest {
-    private Order buyerOrder;
-    private Order sellerOrder;
+    private CustomerOrder buyerOrder;
+    private CustomerOrder sellerOrder;
 }

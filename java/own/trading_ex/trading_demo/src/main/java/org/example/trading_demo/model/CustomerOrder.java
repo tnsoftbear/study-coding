@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class CustomerOrder {
     public String securityName;
     public String userName;
-    public double price;
+    public int price;
     public int quantity;
 
     @Override

@@ -1,0 +1,31 @@
+package org.example.trading_demo.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "stored_order")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class StoredOrder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "price")
+    private int price;
+    @Column(name = "quantity")
+    private int quantity;
+    @Column(name = "type")
+    private int type;
+    @Column(name = "fulfilled")
+    private Boolean fulfilled;
+    @Column(name = "security_id")
+    private long securityId;
+    @Column(name = "user_id")
+    private long userId;
+}

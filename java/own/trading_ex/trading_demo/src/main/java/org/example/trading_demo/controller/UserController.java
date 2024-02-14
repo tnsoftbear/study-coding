@@ -18,7 +18,7 @@ public class UserController {
         return this.userService.findAllUsers();
     }
 
-    @PostMapping("save_user")
+    @PostMapping("save")
     public User saveUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
@@ -28,12 +28,12 @@ public class UserController {
         return userService.findByUsername(username);
     }
 
-    @PutMapping("update_user")
+    @PutMapping("update")
     public User updateUser(@RequestBody User user) {
         return userService.updateUser(user);
     }
 
-    @DeleteMapping("delete_user/{username}")
+    @DeleteMapping("delete/{username}")
     public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
     }

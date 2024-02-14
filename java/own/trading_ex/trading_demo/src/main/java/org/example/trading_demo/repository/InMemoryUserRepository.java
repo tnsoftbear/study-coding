@@ -45,4 +45,7 @@ public class InMemoryUserRepository {
             userStorage.remove(deletingUser);
         }
     }
+
+    public static class TradeRepository {
+    }
 }

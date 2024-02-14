@@ -1,7 +1,7 @@
 package org.example.trading_demo.service;
 
 import lombok.AllArgsConstructor;
-import org.example.trading_demo.model.Order;
+import org.example.trading_demo.model.CustomerOrder;
 import org.example.trading_demo.model.Security;
 import org.example.trading_demo.model.User;
 import org.example.trading_demo.repository.SecurityRepository;
@@ -13,14 +13,15 @@ final public class ExchangeService {
     private UserService userService;
     private SecurityRepository securityRepository;
 
-    public Order exchange(Order buyOrder, Order sellOrder){
-        Order result = new Order();
+    public CustomerOrder exchange(CustomerOrder buyOrder, CustomerOrder sellOrder){
+        CustomerOrder result = new CustomerOrder();
         result.quantity = Math.min(buyOrder.quantity, sellOrder.quantity);
         result.price = Math.min(buyOrder.price, sellOrder.price);
+        result.securityName = buyOrder.securityName;
         return result;
     }
 
-    public String validate(Order buyOrder, Order sellOrder){
+    public String validate(CustomerOrder buyOrder, CustomerOrder sellOrder){
         if (!buyOrder.securityName.equals(sellOrder.securityName)) {
             return "Orders are for different security names";
         }
