@@ -16,18 +16,20 @@ CREATE TABLE IF NOT EXISTS stored_order (
     type INT,
     fulfilled BOOLEAN DEFAULT FALSE NOT NULL,
     security_id BIGINT,
-    user_id BIGINT
+    user_id BIGINT,
+    FOREIGN KEY (security_id) REFERENCES security(id),
+    FOREIGN KEY (user_id) REFERENCES stored_user(id)
 );
 
-INSERT INTO stored_user (id, username, password) VALUES
-(1, 'user1', 'password1'),
-(2, 'user2', 'password2'),
-(3, 'user3', 'password3'),
-(4, 'user4', 'password4');
+INSERT INTO stored_user (username, password) VALUES
+('user1', 'password1'),
+('user2', 'password2'),
+('user3', 'password3'),
+('user4', 'password4');
 
-INSERT INTO security (id, name) VALUES
-(1, 'Apple'),
-(2, 'Google');
+INSERT INTO security (name) VALUES
+('Apple'),
+('Google');
 
 INSERT INTO stored_order (price, quantity, type, security_id, user_id) VALUES
 (100, 50, 0, 1, 1),

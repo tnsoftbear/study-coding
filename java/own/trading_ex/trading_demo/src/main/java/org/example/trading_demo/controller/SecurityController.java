@@ -1,6 +1,5 @@
 package org.example.trading_demo.controller;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.example.trading_demo.model.Security;
 import org.example.trading_demo.repository.SecurityRepository;
@@ -31,7 +30,6 @@ public class SecurityController {
     }
 
     @DeleteMapping("/delete/{name}")
-    //@Transactional
     public ResponseEntity<?> delete(@PathVariable String name) {
         var security = securityRepository.findByName(name);
         if (security != null) {
