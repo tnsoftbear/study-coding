@@ -1,6 +1,7 @@
 package org.example.trading_demo.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.trading_demo.model.CustomerOrder;
 import org.example.trading_demo.model.Security;
 import org.example.trading_demo.model.stored_order.StoredOrder;
@@ -12,16 +13,14 @@ import org.example.trading_demo.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderService {
     private StoredOrderRepository orderRepository;
     private UserService userService;
     private SecurityRepository securityRepository;
-    private static final java.util.logging.Logger log = Logger.getLogger(OrderService.class.getName());
-
     public StoredOrder create(int price, int quantity, Type type, long securityId, long userId) {
         StoredOrder order = new StoredOrder();
         order.setPrice(price);

@@ -1,19 +1,19 @@
 package org.example.trading_demo.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.trading_demo.model.stored_order.StoredOrder;
 import org.example.trading_demo.model.Trade;
 import org.example.trading_demo.repository.TradeRepository;
 import org.springframework.stereotype.Service;
 import org.example.trading_demo.model.stored_order.Type;
-import java.util.logging.Logger;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TradeService {
     TradeRepository tradeRepository;
     OrderService orderService;
-    private static final Logger log = Logger.getLogger(TradeService.class.getName());
 
     public Trade tradeWithSeller(StoredOrder sellerOrder) {
         StoredOrder buyerOrder = orderService.findFirstByTypeAndSecurityId(Type.BUYER, sellerOrder.getSecurityId());

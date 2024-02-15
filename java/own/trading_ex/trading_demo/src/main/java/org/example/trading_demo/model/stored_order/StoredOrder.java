@@ -1,10 +1,7 @@
 package org.example.trading_demo.model.stored_order;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Entity
@@ -13,6 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class StoredOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,17 +28,4 @@ public class StoredOrder {
     private long securityId;
     @Column(name = "user_id")
     private long userId;
-
-    @Override
-    public String toString() {
-        return "StoredOrder{" +
-                "id=" + id +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", type=" + type +
-                ", fulfilled=" + fulfilled +
-                ", securityId=" + securityId +
-                ", userId=" + userId +
-                '}';
-    }
 }

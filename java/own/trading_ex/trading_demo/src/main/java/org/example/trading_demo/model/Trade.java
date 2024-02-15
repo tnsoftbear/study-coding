@@ -1,17 +1,11 @@
 package org.example.trading_demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "trade")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Trade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +18,4 @@ public class Trade {
     private long sellOrderId;
     @Column(name = "buy_order_id")
     private long buyOrderId;
-
-    @Override
-    public String toString() {
-        return "Trade{" +
-                "id=" + id +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", sellOrderId=" + sellOrderId +
-                ", buyOrderId=" + buyOrderId +
-                '}';
-    }
 }
