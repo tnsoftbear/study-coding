@@ -1,10 +1,11 @@
-package org.example.trading_demo.test;
+package org.example.trading_demo.test.trade_feature;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import org.example.trading_demo.model.*;
 import org.example.trading_demo.repository.SecurityRepository;
 import org.example.trading_demo.service.user.UserService;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Slf4j
 public class TradeStepsTests {
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -26,23 +28,24 @@ public class TradeStepsTests {
 
     @Given("^one security \"([^\"]*)\" and two users \"([^\"]*)\" and \"([^\"]*)\" exist$")
     public void one_security_and_two_users_exist(String securityName, String username1, String username2) {
-        User user1 = userService.findByUsername(username1);
-        if (user1 == null) {
-            user1 = User.builder().username(username1).password("").build();
-            this.postSaveUser(user1);
-        }
+        this.createUserIfNotExists(username1);
+        this.createUserIfNotExists(username2);
+        this.createSecurityIfNotExists(securityName);
+    }
 
-        User user2 = userService.findByUsername(username2);
-        if (user2 == null) {
-            user2 = User.builder().username(username2).password("").build();
-            this.postSaveUser(user2);
-        }
+    @Given("^two securities \"([^\"]*)\" and \"([^\"]*)\" and two users \"([^\"]*)\" and \"([^\"]*)\" exist$")
+    public void one_security_and_two_users_exist(String securityName1, String securityName2, String username1, String username2) {
+        this.createUserIfNotExists(username1);
+        this.createUserIfNotExists(username2);
+        this.createSecurityIfNotExists(securityName1);
+        this.createSecurityIfNotExists(securityName2);
+    }
 
-        Security security = securityRepository.findByName(securityName);
-        if (security == null) {
-            security = new Security();
-            security.setName(securityName);
-            this.postSaveSecurity(security);
+    private void createUserIfNotExists(String username) {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            user = User.builder().username(username).password("").build();
+            this.postSaveUser(user);
         }
     }
 
@@ -54,6 +57,15 @@ public class TradeStepsTests {
         ResponseEntity<User> response = restTemplate.postForEntity(url, request, User.class);
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new AssertionError("Unexpected status code: " + response.getStatusCode());
+        }
+    }
+
+    private void createSecurityIfNotExists(String securityName) {
+        Security security = securityRepository.findByName(securityName);
+        if (security == null) {
+            security = new Security();
+            security.setName(securityName);
+            this.postSaveSecurity(security);
         }
     }
 
@@ -103,6 +115,14 @@ public class TradeStepsTests {
         if (this.trade.getQuantity() != expectedQuantity) {
             throw new AssertionError("Trade quantity is not expected");
         }
+    }
+
+    @Then("^a trade does not occur$")
+    public void trade_does_not_occur() {
+        if (this.trade != null) {
+            throw new AssertionError("Trade result is not expected");
+        }
+        log.info("Trade does not occur, Trade: " + this.trade);
     }
 
 }
