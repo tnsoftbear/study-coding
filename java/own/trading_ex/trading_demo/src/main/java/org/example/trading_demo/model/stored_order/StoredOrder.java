@@ -29,4 +29,17 @@ public class StoredOrder {
     private long securityId;
     @Column(name = "user_id")
     private long userId;
+
+    @Override
+    public String toString() {
+        return "StoredOrder{" +
+                "id=" + id +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", type=" + type +
+                ", fulfilled=" + fulfilled +
+                ", securityId=" + securityId +
+                ", userId=" + userId +
+                '}';
+    }
 }

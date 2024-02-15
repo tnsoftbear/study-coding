@@ -12,6 +12,7 @@ import org.example.trading_demo.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class OrderService {
     private StoredOrderRepository orderRepository;
     private UserService userService;
     private SecurityRepository securityRepository;
+    private static final java.util.logging.Logger log = Logger.getLogger(OrderService.class.getName());
 
     public StoredOrder create(int price, int quantity, Type type, long securityId, long userId) {
         StoredOrder order = new StoredOrder();
@@ -28,7 +30,9 @@ public class OrderService {
         order.setSecurityId(securityId);
         order.setUserId(userId);
         order.setFulfilled(false);
-        return orderRepository.save(order);
+        order = orderRepository.save(order);
+        log.info("Order registered - " + order);
+        return order;
     }
 
     public StoredOrder create(CustomerOrder customerOrder, Type type) {
