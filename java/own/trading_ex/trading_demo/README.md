@@ -23,6 +23,8 @@ Observe HTML reports in
 ![20240215-add-user-and-search-report.png](doc/i/20240215-add-user-and-search-report.png)
 ![20240215-all-steps-report.png](doc/i/20240215-all-steps-report.png)
 
+* [trivago/cluecumber](https://github.com/trivago/cluecumber/)
+
 ## Manual requests
 
 * post buy order and trade: POST: http://localhost:8080/api/v1/order/buy_and_trade

@@ -15,10 +15,6 @@ public class Trade {
     private int price;
     @Column(name = "quantity")
     private int quantity;
-//    @Column(name = "sell_order_id")
-//    private long sellOrderId;
-//    @Column(name = "buy_order_id")
-//    private long buyOrderId;
     @OneToOne
     @JoinColumn(name = "sell_order_id", unique = false, nullable = true)
     private StoredOrder sellOrder;

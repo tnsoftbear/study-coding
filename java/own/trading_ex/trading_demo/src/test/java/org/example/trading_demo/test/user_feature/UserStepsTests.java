@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.trading_demo.model.User;
 import org.example.trading_demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -20,8 +21,10 @@ public class UserStepsTests {
     private User resultUser;
     @Autowired
     private UserService userService;
+    @Value("${api.url}")
+    private String urlBase;
 
-    @Given("^user with username \"([^\"]*)\" does not exist")
+    @Given("user with username {string} does not exist")
     public void user_with_username_does_not_exist(String username) {
         User user = userService.findByUsername(username);
         if (user != null) {
@@ -29,7 +32,7 @@ public class UserStepsTests {
         }
     }
 
-    @Given("^user with username \"([^\"]*)\" exists")
+    @Given("user with username {string} exists")
     public void user_with_username_exists(String username) {
         User user = userService.findByUsername(username);
         if (user == null) {
@@ -37,14 +40,14 @@ public class UserStepsTests {
         }
     }
 
-    @When("^register user with username \"([^\"]*)\" and password \"([^\"]*)\"")
+    @When("register user with username {string} and password {string}")
     public void register_user_with_username_and_password(String username, String password) {
         User user = User.builder().username(username).password(password).build();
         this.postSaveUser(user);
     }
 
     private void postSaveUser(User user) {
-        String url = "http://localhost:8080/api/v1/users/save";
+        String url = urlBase + "/users/save";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<User> request = new HttpEntity<>(user, headers);
@@ -58,17 +61,17 @@ public class UserStepsTests {
         }
     }
 
-    @When("^delete user with username \"([^\"]*)\"$")
+    @When("delete user with username {string}")
     public void delete_user_with_username(String username) {
-        String url = "http://localhost:8080/api/v1/users/delete/" + username;
+        String url = urlBase + "/users/delete/" + username;
         ResponseEntity<Void> response = restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new AssertionError("Unexpected status code: " + response.getStatusCode());
         }
     }
 
-    @Then("^user is created with username \"([^\"]*)\" and password \"([^\"]*)\"$")
-    public void trade_occurs(String expectedUsername, String expectedPassword) {
+    @Then("user is created with username {string} and password {string}")
+    public void user_is_created_with_username_and_password(String expectedUsername, String expectedPassword) {
         if (!resultUser.getUsername().equals(expectedUsername)) {
             throw new AssertionError("Result user's username is not expected");
         }
@@ -77,7 +80,7 @@ public class UserStepsTests {
         }
     }
 
-    @And("^can find user by username \"([^\"]*)\"$")
+    @And("can find user by username {string}")
     public void can_find_user_by_username(String searchUsername) {
         resultUser = findByUsername(searchUsername);
         if (resultUser == null) {
@@ -88,7 +91,7 @@ public class UserStepsTests {
         }
     }
 
-    @And("^cannot find user by username \"([^\"]*)\"$")
+    @And("cannot find user by username {string}")
     public void cannot_find_user_by_username(String absentUsername) {
         resultUser = findByUsername(absentUsername);
         if (resultUser != null) {
@@ -97,7 +100,7 @@ public class UserStepsTests {
     }
 
     private User findByUsername(String username) {
-        String url = "http://localhost:8080/api/v1/users/" + username;
+        String url = urlBase + "/users/" + username;
         ResponseEntity<User> response = restTemplate.getForEntity(url, User.class);
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new AssertionError("Unexpected status code: " + response.getStatusCode());
