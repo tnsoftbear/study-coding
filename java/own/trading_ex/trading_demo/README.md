@@ -25,6 +25,10 @@ Observe HTML reports in
 
 * [trivago/cluecumber](https://github.com/trivago/cluecumber/)
 
+* `target/cucumber-report/cucumber.html`
+
+![20240216-cucumber-report.png](doc/i/20240216-cucumber-report.png)
+
 ## Manual requests
 
 * post buy order and trade: POST: http://localhost:8080/api/v1/order/buy_and_trade
