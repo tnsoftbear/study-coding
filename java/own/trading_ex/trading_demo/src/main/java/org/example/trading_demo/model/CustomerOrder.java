@@ -2,8 +2,7 @@ package org.example.trading_demo.model;
 
 import lombok.*;
 
-@Setter
-@Getter
+@AllArgsConstructor
 @Data
 public class CustomerOrder {
     public String securityName;

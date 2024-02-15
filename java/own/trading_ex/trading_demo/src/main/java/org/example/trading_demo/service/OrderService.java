@@ -37,11 +37,11 @@ public class OrderService {
     public StoredOrder create(CustomerOrder customerOrder, Type type) {
         User user = userService.findByUsername(customerOrder.getUserName());
         if (user == null) {
-            throw new IllegalArgumentException("User not found");
+            throw new IllegalArgumentException("User not found by username: " + customerOrder.getUserName());
         }
         Security security = securityRepository.findByName(customerOrder.getSecurityName());
         if (security == null) {
-            throw new IllegalArgumentException("Security not found");
+            throw new IllegalArgumentException("Security not found by security: " + customerOrder.getSecurityName());
         }
 
         return this.create(customerOrder.getPrice(), customerOrder.getQuantity(), type, security.getId(), user.getId());

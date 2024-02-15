@@ -5,8 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "stored_user")
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

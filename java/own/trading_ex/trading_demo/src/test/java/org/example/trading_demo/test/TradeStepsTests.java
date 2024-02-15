@@ -6,6 +6,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.example.trading_demo.model.*;
+import org.example.trading_demo.repository.SecurityRepository;
+import org.example.trading_demo.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -16,18 +19,31 @@ public class TradeStepsTests {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private Trade trade;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SecurityRepository securityRepository;
 
     @Given("^one security \"([^\"]*)\" and two users \"([^\"]*)\" and \"([^\"]*)\" exist$")
     public void one_security_and_two_users_exist(String securityName, String username1, String username2) {
-        User user1 = User.builder().username(username1).password("").build();
-        this.postSaveUser(user1);
+        User user1 = userService.findByUsername(username1);
+        if (user1 == null) {
+            user1 = User.builder().username(username1).password("").build();
+            this.postSaveUser(user1);
+        }
 
-        User user2 = User.builder().username(username2).password("").build();
-        this.postSaveUser(user2);
+        User user2 = userService.findByUsername(username2);
+        if (user2 == null) {
+            user2 = User.builder().username(username2).password("").build();
+            this.postSaveUser(user2);
+        }
 
-        Security security = new Security();
-        security.setName(securityName);
-        this.postSaveSecurity(security);
+        Security security = securityRepository.findByName(securityName);
+        if (security == null) {
+            security = new Security();
+            security.setName(securityName);
+            this.postSaveSecurity(security);
+        }
     }
 
     private void postSaveUser(User user) {
