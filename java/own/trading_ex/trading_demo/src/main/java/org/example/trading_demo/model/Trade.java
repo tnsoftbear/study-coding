@@ -2,6 +2,7 @@ package org.example.trading_demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.trading_demo.model.stored_order.StoredOrder;
 
 @Entity
 @Table(name = "trade")
@@ -14,8 +15,14 @@ public class Trade {
     private int price;
     @Column(name = "quantity")
     private int quantity;
-    @Column(name = "sell_order_id")
-    private long sellOrderId;
-    @Column(name = "buy_order_id")
-    private long buyOrderId;
+//    @Column(name = "sell_order_id")
+//    private long sellOrderId;
+//    @Column(name = "buy_order_id")
+//    private long buyOrderId;
+    @OneToOne
+    @JoinColumn(name = "sell_order_id", unique = false, nullable = true)
+    private StoredOrder sellOrder;
+    @OneToOne
+    @JoinColumn(name = "buy_order_id", unique = false, nullable = true)
+    private StoredOrder buyOrder;
 }

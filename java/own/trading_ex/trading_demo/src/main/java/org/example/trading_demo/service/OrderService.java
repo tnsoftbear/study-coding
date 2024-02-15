@@ -21,13 +21,13 @@ public class OrderService {
     private StoredOrderRepository orderRepository;
     private UserService userService;
     private SecurityRepository securityRepository;
-    public StoredOrder create(int price, int quantity, Type type, long securityId, long userId) {
+    public StoredOrder create(int price, int quantity, Type type, Security security, User user) {
         StoredOrder order = new StoredOrder();
         order.setPrice(price);
         order.setQuantity(quantity);
         order.setType(type);
-        order.setSecurityId(securityId);
-        order.setUserId(userId);
+        order.setSecurity(security);
+        order.setUser(user);
         order.setFulfilled(false);
         order = orderRepository.save(order);
         log.info("Order registered - " + order);
@@ -44,7 +44,7 @@ public class OrderService {
             throw new IllegalArgumentException("Security not found by security: " + customerOrder.getSecurityName());
         }
 
-        return this.create(customerOrder.getPrice(), customerOrder.getQuantity(), type, security.getId(), user.getId());
+        return this.create(customerOrder.getPrice(), customerOrder.getQuantity(), type, security, user);
     }
 
     public StoredOrder findFirstByTypeAndSecurityId(Type type, long securityId) {

@@ -1,5 +1,5 @@
 Feature: User feature
-  Scenario: add user and read
+  Scenario: add user and search
     Given user with username "DiamondJr" does not exist
     When register user with username "DiamondJr" and password "Password1"
     Then user is created with username "DiamondJr" and password "Password1"

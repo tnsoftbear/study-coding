@@ -2,6 +2,8 @@ package org.example.trading_demo.model.stored_order;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.trading_demo.model.Security;
+import org.example.trading_demo.model.User;
 
 
 @Entity
@@ -24,8 +26,10 @@ public class StoredOrder {
     private Type type;
     @Column(name = "fulfilled")
     private Boolean fulfilled;
-    @Column(name = "security_id")
-    private long securityId;
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "security_id")
+    private Security security;
 }

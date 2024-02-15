@@ -16,7 +16,7 @@ public class TradeService {
     OrderService orderService;
 
     public Trade tradeWithSeller(StoredOrder sellerOrder) {
-        StoredOrder buyerOrder = orderService.findFirstByTypeAndSecurityId(Type.BUYER, sellerOrder.getSecurityId());
+        StoredOrder buyerOrder = orderService.findFirstByTypeAndSecurityId(Type.BUYER, sellerOrder.getSecurity().getId());
         if (buyerOrder == null) {
             return null;
         }
@@ -25,7 +25,7 @@ public class TradeService {
     }
 
     public Trade tradeWithBuyer(StoredOrder buyerOrder) {
-        StoredOrder sellerOrder = orderService.findFirstByTypeAndSecurityId(Type.SELLER, buyerOrder.getSecurityId());
+        StoredOrder sellerOrder = orderService.findFirstByTypeAndSecurityId(Type.SELLER, buyerOrder.getSecurity().getId());
         if (sellerOrder == null) {
             return null;
         }
@@ -37,8 +37,8 @@ public class TradeService {
         Trade trade = new Trade();
         trade.setQuantity(Math.min(buyerOrder.getQuantity(), sellerOrder.getQuantity()));
         trade.setPrice(Math.min(buyerOrder.getPrice(), sellerOrder.getPrice()));
-        trade.setBuyOrderId(buyerOrder.getId());
-        trade.setSellOrderId(sellerOrder.getId());
+        trade.setBuyOrder(buyerOrder);
+        trade.setSellOrder(sellerOrder);
         tradeRepository.save(trade);
         orderService.markFulfilled(buyerOrder);
         orderService.markFulfilled(sellerOrder);

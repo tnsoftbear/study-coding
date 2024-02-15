@@ -6,9 +6,22 @@
 
 ## Run BDD test
 
-```
-mvn test
-```
+`mvn test`
+
+### Test reports
+
+Run `mvn verify`
+
+Observe HTML reports in
+
+* `target/site/jacoco/index.html` Jacoco coverage report
+
+![20240215-jacoco-report.png](doc/i/20240215-jacoco-report.png)
+
+* `target/generated-report/index.html` Cluecumber report
+
+![20240215-add-user-and-search-report.png](doc/i/20240215-add-user-and-search-report.png)
+![20240215-all-steps-report.png](doc/i/20240215-all-steps-report.png)
 
 ## Manual requests
 
