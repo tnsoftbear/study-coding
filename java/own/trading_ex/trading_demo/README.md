@@ -1,4 +1,4 @@
-# RestAPI by Spring Boot
+# REST API by Spring Boot
 
 * Model: User, Security, Order, Trade
 * H2 memory DB. Console at <http://localhost:8080/h2-ui>
@@ -6,15 +6,39 @@
 
 ## Run RestAPI server
 
-`mvnw clean spring-boot:run`
+```sh
+mvnw clean spring-boot:run
+# or
+mvn clean package
+java -jar ./target/trading_demo-0.0.1-SNAPSHOT.jar
+# or via docker
+docker compose build
+docker compose up
+# read user list for api checking
+curl http://127.0.0.1:8080/api/v1/users 
+```
 
 ## Run BDD test
 
-`mvn test` or `mvnw test`
+```sh
+# via local java
+mvn test
+# or
+mvnw test
+```
 
-### Test reports
+### Test with reports
 
-Run `mvn verify` or `mvnw verify`
+```sh
+mvn verify
+# or
+mvnw verify
+# via docker
+docker build -t trading_demo_bdd_test -f ./Dockerfile.runtest .
+docker run trading_demo_bdd_test
+# enter docker container
+docker run -it trading_demo_bdd_test bash
+```
 
 Observe HTML reports in
 
