@@ -4,13 +4,17 @@
 * H2 memory DB. Console at <http://localhost:8080/h2-ui>
 * Cucumber BDD test
 
+## Run RestAPI server
+
+`mvnw clean spring-boot:run`
+
 ## Run BDD test
 
-`mvn test`
+`mvn test` or `mvnw test`
 
 ### Test reports
 
-Run `mvn verify`
+Run `mvn verify` or `mvnw verify`
 
 Observe HTML reports in
 
@@ -55,6 +59,8 @@ Observe HTML reports in
 * list orders: GET: http://localhost:8080/api/v1/order
 
 * list users: GET: http://localhost:8080/api/v1/users
+
+`curl -X GET http://localhost:8080/api/v1/users`
 
 * add user: POST: http://localhost:8080/api/v1/users/save
 
