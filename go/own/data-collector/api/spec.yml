@@ -1,0 +1,202 @@
+---
+swagger: "2.0"
+info:
+  description: ""
+  version: "0.0.1"
+  title: "Article collector"
+basePath: "/v1"
+tags:
+- name: "article"
+  description: "Post, news, article, any content"
+- name: "author"
+  description: "Article author"
+schemes:
+- "https"
+- "http"
+paths:
+  /articles:
+    post:
+      tags:
+      - "article"
+      summary: "Add a new article"
+      description: ""
+      operationId: "addArticle"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Article object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/Article"
+      responses:
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+      - "article"
+      summary: "Update an existing article"
+      description: ""
+      operationId: "updateArticle"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Article object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/Article"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Article not found"
+        405:
+          description: "Validation exception"
+  /articles/findByIds:
+    get:
+      tags:
+      - "article"
+      summary: "Finds articles by their IDs"
+      description: "Multiple article IDs can be provided with comma separated strings"
+      operationId: "findArticlesByIds"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "ids"
+        in: "query"
+        description: "Article ID values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "integer"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Article"
+        400:
+          description: "Invalid status value"
+  /article/{articleId}:
+    get:
+      tags:
+      - "article"
+      summary: "Find article by ID"
+      description: "Returns a single article"
+      operationId: "getArticleById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "articleId"
+        in: "path"
+        description: "ID of article to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Article"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Pet not found"
+    post:
+      tags:
+      - "article"
+      summary: "Updates an article with form data"
+      description: ""
+      operationId: "updateArticleWithForm"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "articleId"
+        in: "path"
+        description: "ID of article that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated name of the article"
+        required: false
+        type: "string"
+      - name: "content"
+        in: "formData"
+        description: "Updated content of the article"
+        required: false
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+    delete:
+      tags:
+      - "article"
+      summary: "Deletes an article"
+      description: ""
+      operationId: "deleteArticle"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "articleId"
+        in: "path"
+        description: "Article id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Article not found"
+definitions:
+  Article:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      author:
+        $ref: "#/definitions/Author"
+      name:
+        type: "string"
+        example: ""
+      content:
+        type: "string"
+        example: ""
+    xml:
+      name: "Author"
+  Author:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Author"
