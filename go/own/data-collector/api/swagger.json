@@ -1,0 +1,255 @@
+{
+  "consumes": [
+    "application/json",
+    "application/x-www-form-urlencoded",
+    "application/xml"
+  ],
+  "produces": [
+    "application/json",
+    "application/xml"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Schemes:\nhttp\nhttps",
+    "title": "Article collector",
+    "version": "0.0.1"
+  },
+  "host": "localhost",
+  "basePath": "/v1",
+  "paths": {
+    "/article/{articleId}": {
+      "get": {
+        "description": "Returns a single article",
+        "tags": [
+          "article"
+        ],
+        "summary": "Find article by ID",
+        "operationId": "getArticleById",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID of article to return",
+            "name": "ArticleID",
+            "in": "path",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "description": "Updates an article with form data",
+        "tags": [
+          "article"
+        ],
+        "operationId": "updateArticleWithForm",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID of article that needs to be updated",
+            "name": "ArticleID",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Updated content of the article",
+            "name": "Content",
+            "in": "formData"
+          },
+          {
+            "type": "string",
+            "description": "Updated name of the article",
+            "name": "Name",
+            "in": "formData"
+          }
+        ]
+      },
+      "delete": {
+        "description": "Deletes an article",
+        "tags": [
+          "article"
+        ],
+        "operationId": "deleteArticle",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "APIKey",
+            "in": "header"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "Article id to delete",
+            "name": "ArticleID",
+            "in": "path",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/articles": {
+      "put": {
+        "description": "Update an existing article",
+        "tags": [
+          "article"
+        ],
+        "operationId": "updateArticle",
+        "parameters": [
+          {
+            "description": "Article object that needs to be added",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          }
+        ]
+      },
+      "post": {
+        "description": "Add a new article",
+        "tags": [
+          "article"
+        ],
+        "operationId": "addArticle",
+        "parameters": [
+          {
+            "description": "Article object that needs to be added",
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          }
+        ]
+      }
+    },
+    "/articles/findByIds": {
+      "get": {
+        "description": "Multiple article IDs can be provided with comma separated strings",
+        "tags": [
+          "article"
+        ],
+        "summary": "Finds articles by their IDs",
+        "operationId": "findArticlesByIds",
+        "parameters": [
+          {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi",
+            "description": "Article ID values that need to be considered for filter",
+            "name": "Ids",
+            "in": "query",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Article": {
+      "description": "Article article",
+      "type": "object",
+      "properties": {
+        "author": {
+          "$ref": "#/definitions/Author"
+        },
+        "content": {
+          "description": "content",
+          "type": "string",
+          "x-go-name": "Content"
+        },
+        "id": {
+          "description": "id",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "description": "name",
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "data-collector/internal/generated/models"
+    },
+    "Author": {
+      "description": "Author author",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "id",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "description": "name",
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "data-collector/internal/generated/models"
+    }
+  },
+  "responses": {
+    "addArticleMethodNotAllowed": {
+      "description": "AddArticleMethodNotAllowed Invalid input"
+    },
+    "deleteArticleBadRequest": {
+      "description": "DeleteArticleBadRequest Invalid ID supplied"
+    },
+    "deleteArticleNotFound": {
+      "description": "DeleteArticleNotFound Article not found"
+    },
+    "findArticlesByIdsBadRequest": {
+      "description": "FindArticlesByIdsBadRequest Invalid status value"
+    },
+    "findArticlesByIdsOK": {
+      "description": "FindArticlesByIdsOK successful operation",
+      "headers": {
+        "body": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Article"
+          },
+          "description": "In: Body"
+        }
+      }
+    },
+    "getArticleByIdBadRequest": {
+      "description": "GetArticleByIDBadRequest Invalid ID supplied"
+    },
+    "getArticleByIdNotFound": {
+      "description": "GetArticleByIDNotFound Pet not found"
+    },
+    "getArticleByIdOK": {
+      "description": "GetArticleByIDOK successful operation",
+      "schema": {
+        "$ref": "#/definitions/Article"
+      },
+      "headers": {
+        "body": {
+          "description": "In: Body"
+        }
+      }
+    },
+    "updateArticleBadRequest": {
+      "description": "UpdateArticleBadRequest Invalid ID supplied"
+    },
+    "updateArticleMethodNotAllowed": {
+      "description": "UpdateArticleMethodNotAllowed Validation exception"
+    },
+    "updateArticleNotFound": {
+      "description": "UpdateArticleNotFound Article not found"
+    },
+    "updateArticleWithFormMethodNotAllowed": {
+      "description": "UpdateArticleWithFormMethodNotAllowed Invalid input"
+    }
+  }
+}
