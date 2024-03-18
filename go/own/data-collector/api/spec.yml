@@ -116,7 +116,7 @@ paths:
         400:
           description: "Invalid ID supplied"
         404:
-          description: "Pet not found"
+          description: "Article not found"
     post:
       tags:
       - "article"
