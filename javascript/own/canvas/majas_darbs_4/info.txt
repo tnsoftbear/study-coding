@@ -1,0 +1,31 @@
+
+    <button>MANA</button>
+    <button>POGA</button>
+
+    <input type="text" size="11" value="Pirmais">
+    
+    <button style="background-color: blue;">Poga</button>
+
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(50, 80, 20, 0, 2 * Math.PI);
+    ctx.fillStyle = 'red';
+    ctx.fill(); 
+
+    <input type="text" size="15">
+    <input type="text" size="25">
+
+
+    function Tukss() {
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+
+
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'red';
+    ctx.fillText('Nikita Kokorevs', 50, 50);

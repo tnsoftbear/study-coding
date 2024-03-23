@@ -1,0 +1,118 @@
+<html>
+  <title>Datorikas 9. klases 4. ieskaite</title>
+
+  <style>
+    .MyActions {
+      width: 530px;
+      padding: 10px;
+      text-align: center;
+      background-color: orange;
+    }
+    .ActionBtn:active {
+      border-style: inset;
+    }
+    .ActionBtn {
+      height: 2em;
+      margin-top: 5px;
+      font-size: 150%;
+      border-width: 3px;
+      background-color: transparent;
+      border: 1px solid #000;
+      color: #000;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .ActionBtn:hover {
+      background-color: #f0f0f0;
+    }
+    .virsraksts {
+      font-size: xx-large;
+      font-weight: bold;
+    }
+  </style>
+
+  <body>
+    <div id="virsraksts" class="virsraksts">
+      Te parādīsies mans vārds, uzvārds
+    </div>
+
+    <canvas
+      id="myCanvas"
+      width="550"
+      height="550"
+      style="background-color: orange"
+    >
+    </canvas>
+ 
+    <div class="MyActions">
+      <button class="ActionBtn" onclick="notirit()">Notīrit</button>
+      <button class="ActionBtn" onclick="aplis()">Aplis</button>
+      <button class="ActionBtn" onclick="nikita()">Vārds</button>
+      <button class="ActionBtn" onclick="kokorevs()">Virsraksts</button>
+      <button class="ActionBtn" style="background-color: red;" onclick="zirneklis()">Zirneklis</button>
+      <button class="ActionBtn" style="background-color: green;" onclick="paldies()">Paldies</button>
+      <button class="ActionBtn" style="background-color: yellow;" onclick="parsteigums()">Pārsteigums</button>
+    </div>
+    <script>
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      var name = "Nikita Kokorevs";
+
+      function notirit() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function aplis() {
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2;
+        var radius = 50;
+        var color = "blue";
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+
+      function nikita() {
+        ctx.font = "bold 36px Arial";
+        ctx.fillStyle = "green";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(name, 140, 40);
+      }
+
+      function kokorevs() {
+        document.getElementById("virsraksts").innerHTML = name;
+      }
+
+      function zirneklis() {
+        var BugImg = new Image();
+        BugImg.src = "https://s2js.com/img/etc/ladybug.png";
+        BugImg.onload = function () {
+          ctx.drawImage(BugImg, 40, 120);
+        };
+      }
+
+      function paldies() {
+        alert(
+          "Lielisks, ka izmantojāt šo programmu. Ceru, ka tā jums sagādāja prieku. Veiksmīgu darbu!"
+        );
+      }
+
+      function parsteigums() {
+        var x = 1;
+        var y = 160;
+        squareSize = Math.random() * 50 + 10;
+        ctx.fillStyle = "white";
+        ctx.lineCap = "round";
+        ctx.lineWidth = 5;
+        var s = 25;
+        for (var i = 0; i < 50; i++) {
+          ctx.fillRect(x + i * s, y + i * s, squareSize, squareSize);
+          ctx.fillRect(x + i * s, y + 500 - i * s, squareSize, squareSize);
+        }
+      }
+    </script>
+  </body>
+</html>
