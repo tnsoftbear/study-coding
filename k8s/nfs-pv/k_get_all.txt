@@ -1,0 +1,33 @@
+NAMESPACE     NAME                                          READY   STATUS      RESTARTS         AGE    IP           NODE                       NOMINATED NODE   READINESS GATES
+kube-system   pod/helm-install-traefik-crd-crd78            0/1     Completed   0                251d   10.42.0.6    k3d-ub22cluster-server-0   <none>           <none>
+kube-system   pod/helm-install-traefik-m42hc                0/1     Completed   1                251d   10.42.0.2    k3d-ub22cluster-server-0   <none>           <none>
+kube-system   pod/svclb-traefik-9dc7761d-qlmfp              2/2     Running     28 (2d20h ago)   251d   10.42.0.74   k3d-ub22cluster-server-0   <none>           <none>
+kube-system   pod/local-path-provisioner-76d776f6f9-bwl86   1/1     Running     18 (2d20h ago)   251d   10.42.0.78   k3d-ub22cluster-server-0   <none>           <none>
+kube-system   pod/traefik-56b8c5fb5c-dg5hj                  1/1     Running     14 (2d20h ago)   251d   10.42.0.77   k3d-ub22cluster-server-0   <none>           <none>
+kube-system   pod/metrics-server-7b67f64457-skn6z           1/1     Running     17 (2d20h ago)   251d   10.42.0.76   k3d-ub22cluster-server-0   <none>           <none>
+kube-system   pod/coredns-59b4f5bbd5-hsw2b                  1/1     Running     14 (2d20h ago)   251d   10.42.0.75   k3d-ub22cluster-server-0   <none>           <none>
+
+NAMESPACE     NAME                     TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE    SELECTOR
+default       service/kubernetes       ClusterIP      10.43.0.1      <none>        443/TCP                      251d   <none>
+kube-system   service/kube-dns         ClusterIP      10.43.0.10     <none>        53/UDP,53/TCP,9153/TCP       251d   k8s-app=kube-dns
+kube-system   service/metrics-server   ClusterIP      10.43.250.62   <none>        443/TCP                      251d   k8s-app=metrics-server
+kube-system   service/traefik          LoadBalancer   10.43.86.10    172.19.0.2    80:32374/TCP,443:32388/TCP   251d   app.kubernetes.io/instance=traefik-kube-system,app.kubernetes.io/name=traefik
+
+NAMESPACE     NAME                                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE    CONTAINERS             IMAGES                                                SELECTOR
+kube-system   daemonset.apps/svclb-traefik-9dc7761d   1         1         1       1            1           <none>          251d   lb-tcp-80,lb-tcp-443   rancher/klipper-lb:v0.4.3,rancher/klipper-lb:v0.4.3   app=svclb-traefik-9dc7761d
+
+NAMESPACE     NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS               IMAGES                                    SELECTOR
+kube-system   deployment.apps/traefik                  1/1     1            1           251d   traefik                  rancher/mirrored-library-traefik:2.9.4    app.kubernetes.io/instance=traefik-kube-system,app.kubernetes.io/name=traefik
+kube-system   deployment.apps/local-path-provisioner   1/1     1            1           251d   local-path-provisioner   rancher/local-path-provisioner:v0.0.24    app=local-path-provisioner
+kube-system   deployment.apps/metrics-server           1/1     1            1           251d   metrics-server           rancher/mirrored-metrics-server:v0.6.2    k8s-app=metrics-server
+kube-system   deployment.apps/coredns                  1/1     1            1           251d   coredns                  rancher/mirrored-coredns-coredns:1.10.1   k8s-app=kube-dns
+
+NAMESPACE     NAME                                                DESIRED   CURRENT   READY   AGE    CONTAINERS               IMAGES                                    SELECTOR
+kube-system   replicaset.apps/traefik-56b8c5fb5c                  1         1         1       251d   traefik                  rancher/mirrored-library-traefik:2.9.4    app.kubernetes.io/instance=traefik-kube-system,app.kubernetes.io/name=traefik,pod-template-hash=56b8c5fb5c
+kube-system   replicaset.apps/local-path-provisioner-76d776f6f9   1         1         1       251d   local-path-provisioner   rancher/local-path-provisioner:v0.0.24    app=local-path-provisioner,pod-template-hash=76d776f6f9
+kube-system   replicaset.apps/metrics-server-7b67f64457           1         1         1       251d   metrics-server           rancher/mirrored-metrics-server:v0.6.2    k8s-app=metrics-server,pod-template-hash=7b67f64457
+kube-system   replicaset.apps/coredns-59b4f5bbd5                  1         1         1       251d   coredns                  rancher/mirrored-coredns-coredns:1.10.1   k8s-app=kube-dns,pod-template-hash=59b4f5bbd5
+
+NAMESPACE     NAME                                 COMPLETIONS   DURATION   AGE    CONTAINERS   IMAGES                                      SELECTOR
+kube-system   job.batch/helm-install-traefik-crd   1/1           30s        251d   helm         rancher/klipper-helm:v0.7.7-build20230403   controller-uid=bb8ed985-369b-4737-af2d-d5cb0250421d
+kube-system   job.batch/helm-install-traefik       1/1           32s        251d   helm         rancher/klipper-helm:v0.7.7-build20230403   controller-uid=bcc2e263-6890-4219-aff8-2f12f1c73ec2

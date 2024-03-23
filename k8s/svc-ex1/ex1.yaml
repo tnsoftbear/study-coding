@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ex1-web-deployment
+  labels:
+    app: ex1-web-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: kgb
+  template:
+    metadata:
+      labels:
+        project: kgb  # Service will look for these PODs labels
+    spec:
+      containers:
+      - name: ex1-web
+        image: adv4000/k8sphp:latest
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ex1-web-service
+  labels:
+    env: prod
+spec:
+  selector:
+    project: kgb # Selecting PODs with these labels
+  ports:
+    - name: app-listener
+      protocol: TCP
+      port: 80 # Port on LoadBalancer
+      targetPort: 80 # Port on POD
+  type: LoadBalancer

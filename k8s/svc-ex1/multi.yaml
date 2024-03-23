@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ex1-web-deployment-multi
+  labels:
+    app: ex1-web-deployment-multi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: cia
+  template:
+    metadata:
+      labels:
+        project: cia  # Service will look for these PODs labels
+    spec:
+      containers:
+        - name: ex1-1-web
+          image: adv4000/k8sphp:latest
+          ports:
+          - containerPort: 80 # Port on POD
+
+        - name: ex1-2-web
+          image: tomcat:latest
+          ports:
+          - containerPort: 8080 # Port on POD
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ex1-web-service-multi
+  labels:
+    env: prod
+spec:
+  type: LoadBalancer
+  selector:
+    project: cia # Selecting PODs with these labels
+  ports:
+    - name: ex1-1-app-listener
+      protocol: TCP
+      port: 80 # Port on LoadBalancer
+      targetPort: 80 # Port on POD
+
+    - name: ex1-2-app-listener
+      protocol: TCP
+      port: 8888 # Port on LoadBalancer (клиент запрашивает по этому порту)
+      targetPort: 8080 # Port on POD
