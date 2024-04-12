@@ -1,0 +1,10 @@
+[package]
+name = "roman_to_int"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "roman2integer"
+path = "src/main_0.rs"
