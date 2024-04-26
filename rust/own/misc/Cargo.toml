@@ -1,0 +1,10 @@
+[package]
+name = "guess_game"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "some_name"
+path = "str_types.rs"
