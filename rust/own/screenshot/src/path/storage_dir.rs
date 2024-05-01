@@ -1,11 +1,11 @@
 use std::path::Path;
 use std::{env, fs};
 
-pub const TARGET_DIR: &str = "storage";
+const TARGET_DIR_DEF: &str = "storage";
 
 pub fn prepare(mut screens_dir: String) -> String {
     if screens_dir.is_empty() {
-        screens_dir = TARGET_DIR.to_string();
+        screens_dir = TARGET_DIR_DEF.to_string();
     }
     let mut storage_path_buf = env::current_dir().unwrap();
     storage_path_buf.push(screens_dir);
