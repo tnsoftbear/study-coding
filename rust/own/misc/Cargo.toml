@@ -7,4 +7,6 @@ edition = "2021"
 
 [[bin]]
 name = "some_name"
-path = "str_types.rs"
+# path = "str_types.rs"
+# path = "num_overflow.rs"
+path = "float.rs"

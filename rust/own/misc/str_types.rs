@@ -1,3 +1,5 @@
+mod math;
+
 fn main() {
     // Пример использования &str
     let my_str: &str = "Привет, &str"; // Строка в кодировке UTF-8
