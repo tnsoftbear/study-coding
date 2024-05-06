@@ -13,7 +13,7 @@ pub fn make(storage_root_path: &str) {
 }
 
 fn make_filename(clock: &dyn CurrentDate) -> String {
-    let now = clock.get_current_date();
+    let now = clock.get_current_date_utc();
     let now_formatted = now.format("%Y-%m-%d_%H-%M-%S_%f");
     let filename = format!("{now_formatted}.png");
     filename
@@ -23,13 +23,21 @@ fn make_filename(clock: &dyn CurrentDate) -> String {
 mod tests {
     use chrono::{DateTime, TimeZone, Utc};
     use super::*;
-    use crate::date::clock::CurrentDate;
 
     #[test]
     fn test_make_filename() {
+        let mut mock = crate::date::clock::MockCurrentDate::new();
+        mock.expect_get_current_date_utc()
+            .times(1)
+            .returning(|| Utc.with_ymd_and_hms(2024, 5, 7, 12, 0, 0).unwrap());
+        assert_eq!(make_filename(&mock), "2024-05-07_12-00-00_000000000.png");
+    }
+
+    #[test]
+    fn test_make_filename_2() {
         struct ClockMock;
         impl CurrentDate for ClockMock {
-            fn get_current_date(&self) -> DateTime<Utc> {
+            fn get_current_date_utc(&self) -> DateTime<Utc> {
                 let fixed_date_time = Utc.with_ymd_and_hms(2024, 5, 7, 12, 0, 0).unwrap();
                 fixed_date_time
             }
