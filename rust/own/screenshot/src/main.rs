@@ -4,6 +4,7 @@ mod path;
 mod keyboard;
 mod cli;
 mod screen;
+mod date;
 
 fn main() {
     let cli_input = cli::reader::read();
