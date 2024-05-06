@@ -2,11 +2,12 @@ use std::path::{Path, PathBuf};
 use std::{env, fs};
 use std::io;
 use std::io::Write;
+use crate::cli::reader::CliInput;
 
 const SCREENS_DIR_DEF: &str = "storage";
 
-pub fn determine_root_path(screens_dir_suggestion: &str) -> String {
-    let mut screens_dir: String = screens_dir_suggestion.to_string();
+pub fn determine_root_path(cli_input: &CliInput) -> String {
+    let mut screens_dir: String = cli_input.screens_dir.to_string();
     loop {
         match do_prepare(&screens_dir) {
             Ok(root_path) => {
@@ -48,9 +49,7 @@ fn do_prepare(input_screens_dir: &str) -> Result<String, String> {
     let storage_path_string = make_storage_root_path_string(screens_dir);
 
     if check_path_exists(&storage_path_buf) {
-        if let Err(error_message) = check_dir_ready(&storage_path_buf) {
-            return Err(error_message);
-        }
+        check_dir_ready(&storage_path_buf)?;
         println!("Screens save path is: {storage_path_string}");
     } else {
         if let Err(err) = fs::create_dir(storage_path_buf.clone()) {
@@ -59,7 +58,7 @@ fn do_prepare(input_screens_dir: &str) -> Result<String, String> {
         println!("Directory for screens is created: {storage_path_string}");
     }
 
-    return Ok(storage_path_string)
+    Ok(storage_path_string)
 }
 
 fn check_path_exists(path: &Path) -> bool {
