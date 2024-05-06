@@ -1,5 +1,5 @@
-use chrono::{DateTime, Utc};
-use mockall::*;
+use chrono::{DateTime, Local, Utc};
+use mockall::automock;
 
 pub struct Clock;
 
@@ -10,12 +10,23 @@ impl Clock {
 }
 
 #[automock]
-pub trait CurrentDate {
-    fn get_current_date_utc(&self) -> DateTime<Utc>;
+pub trait CurrentDateUtc {
+    fn now_utc(&self) -> DateTime<Utc>;
 }
 
-impl CurrentDate for Clock {
-    fn get_current_date_utc(&self) -> DateTime<Utc> {
+impl CurrentDateUtc for Clock {
+    fn now_utc(&self) -> DateTime<Utc> {
         Utc::now()
+    }
+}
+
+#[automock]
+pub trait CurrentDateLocal {
+    fn now_local(&self) -> DateTime<Local>;
+}
+
+impl CurrentDateLocal for Clock {
+    fn now_local(&self) -> DateTime<Local> {
+        Local::now()
     }
 }
