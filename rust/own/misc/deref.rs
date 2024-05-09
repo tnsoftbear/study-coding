@@ -1,10 +1,13 @@
+use std::ops::Deref;
+
 fn main() {
     // deref1();
     // deref2();
     // deref3();
     // deref4();
     // deref5();
-    deref6();
+    // deref6();
+    deref7();
 }
 
 #[allow(dead_code)]
@@ -83,4 +86,15 @@ fn deref6() {
     // println!("{}", s);   // cannot borrow `s` as immutable because it is also borrowed as mutable
     t.push_str(" world");
     println!("{}", s);
+}
+
+#[allow(dead_code)]
+fn deref7() {
+    let a = Box::new(42);   // Box<i32>
+    let b = &a; // &Box<i32>
+    let c: &i32 = a.deref(); // &i32
+    let d = *a; // i32
+    // let e = *b; // error[E0507]: cannot move out of `*b` which is behind a shared reference
+    let f = *b.clone();
+    println!("c: {:?}, d: {:?}, e: {:?}", c, d, f);
 }

@@ -1,3 +1,6 @@
+mod smartptr1;
+mod thread1;
+
 use std::cell::RefCell;
 use std::rc::{Rc, Weak};
 
