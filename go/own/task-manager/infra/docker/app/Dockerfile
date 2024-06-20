@@ -6,6 +6,7 @@ RUN go mod tidy \
     && CGO_ENABLED=0 GOOS=linux go build ./cmd/web_server.go
 
 FROM alpine:latest
+RUN apk add curl
 WORKDIR /app
 COPY --from=builder /app/web_server .
 CMD ["./web_server"]
