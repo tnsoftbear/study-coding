@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"task_manager/internal/types"
+	"task_manager/internal/config"
 
 	"github.com/go-redis/redis"
 )
@@ -15,9 +16,9 @@ type RedisManager struct {
 func NewRedisManager() *RedisManager {
 	return &RedisManager{
 		rdb: redis.NewClient(&redis.Options{
-			Addr:     "localhost:6379",
-			Password: "",
-			DB:       0,
+			Addr:     config.GetStrEnv("REDIS_HOST", "localhost:6379"),
+			Password: config.GetStrEnv("REDIS_PASSWORD", ""),
+			DB:       config.GetIntEnv("REDIS_DB", 0),
 		}),
 	}
 }
