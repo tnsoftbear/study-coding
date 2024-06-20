@@ -3,6 +3,18 @@
 ```sh
 go mod init task_manager
 go get -u github.com/gin-gonic/gin
+go get github.com/redis/go-redis/v9
+```
+
+## Redis
+
+```sh
+docker compose up
+docker exec -it task-manager-redis-1 bash
+ls -al /usr/local/bin/  # Находим redis-cli здесь
+redis-cli
+ZRANGE tasks 0 -1 WITHSCORES
+> (empty array)
 ```
 
 ## Testing
@@ -19,3 +31,4 @@ curl -X POST http://localhost:8080/task -H "Content-type: application/json" -d "
 * [gin quickstart](https://gin-gonic.com/docs/quickstart/)
 * [template](https://raw.githubusercontent.com/gin-gonic/examples/master/basic/main.go)
 * [gin docs](https://pkg.go.dev/github.com/gin-gonic/gin)
+* [go-redis](https://github.com/redis/go-redis)
