@@ -43,8 +43,8 @@ GET http://localhost:8080/task
 Content-type: application/json
 HTTP 200
 content-type: application/json; charset=utf-8
-content-length: 203
-{"tasks":[{"id":"task-id-1","name":"task-name-1","description":"task-description-1","created_at":1000001},{"id":"task-id-2","name":"task-name-2","description":"task-description-2","created_at":1000002}]}
+content-length: 437
+{"tasks":[{"id":"task-id-1","name":"task-name-1","description":"task-description-1","created_at":1000001},{"id":"task-id-2","name":"task-name-2","description":"task-description-2","created_at":1000002},{"id":"sample-task-id-1","name":"Sample task 1 name","description":"Sample task 1 description","created_at":2000001},{"id":"sample-task-id-2","name":"Sample task 2 name","description":"Sample task 2 description","created_at":2000002}]}
 
 ### Fail: Delete task by id
 DELETE http://localhost:8080/task/absent-task-id

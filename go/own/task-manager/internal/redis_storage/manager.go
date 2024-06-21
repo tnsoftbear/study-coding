@@ -14,9 +14,12 @@ type RedisManager struct {
 }
 
 func NewRedisManager() *RedisManager {
+	addr := fmt.Sprintf("%s:%s", 
+		config.GetStrEnv("REDIS_HOST", "localhost"), 
+		config.GetStrEnv("REDIS_PORT", "6379"))
 	return &RedisManager{
 		rdb: redis.NewClient(&redis.Options{
-			Addr:     config.GetStrEnv("REDIS_HOST", "localhost:6379"),
+			Addr:     addr,
 			Password: config.GetStrEnv("REDIS_PASSWORD", ""),
 			DB:       config.GetIntEnv("REDIS_DB", 0),
 		}),
