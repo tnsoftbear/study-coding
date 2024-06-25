@@ -1,4 +1,4 @@
-package old_main
+package main
 
 import (
 	"fmt"
@@ -68,7 +68,7 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-// func main() {
-// 	r := setupRouter()
-// 	r.Run(":8080")
-// }
+func main() {
+ 	r := setupRouter()
+ 	r.Run(":8080")
+}

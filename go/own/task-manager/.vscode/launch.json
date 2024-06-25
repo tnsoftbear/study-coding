@@ -6,7 +6,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/web_server.go"
+            "program": "${workspaceFolder}/services/customer/cmd/web_server.go"
         }
     ]
 }

@@ -151,27 +151,37 @@ async fn find_locations_by_distance(params: HashMap<String, String>) -> Result<i
 
     #[derive(Serialize)]
     pub struct CoordSerializable {
-        lat: f64,
-        lon: f64,
+        latitude: f64,
+        longitude: f64,
     }
 
     #[derive(Serialize)]
     pub struct RadiusSearchResultSerializable {
         name: String,
-        coord: Option<CoordSerializable>,
-        dist: Option<f64>,
+        // coord: Option<CoordSerializable>,
+        latitude: f64,
+        longitude: f64,
+        distance: Option<f64>,
     }
 
     impl From<&RadiusSearchResult> for RadiusSearchResultSerializable {
         fn from(rsr: &RadiusSearchResult) -> Self {
-            RadiusSearchResultSerializable {
+            let mut rsrs = RadiusSearchResultSerializable {
                 name: rsr.name.clone(),
-                coord: rsr.coord.as_ref().map(|c| CoordSerializable {
-                    lat: c.latitude,
-                    lon: c.longitude,
-                }),
-                dist: rsr.dist,
+                // coord: rsr.coord.as_ref().map(|c| CoordSerializable {
+                //     latitude: c.latitude,
+                //     longitude: c.longitude,
+                // }),
+                latitude: 0f64,
+                longitude: 0f64,
+                distance: rsr.dist.clone(),
+            };
+            // TODO: Разобраться, почему пустые координаты
+            if let Some(coord) = rsr.coord.as_ref() {
+                rsrs.latitude = coord.latitude;
+                rsrs.longitude = coord.longitude;
             }
+            rsrs
         }
     }
 
@@ -242,6 +252,6 @@ async fn main() {
         .recover(handle_rejection);
 
     warp::serve(routes)
-        .run(([127, 0, 0, 1], 8080))
+        .run(([127, 0, 0, 1], 8081))
         .await;
 }
