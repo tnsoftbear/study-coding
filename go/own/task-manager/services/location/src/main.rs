@@ -30,7 +30,7 @@ impl warp::reject::Reject for ParameterRequired {}
 
 async fn handle_rejection(err: Rejection) -> Result<impl Reply, std::convert::Infallible> {
     if err.is_not_found() {
-        Ok(warp::reply::with_status("NOT_FOUND".to_string(), StatusCode::NOT_FOUND))
+        Ok(warp::reply::with_status("404 page not found".to_string(), StatusCode::NOT_FOUND))
     } else if let Some(err) = err.find::<InvalidParameter>() {
         Ok(warp::reply::with_status(err.message.clone(), StatusCode::BAD_REQUEST))
     } else if let Some(err) = err.find::<ParameterRequired>() {
@@ -41,6 +41,10 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, std::convert::In
         let message = err.0.to_string();
         let status = format!("REDIS_ERROR: code: {}, category: {}, message: {}", code, category, message);
         Ok(warp::reply::with_status(status, StatusCode::INTERNAL_SERVER_ERROR))
+    } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
+        // Silly hack for converting 405 -> 404
+        // https://github.com/seanmonstar/warp/issues/77
+        Ok(warp::reply::with_status("404 page not found".to_string(), StatusCode::NOT_FOUND))
     } else {
         eprintln!("unhandled rejection: {:?}", err);
         Ok(warp::reply::with_status("INTERNAL_SERVER_ERROR".to_string(), StatusCode::INTERNAL_SERVER_ERROR))
@@ -55,15 +59,15 @@ async fn ping_handler() -> Result<impl Reply, Rejection> {
     Ok(warp::reply::json(&PingResponse { message: "pong" }))
 }
 
-#[derive(Clone, Deserialize, Debug)]
-struct Location {
+#[derive(Clone, Deserialize, Debug, Serialize)]
+struct ParcelLocker {
     id: String,
     name: String,
     longitude: f64,
     latitude: f64,
 }
 
-impl Location {
+impl ParcelLocker {
     fn to_tuples(&self) -> Vec<(&str, String)> {
         vec![
             ("id", self.id.clone()),
@@ -74,6 +78,17 @@ impl Location {
     }
 }
 
+impl From<HashMap<String, String>> for ParcelLocker {
+    fn from(value: HashMap<String, String>) -> Self {
+        ParcelLocker {
+            id: value["id"].clone(),
+            name: value["name"].clone(),
+            longitude: value["longitude"].parse::<f64>().unwrap(),
+            latitude: value["latitude"].parse::<f64>().unwrap(),
+        }
+    }
+}
+
 //async fn connect() -> redis::RedisResult<redis::Connection> {
 fn connect() -> redis::Connection {
     let client = redis::Client::open("redis://127.0.0.1:6379").unwrap();
@@ -81,34 +96,16 @@ fn connect() -> redis::Connection {
     con
 }
 
-async fn load_location_by_id(id: String) -> Result<impl Reply, Rejection> {
+async fn load_parcel_locker_by_id(id: String) -> Result<impl Reply, Rejection> {
     let mut con = connect();
-    let key = format!("location:{}", id);
-    match con.hgetall(key) {
-        Ok(l) => Ok(warp::reply::json::<HashMap<String, String>>(&l)),
+    let key = make_parcel_locker_key(&id);
+    match con.hgetall::<String, HashMap<String, String>>(key) {
+        Ok(pl_hm) => Ok(warp::reply::json::<ParcelLocker>(&pl_hm.into())),
         Err(err) => Err(warp::reject::custom(RedisErrorType(err)))
     }
 }
 
-async fn save_location(location: Location) -> Result<impl Reply, Rejection> {
-    let mut con = connect();
-    let location2 = location.clone();
-    let location3 = location.clone();
-    let key = format!("location:{}", location.id);
-    let location_tuples = location.to_tuples();
-    if let Err(err) = con.hset_multiple::<String, &str, String, ()>(key, &location_tuples) {
-        return Err(warp::reject::custom(RedisErrorType(err)))
-    }
-    if let Err(err) = con.geo_add::<&str, (f64, f64, String), ()>("locations", (location3.longitude, location3.latitude, location3.id)) {
-        return Err(warp::reject::custom(RedisErrorType(err)))
-    }
-    Ok(warp::reply::with_status(
-        format!("Location added {:?}", location2),
-        StatusCode::CREATED
-    ))
-}
-
-async fn find_locations_by_distance(params: HashMap<String, String>) -> Result<impl Reply, Rejection> {
+async fn find_parcel_lockers_by_distance(params: HashMap<String, String>) -> Result<impl Reply, Rejection> {
     let longitude = match params.get("longitude") {
         Some(longitude) => {
             match longitude.parse::<f64>() {
@@ -187,7 +184,7 @@ async fn find_locations_by_distance(params: HashMap<String, String>) -> Result<i
 
     let mut con = connect();
     let opts = RadiusOptions::default().with_dist().order(RadiusOrder::Asc);
-    let result: RedisResult<Vec<RadiusSearchResult>> = con.geo_radius("locations", longitude, latitude, radius, Unit::Kilometers, opts);
+    let result: RedisResult<Vec<RadiusSearchResult>> = con.geo_radius("parcel_lockers", longitude, latitude, radius, Unit::Kilometers, opts);
     return match result {
         Ok(search_results) => {
             let serializable_results: Vec<RadiusSearchResultSerializable> = search_results.iter()
@@ -199,19 +196,72 @@ async fn find_locations_by_distance(params: HashMap<String, String>) -> Result<i
     }
 }
 
-async fn delete_location_by_id(id: String) -> Result<impl Reply, Rejection> {
+async fn save_parcel_locker(parcel_locker: ParcelLocker) -> Result<impl Reply, Rejection> {
     let mut con = connect();
-    let key = format!("location:{}", id);
+    let parcel_locker2 = parcel_locker.clone();
+    let parcel_locker3 = parcel_locker.clone();
+    let key = make_parcel_locker_key(&parcel_locker.id);
+
+    let is_new = match con.exists::<String, bool>(key.clone()) {
+        Ok(exists) => !exists,
+        Err(err) => return Err(warp::reject::custom(RedisErrorType(err)))
+    };
+
+    let parcel_locker_tuples = parcel_locker.to_tuples();
+    if let Err(err) = con.hset_multiple::<String, &str, String, ()>(key, &parcel_locker_tuples) {
+        return Err(warp::reject::custom(RedisErrorType(err)))
+    }
+
+    if let Err(err) = con.geo_add::<&str, (f64, f64, String), ()>("parcel_lockers", (parcel_locker3.longitude, parcel_locker3.latitude, parcel_locker3.id)) {
+        return Err(warp::reject::custom(RedisErrorType(err)))
+    }
+
+    Ok(warp::reply::with_status(
+        warp::reply::json::<ParcelLocker>(&parcel_locker2),
+        if is_new { StatusCode::CREATED } else { StatusCode::OK }
+    ))
+}
+
+async fn delete_parcel_locker_by_id(id: String) -> Result<impl Reply, Rejection> {
+    #[derive(Serialize)]
+    struct Response {
+        deleted: bool,
+        message: String,
+        parcel_locker: Option<ParcelLocker>,
+    }
+
+    let mut con = connect();
+    let key = make_parcel_locker_key(&id);
     match con.hgetall::<String, HashMap<String, String>>(key.clone()) {
-        Ok(loc) if loc.is_empty() => Ok(warp::reply::json(&format!("Location not found by id: {}", id))),
+        Ok(pl_hm) if pl_hm.is_empty() => Ok(warp::reply::json(
+            &Response {
+                deleted: false,
+                message: format!("Parcel locker not found by id: {}", id),
+                parcel_locker: None
+            })),
         Err(err) => Err(warp::reject::custom(RedisErrorType(err))),
-        Ok(loc) => {
-            match con.del::<String, ()>(key) {
-                Ok(_) => Ok(warp::reply::json(&format!("Location deleted: {:?}", loc))),
+        Ok(pl_hm) => {
+            match con.del::<&str, ()>(&key) {
+                Ok(_) => {
+                    match con.zrem::<&str, &str, ()>("parcel_lockers", &id) {
+                        Ok(_) => Ok(warp::reply::json(
+                            &Response {
+                                deleted: true,
+                                message: "Parcel locker deleted".to_string(),
+                                parcel_locker: Some(pl_hm.into()),
+                            }
+                        )),
+                        Err(err) => Err(warp::reject::custom(RedisErrorType(err)))
+                    }
+                },
                 Err(err) => Err(warp::reject::custom(RedisErrorType(err)))
             }
         }
     }
+}
+
+fn make_parcel_locker_key(id: &str) -> String {
+    format!("parcel_locker:{}", id)
 }
 
 #[tokio::main]
@@ -219,36 +269,36 @@ async fn main() {
     let ping_route = warp::path("ping")
         .and_then(ping_handler);
 
-    let get_location_by_id_route = warp::get()
-        .and(warp::path("location"))
+    let get_parcel_locker_by_id_route = warp::get()
+        .and(warp::path("parcel-locker"))
         .and(warp::path::param())
         .and(warp::path::end())
-        .and_then(load_location_by_id);
+        .and_then(load_parcel_locker_by_id);
 
-    let post_location_route = warp::post()
-        .and(warp::path("location"))
-        .and(warp::path::end())
-        .and(warp::body::json())
-        .and_then(save_location);
-
-    let get_locations_by_distance_route = warp::get()
-        .and(warp::path("location"))
-        .and(warp::path("search"))
+    let get_parcel_lockers_by_distance_route = warp::get()
+        .and(warp::path("parcel-locker"))
+        .and(warp::path("distance-search"))
         .and(warp::path::end())
         .and(warp::query())
-        .and_then(find_locations_by_distance);
+        .and_then(find_parcel_lockers_by_distance);
 
-    let delete_location_by_id_route = warp::delete()
-        .and(warp::path("location"))
+    let post_parcel_locker_route = warp::post()
+        .and(warp::path("parcel-locker"))
+        .and(warp::path::end())
+        .and(warp::body::json())
+        .and_then(save_parcel_locker);
+
+    let delete_parcel_locker_by_id_route = warp::delete()
+        .and(warp::path("parcel-locker"))
         .and(warp::path::param())
         .and(warp::path::end())
-        .and_then(delete_location_by_id);
+        .and_then(delete_parcel_locker_by_id);
 
     let routes = ping_route
-        .or(get_locations_by_distance_route)
-        .or(get_location_by_id_route)
-        .or(post_location_route)
-        .or(delete_location_by_id_route)
+        .or(get_parcel_lockers_by_distance_route)
+        .or(get_parcel_locker_by_id_route)
+        .or(post_parcel_locker_route)
+        .or(delete_parcel_locker_by_id_route)
         .recover(handle_rejection);
 
     warp::serve(routes)
