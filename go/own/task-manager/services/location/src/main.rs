@@ -8,6 +8,7 @@ use redis::{Commands, RedisError, RedisResult};
 use redis::geo::{RadiusOptions, RadiusOrder, RadiusSearchResult, Unit};
 use warp::{Filter, Rejection, Reply};
 use serde::{Deserialize, Serialize};
+use warp::filters::body::BodyDeserializeError;
 use warp::http::{StatusCode};
 
 #[derive(Debug)]
@@ -53,6 +54,9 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, std::convert::In
         let status = format!("REDIS_ERROR: {} (code: {}, category: {})", message, code, category);
         error_message = status;
         status_code = StatusCode::INTERNAL_SERVER_ERROR;
+    } else if let Some(err) = err.find::<BodyDeserializeError>() {
+        error_message = err.to_string();
+        status_code = StatusCode::UNPROCESSABLE_ENTITY;
     } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
         // Silly hack for converting 405 -> 404
         // https://github.com/seanmonstar/warp/issues/77

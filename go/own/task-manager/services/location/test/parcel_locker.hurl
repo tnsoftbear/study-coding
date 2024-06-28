@@ -34,6 +34,15 @@ content-type: application/json
 content-length: 109
 {"id":"parcel-locker-id-1","name":"The \"Olympic\" Sports Centre","longitude":24.111111,"latitude":56.999999}
 
+### Fail: Missing field insert
+POST {{url_base}}/parcel-locker
+Content-type: application/json
+{"id":"parcel-locker-id-2","name":"The Olympic Sports Centre","longitude":24.124542}
+HTTP 422
+content-type: application/json
+content-length: 88
+{"error":"Request body deserialize error: missing field `latitude` at line 1 column 84"}
+
 ### Ok: Successful insert 2
 POST {{url_base}}/parcel-locker
 Content-type: application/json
