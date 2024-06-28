@@ -1,0 +1,19 @@
+[1;31merror[0m: [1mAssert header value[0m
+   [1;34m-->[0m .\test\parcel_locker.hurl:68:17
+[1;34m    |[0m
+[1;34m    |[0m [90mGET {{url_base}}/parcel-lockers[0m
+[1;34m    |[0m[90m ...[0m
+[1;34m 68 |[0m content-length: 109
+[1;34m    |[0m[1;31m                 ^^^ [0m[1;31mactual value is <317>[0m
+[1;34m    |[0m
+
+[1;31merror[0m: [1mAssert body value[0m
+   [1;34m-->[0m .\test\parcel_locker.hurl:69:1
+[1;34m    |[0m
+[1;34m    |[0m [90mGET {{url_base}}/parcel-lockers[0m
+[1;34m    |[0m[90m ...[0m
+[1;34m 69 |[0m [{"id":"parcel-locker-id-1","name":"The \"Olympic\" Sports Centre","longitude":24.111111,"latitude":56.999999}]
+[1;34m    |[0m[1;31m ^ [0m[1;31mactual value is <[{"id":"parcel-locker-id-1","name":"The \"Olympic\" Sports Centre","longitude":24.111111,"latitude":56.999999},{"id":"parcel-locker-id-2","name":"The Olympic Sports Centre 2","longitude":24.324542,"latitude":57.012123},{"id":"parcel-locker-id-3","name":"The Olympic Sports Centre 3","longitude":25.0,"latitude":58.0}]>[0m
+[1;34m    |[0m
+
+make: *** [hurl] Error 4

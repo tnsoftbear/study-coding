@@ -60,6 +60,38 @@ content-type: application/json
 content-length: 109
 {"id":"parcel-locker-id-1","name":"The \"Olympic\" Sports Centre","longitude":24.111111,"latitude":56.999999}
 
+### Ok: Read all
+GET {{url_base}}/parcel-lockers
+Content-type: application/json
+HTTP 200
+content-type: application/json
+content-length: 317
+[{"id":"parcel-locker-id-1","name":"The \"Olympic\" Sports Centre","longitude":24.111111,"latitude":56.999999},{"id":"parcel-locker-id-2","name":"The Olympic Sports Centre 2","longitude":24.324542,"latitude":57.012123},{"id":"parcel-locker-id-3","name":"The Olympic Sports Centre 3","longitude":25.0,"latitude":58.0}]
+
+### Ok: Read first page
+GET {{url_base}}/parcel-lockers?page=1&per_page=2
+Content-type: application/json
+HTTP 200
+content-type: application/json
+content-length: 219
+[{"id":"parcel-locker-id-1","name":"The \"Olympic\" Sports Centre","longitude":24.111111,"latitude":56.999999},{"id":"parcel-locker-id-2","name":"The Olympic Sports Centre 2","longitude":24.324542,"latitude":57.012123}]
+
+### Ok: Read second page
+GET {{url_base}}/parcel-lockers?page=2&per_page=2
+Content-type: application/json
+HTTP 200
+content-type: application/json
+content-length: 99
+[{"id":"parcel-locker-id-3","name":"The Olympic Sports Centre 3","longitude":25.0,"latitude":58.0}]
+
+### Ok: Read third page
+GET {{url_base}}/parcel-lockers?page=3&per_page=2
+Content-type: application/json
+HTTP 200
+content-type: application/json
+content-length: 2
+[]
+
 ### Ok: Distance search
 GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&radius=10
 Content-type: application/json

@@ -123,6 +123,51 @@ async fn load_parcel_locker_by_id(id: String) -> Result<impl Reply, Rejection> {
     }
 }
 
+async fn load_parcel_lockers_pagenated(params: HashMap<String, String>) -> Result<impl Reply, Rejection> {
+    let page = match params.get("page") {
+        Some(page_param) => {
+            match page_param.parse::<isize>() {
+                Ok(page) => page,
+                Err(_) => return Err(warp::reject::custom(
+                    BadRequestError::ParameterNotNumeric("page".to_string())
+                ))
+            }
+        }
+        None => 1,
+    };
+    let per_page = match params.get("per_page") {
+        Some(per_page_param) => {
+            match per_page_param.parse::<isize>() {
+                Ok(per_page) => per_page,
+                Err(_) => return Err(warp::reject::custom(
+                    BadRequestError::ParameterNotNumeric("per_page".to_string())
+                ))
+            }
+        }
+        None => 10,
+    };
+
+    let start = (page - 1) * per_page;
+    let stop = start + per_page - 1;
+
+    let mut con = connect();
+    let result: RedisResult<Vec<String>> = con.zrange("parcel_lockers", start, stop);
+    match result {
+        Ok(parcel_locker_ids) => {
+            let mut parcel_lockers: Vec<ParcelLocker> = Vec::new();
+            for id in parcel_locker_ids {
+                let key = make_parcel_locker_key(&id);
+                match con.hgetall::<String, HashMap<String, String>>(key) {
+                    Ok(pl_hm) => parcel_lockers.push(pl_hm.into()),
+                    Err(err) => return Err(warp::reject::custom(RedisErrorType(err))),
+                }
+            }
+            Ok(warp::reply::json(&parcel_lockers))
+        }
+        Err(err) => Err(warp::reject::custom(RedisErrorType(err)))
+    }
+}
+
 async fn find_parcel_lockers_by_distance(params: HashMap<String, String>) -> Result<impl Reply, Rejection> {
     let longitude = match params.get("longitude") {
         Some(longitude) => {
@@ -184,9 +229,13 @@ async fn find_parcel_lockers_by_distance(params: HashMap<String, String>) -> Res
     }
 
     let mut con = connect();
-    let opts = RadiusOptions::default().with_dist().with_coord().order(RadiusOrder::Asc);
-    let result: RedisResult<Vec<RadiusSearchResult>> = con.geo_radius("parcel_lockers", longitude, latitude, radius, Unit::Kilometers, opts);
-    return match result {
+    let opts = RadiusOptions::default()
+        .with_dist()
+        .with_coord()
+        .order(RadiusOrder::Asc);
+    let result: RedisResult<Vec<RadiusSearchResult>> = con
+        .geo_radius("parcel_lockers", longitude, latitude, radius, Unit::Kilometers, opts);
+    match result {
         Ok(search_results) => {
             let serializable_results: Vec<RadiusSearchResultSerializable> = search_results.iter()
                 .map(|result| RadiusSearchResultSerializable::from(result))
@@ -289,6 +338,12 @@ async fn main() {
     let ping_route = warp::path("ping")
         .and_then(ping_handler);
 
+    let get_parcel_lockers_route = warp::get()
+        .and(warp::path("parcel-lockers"))
+        .and(warp::path::end())
+        .and(warp::query())
+        .and_then(load_parcel_lockers_pagenated);
+
     let get_parcel_locker_by_id_route = warp::get()
         .and(warp::path("parcel-locker"))
         .and(warp::path::param())
@@ -319,6 +374,7 @@ async fn main() {
         .and_then(delete_all_parcel_lockers);
 
     let routes = ping_route
+        .or(get_parcel_lockers_route)
         .or(get_parcel_locker_by_id_route)
         .or(post_parcel_locker_route)
         .or(delete_parcel_locker_by_id_route)
