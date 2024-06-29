@@ -7,5 +7,5 @@ import (
 
 func main() {
 	r := controller.SetupRouter()
-	r.Run(config.GetStrEnv("APP_HOST", ":8080"))
+	r.Run(config.GetStrEnv("APP_HOST", ":8080")) # todo: port
 }
