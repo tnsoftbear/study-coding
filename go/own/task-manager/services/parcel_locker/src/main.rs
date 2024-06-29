@@ -22,8 +22,8 @@ impl warp::reject::Reject for BadRequestError {}
 impl std::fmt::Display for BadRequestError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match *self {
-            BadRequestError::ParameterNotNumeric(ref param) => write!(f, "{}", format!("\"{}\" parameter must be numeric value", param)),
-            BadRequestError::ParameterRequired(ref param) => write!(f, "{}", format!("\"{}\" parameter required", param)),
+            BadRequestError::ParameterNotNumeric(ref param) => write!(f, "\"{param}\" parameter must be numeric value"),
+            BadRequestError::ParameterRequired(ref param) => write!(f, "\"{param}\" parameter required"),
         }
     }
 }
@@ -51,19 +51,19 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, std::convert::In
         let code = err.0.code().unwrap_or("");
         let category = err.0.category();
         let message = err.0.to_string();
-        let status = format!("REDIS_ERROR: {} (code: {}, category: {})", message, code, category);
+        let status = format!("REDIS_ERROR: {message} (code: {code}, category: {category})");
         error_message = status;
         status_code = StatusCode::INTERNAL_SERVER_ERROR;
     } else if let Some(err) = err.find::<BodyDeserializeError>() {
         error_message = err.to_string();
         status_code = StatusCode::UNPROCESSABLE_ENTITY;
-    } else if let Some(_) = err.find::<warp::reject::MethodNotAllowed>() {
+    } else if err.find::<warp::reject::MethodNotAllowed>().is_some() {
         // Silly hack for converting 405 -> 404
         // https://github.com/seanmonstar/warp/issues/77
         error_message = "404 page not found".to_string();
         status_code = StatusCode::NOT_FOUND;
     } else {
-        eprintln!("unhandled rejection: {:?}", err);
+        eprintln!("unhandled rejection: {err:?}");
         error_message = "INTERNAL_SERVER_ERROR".to_string();
         status_code = StatusCode::INTERNAL_SERVER_ERROR;
     }
@@ -114,8 +114,7 @@ impl From<HashMap<String, String>> for ParcelLocker {
 //async fn connect() -> redis::RedisResult<redis::Connection> {
 fn connect() -> redis::Connection {
     let client = redis::Client::open("redis://127.0.0.1:6379").unwrap();
-    let con = client.get_connection().unwrap();
-    con
+    client.get_connection().unwrap()
 }
 
 async fn load_parcel_locker_by_id(id: String) -> Result<impl Reply, Rejection> {
@@ -227,7 +226,7 @@ async fn find_parcel_lockers_by_distance(params: HashMap<String, String>) -> Res
                 name: rsr.name.clone(),
                 latitude: rsr.coord.as_ref().unwrap().latitude,
                 longitude: rsr.coord.as_ref().unwrap().longitude,
-                distance: rsr.dist.clone(),
+                distance: rsr.dist,
             }
         }
     }
@@ -242,7 +241,7 @@ async fn find_parcel_lockers_by_distance(params: HashMap<String, String>) -> Res
     match result {
         Ok(search_results) => {
             let serializable_results: Vec<RadiusSearchResultSerializable> = search_results.iter()
-                .map(|result| RadiusSearchResultSerializable::from(result))
+                .map(RadiusSearchResultSerializable::from)
                 .collect();
             Ok(warp::reply::json(&serializable_results))
         }
@@ -290,15 +289,15 @@ async fn delete_parcel_locker_by_id(id: String) -> Result<impl Reply, Rejection>
         Ok(pl_hm) if pl_hm.is_empty() => Ok(warp::reply::json(
             &Response {
                 deleted: false,
-                message: format!("Parcel locker not found by id: {}", id),
+                message: format!("Parcel locker not found by id: {id}"),
                 parcel_locker: None
             })),
         Err(err) => Err(warp::reject::custom(RedisErrorType(err))),
         Ok(pl_hm) => {
             match con.del::<&str, ()>(&key) {
-                Ok(_) => {
+                Ok(()) => {
                     match con.zrem::<&str, &str, ()>("parcel_lockers", &id) {
-                        Ok(_) => Ok(warp::reply::json(
+                        Ok(()) => Ok(warp::reply::json(
                             &Response {
                                 deleted: true,
                                 message: "Parcel locker deleted".to_string(),
@@ -334,7 +333,7 @@ async fn delete_all_parcel_lockers() -> Result<impl Reply, Rejection> {
 }
 
 fn make_parcel_locker_key(id: &str) -> String {
-    format!("parcel_locker:{}", id)
+    format!("parcel_locker:{id}")
 }
 
 #[tokio::main]
