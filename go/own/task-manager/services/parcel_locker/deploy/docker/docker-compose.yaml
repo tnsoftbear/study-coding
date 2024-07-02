@@ -1,0 +1,84 @@
+services:
+  pl-app:
+    build: 
+      context: ../..
+      dockerfile: deploy/docker/app/Dockerfile
+      labels:
+        - "app-identity=delivery-magic"
+        - "app-service=pl-app"
+    ports:
+      - 8081:8081
+    env_file:
+      - ./env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/ping"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    depends_on:
+      - pl-redis-storage
+    networks:
+      - pl-public-network
+      - pl-redis-network
+
+  pl-redis-storage:
+    image: redis
+    ports:
+      - 6379:6379
+    labels:
+      - "app-identity=delivery-magic"
+      - "app-service=pl-redis-storage"
+    volumes:
+      - pl-redis-data:/data
+      - ./redis-storage/redis.conf:/usr/local/etc/redis/redis.conf
+    entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    networks:
+      - pl-redis-network
+
+#  pl-redis-populator:
+#    image: redis
+#    depends_on:
+#      - pl-redis-storage
+#    env_file:
+#      - ./env
+#    volumes:
+#      - ./redis-populator:/redis-populator
+#    entrypoint: ["/redis-populator/populate.sh", "/redis-populator/data.txt"]
+#    labels:
+#      - "app-identity=delivery-magic"
+#      - "app-service=pl-redis-populator"
+#    networks:
+#      - pl-redis-network
+#
+#  pl-redis-backup:
+#    image: bash
+#    entrypoint: ["/snapshot-backup.sh"]
+#    depends_on:
+#      - pl-redis-storage
+#    environment:
+#      - BACKUP_PERIOD=60
+#    volumes:
+#      - ./redis-backup/snapshot-backup.sh:/snapshot-backup.sh
+#      - pl-redis-data:/data:ro
+#      - pl-backup:/backup
+#
+volumes:
+  pl-redis-data:
+    labels:
+      - "app-identity=delivery-magic"
+      - "app-volume=pl-redis-data"
+#  pl-backup:
+#    labels:
+#      - "app-identity=delivery-magic"
+#      - "app-volume=pl-backup"
+
+networks:
+  pl-public-network:
+    labels:
+      - "app-identity=delivery-magic"
+      - "app-network=pl-public-network"
+  pl-redis-network:
+    labels:
+      - "app-identity=delivery-magic"
+      - "app-network=pl-redis-network"

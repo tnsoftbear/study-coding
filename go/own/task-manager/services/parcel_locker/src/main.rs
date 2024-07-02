@@ -14,7 +14,7 @@ use crate::controller::route::routing;
 async fn main() {
     let routes = routing::build_routes();
     let host = env::var("APP_HOST")
-        .unwrap_or("127.0.0.1".to_string())
+        .unwrap_or("0.0.0.0".to_string())
         .parse::<IpAddr>()
         .expect("APP_HOST env variable must be valid IP address");
     let port = env::var("APP_PORT")
