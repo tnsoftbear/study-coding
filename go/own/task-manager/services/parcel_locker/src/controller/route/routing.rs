@@ -4,7 +4,9 @@ use crate::controller::action::{deletion, health, loading, saving};
 use crate::controller::rejection::handler::reject;
 
 pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> + Clone {
+    let id_filter = warp::any().map(|| uuid::Uuid::new_v4().to_string());
     let ping_route = warp::path("ping")
+        .and(id_filter)
         .and_then(health::ping_handler);
 
     let get_parcel_lockers_route = warp::get()
@@ -42,6 +44,18 @@ pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> +
         .and(warp::path::end())
         .and_then(deletion::delete_all_parcel_lockers);
 
+    let log = warp::log::custom(|info| {
+        eprintln!(
+            "{} {} {} {:?} from {} with {:?}",
+            info.method(),
+            info.path(),
+            info.status(),
+            info.elapsed(),
+            info.remote_addr().unwrap(),
+            info.request_headers()
+        )
+    });
+
     ping_route
         .or(get_parcel_lockers_route)
         .or(get_parcel_locker_by_id_route)
@@ -49,5 +63,7 @@ pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> +
         .or(delete_parcel_locker_by_id_route)
         .or(get_parcel_lockers_by_distance_route)
         .or(delete_all_parcel_lockers_route)
+        // .with(cors) // todo
+        .with(log)
         .recover(reject)
 }

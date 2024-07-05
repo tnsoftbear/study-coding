@@ -12,6 +12,7 @@ use crate::controller::route::routing;
 
 #[tokio::main]
 async fn main() {
+    log4rs::init_file("config/log4rs.yaml", Default::default()).unwrap();
     let routes = routing::build_routes();
     let host = env::var("APP_HOST")
         .unwrap_or("0.0.0.0".to_string())
