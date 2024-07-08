@@ -1,4 +1,4 @@
-pub mod loading;
-pub mod saving;
-pub mod deletion;
-pub mod health;
+pub(crate) mod deletion;
+pub(crate) mod health;
+pub(crate) mod loading;
+pub(crate) mod saving;

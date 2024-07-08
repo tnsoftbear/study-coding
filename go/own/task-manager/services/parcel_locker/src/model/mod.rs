@@ -1,1 +1,1 @@
-pub mod parcel_locker;
+pub(crate) mod parcel_locker;

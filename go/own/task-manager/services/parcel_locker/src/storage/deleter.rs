@@ -1,8 +1,8 @@
-use std::collections::HashMap;
-use redis::RedisError;
 use crate::model::parcel_locker::ParcelLocker;
-use crate::storage::common::{connect, make_parcel_locker_key};
 use crate::redis::Commands;
+use crate::storage::common::{connect, make_parcel_locker_key};
+use redis::RedisError;
+use std::collections::HashMap;
 
 pub enum DeletionError {
     RedisErrorType(RedisError),
@@ -15,17 +15,13 @@ pub fn delete_parcel_locker_by_id(id: &str) -> Result<ParcelLocker, DeletionErro
     match con.hgetall::<String, HashMap<String, String>>(key.clone()) {
         Ok(pl_hm) if pl_hm.is_empty() => Err(DeletionError::EntryNotFound),
         Err(err) => Err(DeletionError::RedisErrorType(err)),
-        Ok(pl_hm) => {
-            match con.del::<&str, ()>(&key) {
-                Ok(()) => {
-                    match con.zrem::<&str, &str, ()>("parcel_lockers", id) {
-                        Ok(()) => Ok(pl_hm.into()),
-                        Err(err) => Err(DeletionError::RedisErrorType(err))
-                    }
-                },
-                Err(err) => Err(DeletionError::RedisErrorType(err))
-            }
-        }
+        Ok(pl_hm) => match con.del::<&str, ()>(&key) {
+            Ok(()) => match con.zrem::<&str, &str, ()>("parcel_lockers", id) {
+                Ok(()) => Ok(pl_hm.into()),
+                Err(err) => Err(DeletionError::RedisErrorType(err)),
+            },
+            Err(err) => Err(DeletionError::RedisErrorType(err)),
+        },
     }
 }
 
@@ -38,6 +34,6 @@ pub fn delete_all_parcel_lockers() -> Result<(), RedisError> {
             }
             Ok(())
         }
-        Err(err) => Err(err)
+        Err(err) => Err(err),
     }
 }

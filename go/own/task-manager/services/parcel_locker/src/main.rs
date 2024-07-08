@@ -2,17 +2,18 @@
 
 extern crate redis;
 
+mod controller;
+mod infra;
 mod model;
 mod storage;
-mod controller;
 
+use crate::controller::route::routing;
 use std::env;
 use std::net::IpAddr;
-use crate::controller::route::routing;
 
 #[tokio::main]
 async fn main() {
-    log4rs::init_file("config/log4rs.yaml", Default::default()).unwrap();
+    infra::tracing::init();
     let routes = routing::build_routes();
     let host = env::var("APP_HOST")
         .unwrap_or("0.0.0.0".to_string())
@@ -22,7 +23,5 @@ async fn main() {
         .unwrap_or("8081".to_string())
         .parse::<u16>()
         .expect("APP_PORT env variable must be valid port number");
-    warp::serve(routes)
-        .run((host, port))
-        .await;
+    warp::serve(routes).run((host, port)).await;
 }

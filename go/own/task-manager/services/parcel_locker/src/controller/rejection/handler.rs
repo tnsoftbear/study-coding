@@ -1,8 +1,8 @@
+use crate::controller::rejection::errors::{BadRequestError, StorageError};
 use serde::Serialize;
-use warp::{Rejection, Reply};
 use warp::body::BodyDeserializeError;
 use warp::http::StatusCode;
-use crate::controller::rejection::errors::{BadRequestError, StorageError};
+use warp::{Rejection, Reply};
 
 pub async fn reject(err: Rejection) -> Result<impl Reply, std::convert::Infallible> {
     #[derive(Serialize)]
@@ -39,7 +39,9 @@ pub async fn reject(err: Rejection) -> Result<impl Reply, std::convert::Infallib
         status_code = StatusCode::INTERNAL_SERVER_ERROR;
     }
     Ok(warp::reply::with_status(
-        warp::reply::json(&Response { error: error_message }),
-        status_code
+        warp::reply::json(&Response {
+            error: error_message,
+        }),
+        status_code,
     ))
 }
