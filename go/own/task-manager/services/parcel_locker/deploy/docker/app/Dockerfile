@@ -13,7 +13,6 @@ COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 # Build application
 COPY . .
-ENV RUSTFLAGS="-C target-feature=-crt-static"
 RUN cargo build --release --bin parcel_locker
 
 # We do not need the Rust toolchain to run the binary!

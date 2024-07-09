@@ -1,2 +1,0 @@
-REDIS_HOST=tm-redis-storage
-REDIS_PORT=6379

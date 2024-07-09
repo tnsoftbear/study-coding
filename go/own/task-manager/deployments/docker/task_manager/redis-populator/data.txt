@@ -1,4 +1,0 @@
-HSET task:sample-task-id-1 Id "sample-task-id-1" Name "Sample task 1 name" Description "Sample task 1 description" CreatedAt 2000001
-HSET task:sample-task-id-2 Id "sample-task-id-2" Name "Sample task 2 name" Description "Sample task 2 description" CreatedAt 2000002
-ZADD tasks 2000001 "sample-task-id-1"
-ZADD tasks 2000002 "sample-task-id-2"
