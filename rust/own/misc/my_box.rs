@@ -1,6 +1,3 @@
-mod trait1;
-mod trait2;
-
 use std::ops::Deref;
 
 struct MyBox<T>(T);
