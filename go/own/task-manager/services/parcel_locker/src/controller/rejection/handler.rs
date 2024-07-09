@@ -34,10 +34,10 @@ pub async fn reject(err: Rejection) -> Result<impl Reply, std::convert::Infallib
         error_message = "404 page not found".to_string();
         status_code = StatusCode::NOT_FOUND;
     } else {
-        log::warn!("unhandled rejection: {err:?}");
         error_message = "INTERNAL_SERVER_ERROR".to_string();
         status_code = StatusCode::INTERNAL_SERVER_ERROR;
     }
+    log::info!("Request rejected: {error_message}");
     Ok(warp::reply::with_status(
         warp::reply::json(&Response {
             error: error_message,

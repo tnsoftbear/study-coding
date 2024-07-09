@@ -11,3 +11,4 @@ redis = "0.25.4"
 uuid = { version = "1.9.1", features = ["v4"] }
 tracing = { version = "0.1.40", features = ["log"] }
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+log = "0.4.22"
