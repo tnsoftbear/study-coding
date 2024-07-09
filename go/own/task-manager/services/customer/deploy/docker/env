@@ -1,0 +1,2 @@
+REDIS_HOST=cst-redis-storage
+REDIS_PORT=6379

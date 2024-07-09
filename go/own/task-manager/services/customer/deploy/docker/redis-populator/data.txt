@@ -1,0 +1,5 @@
+HSET customer_shipping_address:sample-shipping-address-id-1 Id "sample-shipping-address-id-1" City "New York" Street "Oak Street 1" Longitude "-74.13163" Latitude "40.8277"
+HSET customer_shipping:sample-shipping-id-1 Id "sample-shipping-id-1" Name "Sample shipping 1 name" Description "Sample shipping 1 description" CreatedAt 2000001 AddressId "sample-shipping-address-id-1"
+HSET customer_shipping:sample-shipping-id-2 Id "sample-shipping-id-2" Name "Sample shipping 2 name" Description "Sample shipping 2 description" CreatedAt 2000002
+ZADD customer_shippings 2000001 "sample-shipping-id-1"
+ZADD customer_shippings 2000002 "sample-shipping-id-2"
