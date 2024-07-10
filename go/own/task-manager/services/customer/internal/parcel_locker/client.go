@@ -27,11 +27,11 @@ type ParcelLockersNear struct {
 	ParcelLockers []ParcelLockersDistanceSearchResponse
 }
 
-func (ls *ParcelLockerClient) FindParcelLockersNear(shipping *model.CustomerShipping, radius float64) (ParcelLockersNear, error) {
+func (ls *ParcelLockerClient) FindParcelLockersNear(shipping *model.CustomerShipping, distance float64) (ParcelLockersNear, error) {
 	parcels := ParcelLockersNear{}
 
 	if shipping.Address != nil {
-		endpoint := fmt.Sprintf(parcelLockersDistanceSearchUrlTpl, ls.LocationServiceEndpoint, shipping.Address.Longitude, shipping.Address.Latitude, radius)
+		endpoint := fmt.Sprintf(parcelLockersDistanceSearchUrlTpl, ls.LocationServiceEndpoint, shipping.Address.Longitude, shipping.Address.Latitude, distance)
 		respose, err := http.Get(endpoint)
 		if err != nil {
 			return parcels, err
@@ -42,7 +42,7 @@ func (ls *ParcelLockerClient) FindParcelLockersNear(shipping *model.CustomerShip
 			return parcels, err
 		}
 
-		if err := json.Unmarshal(responseData, &parcels); err != nil {
+		if err := json.Unmarshal(responseData, &parcels.ParcelLockers); err != nil {
 			return parcels, err
 		}
 

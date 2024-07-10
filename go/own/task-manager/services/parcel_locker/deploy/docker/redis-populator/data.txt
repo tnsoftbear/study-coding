@@ -1,0 +1,8 @@
+HSET parcel_locker:venipak-id-1 Id "venipak-id-1" Name "Venipak at Rimi Minska" Longitude "56.959523" Latitude "24.174041"
+GEOADD parcel_lockers "56.959523" "24.174041" "venipak-id-1"
+HSET parcel_locker:dpd-id-1 Id "dpd-id-1" Name "DPD at Nīcgales iela 2, Rīga" Longitude "56.959523" Latitude "24.174041"
+GEOADD parcel_lockers "56.959523" "24.174041" "dpd-id-1"
+HSET parcel_locker:dpd-id-2 Id "dpd-id-2" Name "DPD at Nīcgales iela 46a, Rīga" Longitude "56.944825" Latitude "24.171664"
+GEOADD parcel_lockers "56.944825" "24.171664" "dpd-id-2"
+HSET parcel_locker:dpd-id-3 Id "dpd-id-3" Name "DPD at Ieriķu iela 3, Rīga" Longitude "56.966626" Latitude "24.162913"
+GEOADD parcel_lockers "56.966626" "24.162913" "dpd-id-3"

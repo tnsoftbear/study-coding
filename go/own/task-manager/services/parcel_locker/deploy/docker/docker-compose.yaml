@@ -36,21 +36,21 @@ services:
     networks:
       - pl-redis-network
 
-#  pl-redis-populator:
-#    image: redis
-#    depends_on:
-#      - pl-redis-storage
-#    env_file:
-#      - ./env
-#    volumes:
-#      - ./redis-populator:/redis-populator
-#    entrypoint: ["/redis-populator/populate.sh", "/redis-populator/data.txt"]
-#    labels:
-#      - "app-identity=delivery-magic"
-#      - "app-service=pl-redis-populator"
-#    networks:
-#      - pl-redis-network
-#
+  pl-redis-populator:
+    image: redis
+    depends_on:
+      - pl-redis-storage
+    env_file:
+      - ./env
+    volumes:
+      - ./redis-populator:/redis-populator
+    entrypoint: ["/redis-populator/populate.sh", "/redis-populator/data.txt"]
+    labels:
+      - "app-identity=delivery-magic"
+      - "app-service=pl-redis-populator"
+    networks:
+      - pl-redis-network
+
 #  pl-redis-backup:
 #    image: bash
 #    entrypoint: ["/snapshot-backup.sh"]
