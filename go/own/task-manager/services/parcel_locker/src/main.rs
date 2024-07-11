@@ -2,19 +2,17 @@
 
 extern crate redis;
 
-mod controller;
+mod app;
 mod infra;
-mod model;
-mod storage;
+mod domain;
 
-use crate::controller::route::routing;
 use std::env;
 use std::net::IpAddr;
 
 #[tokio::main]
 async fn main() {
-    infra::tracing::init();
-    let routes = routing::build_routes();
+    infra::trace::tracing::init();
+    let routes = app::rest::route::routing::build_routes();
     let host = env::var("APP_HOST")
         .unwrap_or("0.0.0.0".to_string())
         .parse::<IpAddr>()

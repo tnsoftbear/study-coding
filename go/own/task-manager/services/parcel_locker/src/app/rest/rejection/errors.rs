@@ -4,6 +4,7 @@ use redis::RedisError;
 pub enum BadRequestError {
     ParameterNotNumeric(String),
     ParameterRequired(String),
+    InvalidValue(String),
 }
 
 impl warp::reject::Reject for BadRequestError {}
@@ -16,6 +17,9 @@ impl std::fmt::Display for BadRequestError {
             }
             BadRequestError::ParameterRequired(ref param) => {
                 write!(f, "\"{param}\" parameter required")
+            },
+            BadRequestError::InvalidValue(ref message) => {
+                write!(f, "{message}")
             }
         }
     }

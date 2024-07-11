@@ -102,7 +102,7 @@ content-length: 2
 []
 
 ### Ok: Distance search
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&radius=10
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&distance=10
 Content-type: application/json
 HTTP 200
 content-type: application/json
@@ -110,7 +110,7 @@ content-length: 216
 [{"name":"parcel-locker-id-1","latitude":56.99999958780393,"longitude":24.11110907793045,"distance":5.4978},{"name":"parcel-locker-id-2","latitude":57.01212315910904,"longitude":24.324543178081512,"distance":7.5461}]
 
 ### Ok: Distance search nothing found
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&radius=1
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&distance=1
 Content-type: application/json
 HTTP 200
 content-type: application/json
@@ -118,7 +118,7 @@ content-length: 2
 []
 
 ### Fail: Distance search invalid "longitude" parameter
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24x20&radius=1
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24x20&distance=1
 Content-type: application/json
 HTTP 400
 content-type: application/json
@@ -126,23 +126,23 @@ content-length: 57
 {"error":"\"longitude\" parameter must be numeric value"}
 
 ### Fail: Distance search invalid "latitude" parameter
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01x&longitude=24.20&radius=1
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01x&longitude=24.20&distance=1
 Content-type: application/json
 HTTP 400
 content-type: application/json
 content-length: 56
 {"error":"\"latitude\" parameter must be numeric value"}
 
-### Fail: Distance search invalid "radius" parameter
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&radius=x1
+### Fail: Distance search invalid "distance" parameter
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&distance=x1
 Content-type: application/json
 HTTP 400
 content-type: application/json
 content-length: 54
-{"error":"\"radius\" parameter must be numeric value"}
+{"error":"\"distance\" parameter must be numeric value"}
 
 ### Fail: Distance search missing "longitude" parameter
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&radius=1
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&distance=1
 Content-type: application/json
 HTTP 400
 content-type: application/json
@@ -150,20 +150,20 @@ content-length: 44
 {"error":"\"longitude\" parameter required"}
 
 ### Fail: Distance search missing "latitude" parameter
-GET {{url_base}}/parcel-locker-distance-search?longitude=24.20&radius=1
+GET {{url_base}}/parcel-locker-distance-search?longitude=24.20&distance=1
 Content-type: application/json
 HTTP 400
 content-type: application/json
 content-length: 43
 {"error":"\"latitude\" parameter required"}
 
-### Fail: Distance search missing "radius" parameter
+### Fail: Distance search missing "distance" parameter
 GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20
 Content-type: application/json
 HTTP 400
 content-type: application/json
 content-length: 41
-{"error":"\"radius\" parameter required"}
+{"error":"\"distance\" parameter required"}
 
 ### Ok: Delete existing entry
 DELETE {{url_base}}/parcel-locker/parcel-locker-id-1
@@ -182,7 +182,7 @@ content-length: 100
 {"deleted":false,"message":"Parcel locker not found by id: parcel-locker-id-1","parcel_locker":null}
 
 ### Ok: Distance search again
-GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&radius=10
+GET {{url_base}}/parcel-locker-distance-search?latitude=57.01&longitude=24.20&distance=10
 Content-type: application/json
 HTTP 200
 content-type: application/json

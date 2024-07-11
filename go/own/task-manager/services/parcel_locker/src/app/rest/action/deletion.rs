@@ -1,7 +1,7 @@
-use crate::controller::rejection::errors::StorageError;
-use crate::model::parcel_locker::ParcelLocker;
-use crate::storage::deleter;
-use crate::storage::deleter::DeletionError;
+use crate::app::rest::rejection::errors::StorageError;
+use crate::domain::model::parcel_locker::ParcelLocker;
+use crate::infra::storage::deleter;
+use crate::infra::storage::deleter::DeletionError;
 use serde::Serialize;
 use tracing::instrument;
 use warp::{Rejection, Reply};

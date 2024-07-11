@@ -1,5 +1,5 @@
-use crate::controller::action::{deletion, health, loading, saving};
-use crate::controller::rejection::handler::reject;
+use crate::app::rest::action::{deletion, health, loading, saving, finding};
+use crate::app::rest::rejection::handler::reject;
 use crate::infra;
 use std::convert::Infallible;
 use warp::{Filter, Reply};
@@ -23,7 +23,7 @@ pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> +
         .and(warp::path("parcel-locker-distance-search"))
         .and(warp::path::end())
         .and(warp::query())
-        .and_then(loading::find_parcel_lockers_by_distance);
+        .and_then(finding::find_parcel_lockers_by_distance);
 
     let post_parcel_locker_route = warp::post()
         .and(warp::path("parcel-locker"))
@@ -49,7 +49,7 @@ pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> +
         .or(delete_parcel_locker_by_id_route)
         .or(get_parcel_lockers_by_distance_route)
         .or(delete_all_parcel_lockers_route)
-        .with(infra::tracing::make_request_trace())
+        .with(infra::trace::tracing::construct_tracing_span_for_request())
         // .with(cors) // todo
         .recover(reject)
 }

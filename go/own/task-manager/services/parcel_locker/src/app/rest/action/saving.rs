@@ -1,6 +1,6 @@
-use crate::controller::rejection::errors::StorageError;
-use crate::model::parcel_locker::ParcelLocker;
-use crate::storage::saver;
+use crate::app::rest::rejection::errors::StorageError;
+use crate::domain::model::parcel_locker::ParcelLocker;
+use crate::infra::storage::saver;
 use tracing::instrument;
 use warp::http::StatusCode;
 
