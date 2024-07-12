@@ -1,8 +1,8 @@
+use crate::infra::storage::common::connect;
+use crate::redis::Commands;
 use redis::geo::{RadiusOptions, RadiusOrder, RadiusSearchResult, Unit};
 use redis::{RedisError, RedisResult};
 use serde::Serialize;
-use crate::infra::storage::common::connect;
-use crate::redis::Commands;
 
 #[derive(Serialize)]
 pub struct RadiusSearchResultSerializable {

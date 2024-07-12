@@ -1,6 +1,6 @@
-use crate::domain::model::parcel_locker::ParcelLocker;
-use crate::redis::Commands;
+use crate::domain::model::ParcelLocker;
 use crate::infra::storage::common::{connect, make_parcel_locker_key};
+use crate::redis::Commands;
 use redis::RedisError;
 use std::collections::HashMap;
 

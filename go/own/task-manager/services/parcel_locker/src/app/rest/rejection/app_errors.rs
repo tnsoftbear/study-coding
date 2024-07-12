@@ -17,7 +17,7 @@ impl std::fmt::Display for BadRequestError {
             }
             BadRequestError::ParameterRequired(ref param) => {
                 write!(f, "\"{param}\" parameter required")
-            },
+            }
             BadRequestError::InvalidValue(ref message) => {
                 write!(f, "{message}")
             }

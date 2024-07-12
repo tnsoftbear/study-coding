@@ -9,7 +9,8 @@ pub fn init() {
         .init();
 }
 
-pub fn construct_tracing_span_for_request() -> warp::trace::Trace<fn(warp::trace::Info) -> tracing::Span> {
+pub fn construct_tracing_span_for_request(
+) -> warp::trace::Trace<fn(warp::trace::Info) -> tracing::Span> {
     warp::trace(|info| {
         let mut remote_addr = String::new();
         if let Some(remote_socket_addr) = info.remote_addr() {

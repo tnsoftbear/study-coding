@@ -1,4 +1,4 @@
-use crate::app::rest::rejection::errors::{BadRequestError, StorageError};
+use crate::app::rest::rejection::app_errors::{BadRequestError, StorageError};
 use serde::Serialize;
 use warp::body::BodyDeserializeError;
 use warp::http::StatusCode;

@@ -3,8 +3,8 @@
 extern crate redis;
 
 mod app;
-mod infra;
 mod domain;
+mod infra;
 
 use std::env;
 use std::net::IpAddr;

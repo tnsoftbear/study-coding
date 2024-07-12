@@ -1,5 +1,5 @@
-use crate::app::rest::rejection::errors::StorageError;
-use crate::domain::model::parcel_locker::ParcelLocker;
+use crate::app::rest::rejection::app_errors::StorageError;
+use crate::domain::model::ParcelLocker;
 use crate::infra::storage::deleter;
 use crate::infra::storage::deleter::DeletionError;
 use serde::Serialize;

@@ -1,23 +1,12 @@
-use crate::domain::model::parcel_locker::ParcelLocker;
-use crate::redis::Commands;
+use crate::domain::model::ParcelLocker;
+use crate::domain::repository::{LoadError, Loading};
 use crate::infra::storage::common::{connect, make_parcel_locker_key};
-use redis::{RedisError, RedisResult};
+use crate::redis::Commands;
+use redis::RedisResult;
 use std::collections::HashMap;
-use mockall::automock;
-
-pub enum LoadError {
-    NotFound,
-    RedisError(RedisError),
-}
 
 #[derive(Debug)]
 pub struct Loader {}
-
-#[automock]
-pub trait Loading {
-    fn load_parcel_locker_by_id(&self, id: &str) -> Result<ParcelLocker, LoadError>;
-    fn load_parcel_lockers(&self, page: isize, per_page: isize) -> Result<Vec<ParcelLocker>, RedisError>;
-}
 
 impl Loading for Loader {
     fn load_parcel_locker_by_id(&self, id: &str) -> Result<ParcelLocker, LoadError> {
@@ -30,11 +19,15 @@ impl Loading for Loader {
                 }
                 Ok(pl_hm.into())
             }
-            Err(err) => Err(LoadError::RedisError(err)),
+            Err(err) => Err(LoadError::StorageError(err)),
         }
     }
 
-    fn load_parcel_lockers(&self, page: isize, per_page: isize) -> Result<Vec<ParcelLocker>, RedisError> {
+    fn load_parcel_lockers(
+        &self,
+        page: isize,
+        per_page: isize,
+    ) -> Result<Vec<ParcelLocker>, LoadError> {
         let start = (page - 1) * per_page;
         let stop = start + per_page - 1;
 
@@ -47,12 +40,12 @@ impl Loading for Loader {
                     let key = make_parcel_locker_key(&id);
                     match con.hgetall::<String, HashMap<String, String>>(key) {
                         Ok(pl_hm) => parcel_lockers.push(pl_hm.into()),
-                        Err(err) => return Err(err),
+                        Err(err) => return Err(LoadError::StorageError(err)),
                     }
                 }
                 Ok(parcel_lockers)
             }
-            Err(err) => Err(err),
+            Err(err) => Err(LoadError::StorageError(err)),
         }
     }
 }

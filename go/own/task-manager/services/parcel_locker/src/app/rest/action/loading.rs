@@ -1,6 +1,5 @@
-use crate::app::rest::rejection::errors::{BadRequestError, StorageError};
-use crate::infra::storage::loader;
-use crate::infra::storage::loader::Loading;
+use crate::app::rest::rejection::app_errors;
+use crate::domain::repository::{LoadError, Loading};
 use std::collections::HashMap;
 use std::fmt::Debug;
 use tracing::instrument;
@@ -9,62 +8,75 @@ use warp::{Rejection, Reply};
 #[instrument]
 pub async fn load_parcel_locker_by_id(
     id: String,
-    loader: impl Loading + Debug
+    loader: impl Loading + Debug,
 ) -> Result<impl Reply, Rejection> {
     match loader.load_parcel_locker_by_id(&id) {
         Ok(parcel_locker) => Ok(warp::reply::json(&parcel_locker)),
-        Err(loader::LoadError::NotFound) => Ok(warp::reply::json(&())),
-        Err(loader::LoadError::RedisError(err)) => Err(warp::reject::custom(StorageError(err))),
+        Err(LoadError::NotFound) => Ok(warp::reply::json(&())),
+        Err(LoadError::StorageError(err)) => {
+            Err(warp::reject::custom(app_errors::StorageError(err)))
+        }
     }
 }
 
 #[instrument]
 pub async fn load_parcel_lockers_paginated(
     params: HashMap<String, String>,
-    loader: impl Loading + Debug
+    loader: impl Loading + Debug,
 ) -> Result<impl Reply, Rejection> {
     let page = match params.get("page") {
         Some(page_param) => match page_param.parse::<isize>() {
             Ok(page) => page,
-            Err(_) => return Err(warp::reject::custom(BadRequestError::ParameterNotNumeric(
-                "page".to_string(),
-            )))
+            Err(_) => {
+                return Err(warp::reject::custom(
+                    app_errors::BadRequestError::ParameterNotNumeric("page".to_string()),
+                ))
+            }
         },
         None => 1,
     };
     let per_page = match params.get("per_page") {
         Some(per_page_param) => match per_page_param.parse::<isize>() {
             Ok(per_page) => per_page,
-            Err(_) => return Err(warp::reject::custom(BadRequestError::ParameterNotNumeric(
-                "per_page".to_string(),
-            )))
+            Err(_) => {
+                return Err(warp::reject::custom(
+                    app_errors::BadRequestError::ParameterNotNumeric("per_page".to_string()),
+                ))
+            }
         },
         None => 10,
     };
 
     match loader.load_parcel_lockers(page, per_page) {
         Ok(parcel_lockers) => Ok(warp::reply::json(&parcel_lockers)),
-        Err(err) => Err(warp::reject::custom(StorageError(err))),
+        Err(LoadError::NotFound) => Ok(warp::reply::json(&())),
+        Err(LoadError::StorageError(err)) => {
+            Err(warp::reject::custom(app_errors::StorageError(err)))
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use std::io;
-    use std::io::ErrorKind;
     use super::*;
+    use crate::domain::model::ParcelLocker;
+    use crate::domain::repository::MockLoading;
     use mockall::predicate::*;
     use redis::RedisError;
+    use std::io;
     use warp::http::{StatusCode, Version};
-    use crate::domain::model::parcel_locker::ParcelLocker;
-    use crate::infra::storage::loader::MockLoading;
 
     #[tokio::test]
     async fn load_parcel_locker_by_id_found() {
         // Arrange
         const EXISTING_ID: &str = "11111111";
         let mut loader = MockLoading::new();
-        let expected_parcel_locker = ParcelLocker {id: EXISTING_ID.to_string(), name: "name-1".to_string(), latitude: 0.0, longitude: 0.0};
+        let expected_parcel_locker = ParcelLocker {
+            id: EXISTING_ID.to_string(),
+            name: "name-1".to_string(),
+            latitude: 0.0,
+            longitude: 0.0,
+        };
         let expected_parcel_locker_clone = expected_parcel_locker.clone();
         loader
             .expect_load_parcel_locker_by_id()
@@ -78,7 +90,10 @@ mod tests {
         assert_eq!(parts.status, StatusCode::OK);
         assert_eq!(parts.version, Version::HTTP_11);
         assert!(parts.headers.contains_key("content-type"));
-        assert_eq!(parts.headers.get("content-type").unwrap(), "application/json");
+        assert_eq!(
+            parts.headers.get("content-type").unwrap(),
+            "application/json"
+        );
         let body_bytes = hyper::body::to_bytes(body).await.unwrap();
         let actual_parcel_locker: ParcelLocker = serde_json::from_slice(&body_bytes).unwrap();
         assert_eq!(actual_parcel_locker, expected_parcel_locker);
@@ -92,7 +107,7 @@ mod tests {
         loader
             .expect_load_parcel_locker_by_id()
             .with(eq(ABSENT_ID))
-            .returning(|_| Err(loader::LoadError::NotFound));
+            .returning(|_| Err(LoadError::NotFound));
         // Act
         let reply_result = load_parcel_locker_by_id(ABSENT_ID.to_string(), loader).await;
         // Assert
@@ -101,7 +116,10 @@ mod tests {
         assert_eq!(parts.status, StatusCode::OK);
         assert_eq!(parts.version, Version::HTTP_11);
         assert!(parts.headers.contains_key("content-type"));
-        assert_eq!(parts.headers.get("content-type").unwrap(), "application/json");
+        assert_eq!(
+            parts.headers.get("content-type").unwrap(),
+            "application/json"
+        );
         let actual_body_bytes = hyper::body::to_bytes(body).await.unwrap();
         assert_eq!(actual_body_bytes, hyper::body::Bytes::from("null"));
     }
@@ -115,14 +133,18 @@ mod tests {
         loader
             .expect_load_parcel_locker_by_id()
             .with(eq(ID))
-            .returning(|_| Err(loader::LoadError::RedisError(RedisError::from(io::Error::new(ErrorKind::Other, ERROR_MESSAGE.to_string())))));
+            .returning(|_| {
+                Err(LoadError::StorageError(RedisError::from(
+                    io::Error::new(io::ErrorKind::Other, ERROR_MESSAGE.to_string()),
+                )))
+            });
         // Act
         let reply_result = load_parcel_locker_by_id(ID.to_string(), loader).await;
         // Assert
         assert!(reply_result.is_err());
         if let Err(rejection) = reply_result {
-            assert!(rejection.find::<StorageError>().is_some());
-            if let Some(err) = rejection.find::<StorageError>() {
+            assert!(rejection.find::<app_errors::StorageError>().is_some());
+            if let Some(err) = rejection.find::<app_errors::StorageError>() {
                 assert_eq!(err.0.to_string(), ERROR_MESSAGE.to_string());
                 println!("{:?}", err.0);
             } else {
