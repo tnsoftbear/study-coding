@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"task_manager/internal/model"
+	"task_manager/internal/config"
 )
 
 const (
@@ -25,6 +26,12 @@ type ParcelLockersDistanceSearchResponse struct {
 
 type ParcelLockersNear struct {
 	ParcelLockers []ParcelLockersDistanceSearchResponse
+}
+
+func NewParcelLockerClient() *ParcelLockerClient {
+	return &ParcelLockerClient{
+		LocationServiceEndpoint: config.GetStrEnv("PARCEL_LOCKER_SERVICE_ADDR", "http://localhost:8081"),
+	}
 }
 
 func (ls *ParcelLockerClient) FindParcelLockersNear(shipping *model.CustomerShipping, distance float64) (ParcelLockersNear, error) {

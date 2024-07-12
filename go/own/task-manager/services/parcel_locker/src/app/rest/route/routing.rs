@@ -3,6 +3,7 @@ use crate::app::rest::rejection::handler::reject;
 use crate::infra;
 use std::convert::Infallible;
 use warp::{Filter, Reply};
+use crate::infra::storage::loader::Loader;
 
 pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> + Clone {
     let ping_route = warp::path("ping").and_then(health::ping_handler);
@@ -11,12 +12,14 @@ pub fn build_routes() -> impl Filter<Extract = impl Reply, Error = Infallible> +
         .and(warp::path("parcel-lockers"))
         .and(warp::path::end())
         .and(warp::query())
+        .and(warp::any().map(|| Loader{}))
         .and_then(loading::load_parcel_lockers_paginated);
 
     let get_parcel_locker_by_id_route = warp::get()
         .and(warp::path("parcel-locker"))
         .and(warp::path::param())
         .and(warp::path::end())
+        .and(warp::any().map(|| Loader{}))
         .and_then(loading::load_parcel_locker_by_id);
 
     let get_parcel_lockers_by_distance_route = warp::get()
