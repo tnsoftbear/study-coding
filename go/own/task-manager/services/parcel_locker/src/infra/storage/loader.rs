@@ -25,11 +25,11 @@ impl Loading for Loader {
 
     fn load_parcel_lockers(
         &self,
-        page: isize,
-        per_page: isize,
+        page: usize,
+        per_page: usize,
     ) -> Result<Vec<ParcelLocker>, LoadError> {
-        let start = (page - 1) * per_page;
-        let stop = start + per_page - 1;
+        let start = ((page - 1) * per_page) as isize;
+        let stop = start + (per_page as isize) - 1;
 
         let mut con = connect();
         let result: RedisResult<Vec<String>> = con.zrange("parcel_lockers", start, stop);

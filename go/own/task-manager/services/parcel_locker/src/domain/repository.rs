@@ -11,7 +11,7 @@ pub trait Loading {
     fn load_parcel_locker_by_id(&self, id: &str) -> Result<ParcelLocker, LoadError>;
     fn load_parcel_lockers(
         &self,
-        page: isize,
-        per_page: isize,
+        page: usize,
+        per_page: usize,
     ) -> Result<Vec<ParcelLocker>, LoadError>;
 }
