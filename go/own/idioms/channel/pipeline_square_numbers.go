@@ -1,33 +1,35 @@
-package _main
+package main
 
 import "fmt"
 
-func main() {
-	naturalsCh := make(chan int)
-	squaresCh := make(chan int)
-	go func() {
-		for n := 1; n <= 100; n++ {
-			naturalsCh <- n
+func counter(naturalsCh chan<- int) {
+	for n := 1; n <= 100; n++ {
+		naturalsCh <- n
+	}
+	close(naturalsCh)
+}
+
+func squarer(naturalsCh <-chan int, squaresCh chan<- int) {
+	for {
+		n, ok := <-naturalsCh
+		if !ok {
+			break
 		}
-		close(naturalsCh)
-	}()
+		squaresCh <- n * n
+	}
+	close(squaresCh)
+}
 
-	go func() {
-		for {
-			n, ok := <-naturalsCh
-			if !ok {
-				break
-			}
-			squaresCh <- n * n
-		}
-		close(squaresCh)
-	}()
-
-	// for v, ok := <- squaresCh; ok; v, ok = <- squaresCh {
-	// 	fmt.Println(v)
-	// }
-
+func printer(squaresCh <-chan int) {
 	for v := range squaresCh {
 		fmt.Println(v)
 	}
+}
+
+func main() {
+	ch1 := make(chan int)
+	ch2 := make(chan int)
+	go counter(ch1)
+	go squarer(ch1, ch2)
+	printer(ch2)
 }
