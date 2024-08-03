@@ -1,0 +1,6 @@
+root = "."
+
+[build]
+  args_bin = []
+  bin = "./tmp/main.exe"
+  cmd = "go build -o ./tmp/main.exe cmd/main.go"
