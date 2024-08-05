@@ -1,4 +1,4 @@
-module htmx-counter
+module simple-counter
 
 go 1.22.4
 

@@ -1,0 +1,35 @@
+{{ block "index" . }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/htmx.org@2.0.1/dist/htmx.js" integrity="sha384-gpIh5aLQ0qmX8kZdyhsd6jA24uKLkqIr1WAGtantR4KsS97l/NRBvh8/8OYGThAf" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/index.css">
+
+    <script type="text/javascript">
+document.addEventListener("DOMContentLoaded", (event) => {
+    document.body.addEventListener('htmx:beforeSwap', function(evt) {
+        if (evt.detail.xhr.status === 422) {
+            console.log("setting status to paint");
+            // allow 422 responses to swap as we are using this as a signal that
+            // a form was submitted with bad data and want to rerender with the errors
+            evt.detail.shouldSwap = true;
+            // set isError to false to avoid error logging in console
+            evt.detail.isError = false;
+        }
+    });
+});
+    </script>
+
+</head>
+<body>
+    <h1>Registration</h1>
+    {{ template "contact-form" .Form }}
+    <hr>
+    {{ template "contact-list" .List }}
+</body>
+</html>
+{{ end }}
+

@@ -1,0 +1,62 @@
+{{ block "contact-form" . }}
+<form id="contact-form" hx-swap="outerHTML" hx-post="/contacts">
+    <label for="name">Name</label>
+    <input name="name" placeholder="Name" 
+        {{ if .Values.name }} value="{{ .Values.name }}" {{ end }}
+    />
+
+    <label for="email">Email</label>
+    <input type="email" name="email" placeholder="Email" 
+        {{ if .Values.email }} value="{{ .Values.email }}" {{ end }}
+    />
+
+    {{ if .Errors.email }}
+        <div style="color: red">{{ .Errors.email }}</div>
+    {{ end }}
+
+    <button type="submit">Create contact</button>
+</form>
+{{ end }}
+
+{{ block "contact-list" . }}
+    <div id="contact-list" style="display: flex; flex-direction: column; width: 50%">
+        {{ if .Contacts }}
+        <div style="display: flex; font-weight: bold; border-bottom: 1px solid #ddd;">
+            <div style="flex: 1; padding: 8px;">Name</div>
+            <div style="flex: 1; padding: 8px;">Email</div>
+            <div style="width: 1rem; padding: 8px;">&nbsp;</div>
+            <div style="width: 1rem; padding: 8px;">&nbsp;</div>
+        </div>
+        {{ end }}
+
+        {{ range .Contacts }}
+            {{ template "contact-row" . }}
+        {{ end }}
+    </div>
+{{ end }}
+
+{{ block "contact-row" . }}
+<div class="contact-row" style="display: flex; border-bottom: 1px solid #ddd; align-items: center;">
+    <div style="flex: 1; padding: 8px;">{{ .Name }}</div>
+    <div style="flex: 1; padding: 8px;">{{ .Email }}</div>
+    <div hx-delete="/contacts/{{ .Id }}" 
+         hx-swap="outerHTML swap:500ms" 
+         hx-target="closest .contact-row" 
+         hx-indicator="#ci-{{ .Id }}"
+         style="cursor: pointer; width: 1rem">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path fill="none" d="M0 0h24v24H0z"/>
+            <path d="M4 2h16a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1zM3 6h18v16a1 1 0 01-1 1H4a1 1 0 01-1-1V6zm3 3v9a1 1 0 002 0v-9a1 1 0 00-2 0zm5 0v9a1 1 0 002 0v-9a1 1 0 00-2 0zm5 0v9a1 1 0 002 0v-9a1 1 0 00-2 0z"/>
+        </svg>
+    </div>
+    <div id="ci-{{ .Id }}" class="htmx-indicator" style="width: 24px; height: 24px">
+        <img src="/images/bars.svg" alt="loading" style="width: 24px; height: 24px">
+    </div>
+</div>
+{{ end }}
+
+{{ block "oob-contact-list" . }}
+    <div id="contact-list" hx-swap-oob="outerHTML">
+        {{ template "contact-list" . }}
+    </div>
+{{ end }}
