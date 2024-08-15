@@ -13,16 +13,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2        
       
       - name: check modified fields
         id: check_files
         run: |
           echo "=============== list modified files ==============="
-          # git diff --name-only HEAD^ HEAD
-          git log -1 --name-only --pretty=format:
+          git diff --name-only HEAD^ HEAD
 
           echo "========== check paths of modified files =========="
-          git log -1 --name-only --pretty=format: > files.txt
+          git diff --name-only HEAD^ HEAD > files.txt
           while IFS= read -r file; do
             echo $file
             if [[ $file == go/exercism/two-fer/* ]]; then
