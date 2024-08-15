@@ -9,4 +9,3 @@ func ShareWith(name string) string {
 	}
 	return fmt.Sprintf("One for %s, one for me.", name)
 }
-
