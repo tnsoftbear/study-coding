@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "=============== list modified files ==============="
           # git diff --name-only HEAD^ HEAD
-	  git show --name-only --pretty=format: HEAD
+          git show --name-only --pretty=format: HEAD
 
           echo "========== check paths of modified files =========="
           git show --name-only --pretty=format: HEAD > files.txt
