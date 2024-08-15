@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2        
+          fetch-depth: 2         # Клонируем 2 последних коммита
       
       - name: check modified fields
         id: check_files
@@ -27,7 +27,7 @@ jobs:
           while IFS= read -r file; do
             echo $file
             if [[ $file == go/exercism/two-fer/* ]]; then
-              echo "::set-output name=go_exercism_two-fer::true"
+              echo "go_exercism_two-fer=true" >> $GITHUB_OUTPUT
             # elif [[ $file == /* ]]; then
             #   echo "::set-output name=...::true"
             else
