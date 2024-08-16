@@ -13,3 +13,4 @@ echo ${V2/path/xxx}
 echo ${V2//path/xxx}
 echo ${V2/#c/xxx}
 echo ${V2/%txt/xxx}
+
