@@ -30,8 +30,8 @@ jobs:
               echo "go_exercism_two-fer=true" >> $GITHUB_OUTPUT
             elif [[ $file == go/own/sys-dev/signal_ex1/* ]]; then
               echo "go_own_sys-dev_signal_ex1=true" >> $GITHUB_OUTPUT
-            # else
-            #   echo "file does not belong to any check pattern"
+            else
+              echo "file $file does not belong to any check pattern"
             fi
           done < files.txt
           echo "=============== GITHUB_OUTPUT ==============="
