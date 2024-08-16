@@ -73,6 +73,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: go/own/sys-dev/signal_ex1
+          file: ./go/own/sys-dev/signal_ex1/Dockerfile
           push: true
           tags: tnsoftbear/go-own-sys-dev-signal-ex1:latest
