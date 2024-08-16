@@ -9,6 +9,7 @@ jobs:
     name: Check modifications
     outputs:
       go_exercism_two-fer: ${{ steps.check_files.outputs.go_exercism_two-fer }}
+      go_own_sys-dev_signal_ex1: ${{ steps.check_files.outputs.go_own_sys-dev_signal_ex1 }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
