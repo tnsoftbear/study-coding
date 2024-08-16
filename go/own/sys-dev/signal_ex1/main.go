@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	// c := make(chan os.Signal, 1)
+	//c := make(chan os.Signal, 1)
 	fmt.Println("Before")
 	wait()
 	fmt.Println("After")
