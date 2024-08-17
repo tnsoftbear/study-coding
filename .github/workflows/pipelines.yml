@@ -57,6 +57,27 @@ jobs:
     needs: check
     if: needs.check.outputs.go_own_sys-dev_signal_ex1 == 'true'
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+            context: "{{defaultContext}}:go/own/sys-dev/signal_ex1"
+            file: ./Dockerfile
+            push: true
+            tags: ghcr.io/${{ github.actor }}/go-own-sys-dev-signal-ex1:latest
+
+    # Паблишинг в docker.io репозиторий
+    # Не работает, фейлится с "401 Unauthorized" на шаге "Build and push"
     # steps:
     #   - name: Set up QEMU
     #     uses: docker/setup-qemu-action@v3
@@ -78,21 +99,3 @@ jobs:
     #       file: ./Dockerfile
     #       push: true
     #       tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-own-sys-dev-signal-ex1:latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-            registry: ghcr.io
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-            context: "{{defaultContext}}:go/own/sys-dev/signal_ex1"
-            file: ./Dockerfile
-            push: true
-            tags: ghcr.io/${{ github.actor }}/go-own-sys-dev-signal-ex1:latest
