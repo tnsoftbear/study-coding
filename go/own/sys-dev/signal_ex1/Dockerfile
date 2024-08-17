@@ -2,7 +2,6 @@
 FROM golang:1.22-alpine AS builder
 WORKDIR /app
 RUN pwd
-RUN ls -al
 COPY ./go.mod .
 RUN go version
 COPY . .
