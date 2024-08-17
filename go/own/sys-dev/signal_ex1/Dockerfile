@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1
 FROM golang:1.22-alpine AS builder
 WORKDIR /app
+RUN pwd
+RUN ls -al
+COPY ./go.mod .
 RUN go version
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o myapp .
