@@ -38,7 +38,8 @@ jobs:
           done < files.txt
           echo "=============== GITHUB_OUTPUT ==============="
           if [ -s "$GITHUB_OUTPUT" ]; then
-            echo "### Job summary :rocket:" >> $GITHUB_STEP_SUMMARY
+            echo "### Expected jobs: :rocket:" >> $GITHUB_STEP_SUMMARY
+            cat $GITHUB_OUTPUT >> $GITHUB_STEP_SUMMARY
           fi
 
   go_exercism_two-fer:
