@@ -36,7 +36,14 @@ jobs:
             fi
           done < files.txt
           echo "=============== GITHUB_OUTPUT ==============="
+          echo "::debug::GITHUB_OUTPUT is $GITHUB_OUTPUT"
           cat $GITHUB_OUTPUT
+          echo "::group::My title"
+          echo "Inside group"
+          echo "Inside group too"
+          echo "::add-mask::Mona The Octocat"
+          echo "::endgroup::"
+          echo "GITHUB_OUTPUT: ::add-mask::$GITHUB_OUTPUT"
   
   go_exercism_two-fer:
     needs: check
