@@ -44,7 +44,7 @@ jobs:
           echo "::add-mask::Mona The Octocat"
           echo "::endgroup::"
           echo "GITHUB_OUTPUT: ::add-mask::$GITHUB_OUTPUT"
-  
+
   go_exercism_two-fer:
     needs: check
     if: needs.check.outputs.go_exercism_two-fer == 'true'
