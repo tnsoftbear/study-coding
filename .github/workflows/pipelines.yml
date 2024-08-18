@@ -44,7 +44,7 @@ jobs:
           echo "Inside group too"
           echo "::add-mask::Mona The Octocat"
           echo "::endgroup::"
-          echo "GITHUB_OUTPUT: ::add-mask::$GITHUB_OUTPUT"
+          echo "::add-mask::GITHUB_OUTPUT: $GITHUB_OUTPUT"
 
   go_exercism_two-fer:
     needs: check
