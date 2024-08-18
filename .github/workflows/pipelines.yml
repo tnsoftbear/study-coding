@@ -37,11 +37,13 @@ jobs:
             fi
           done < files.txt
           echo "=============== GITHUB_OUTPUT ==============="
+          echo "### This is job summary! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
+          echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
           echo "::debug::GITHUB_OUTPUT is $GITHUB_OUTPUT"
           cat $GITHUB_OUTPUT
           echo "::group::My title"
           echo "Inside group"
-          echo "Inside group too"
           echo "::add-mask::Mona The Octocat"
           echo "::endgroup::"
           echo "::add-mask::GITHUB_OUTPUT: $GITHUB_OUTPUT"
