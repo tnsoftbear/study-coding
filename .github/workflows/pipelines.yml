@@ -37,16 +37,9 @@ jobs:
             fi
           done < files.txt
           echo "=============== GITHUB_OUTPUT ==============="
-          echo "### This is job summary! :rocket:" >> $GITHUB_STEP_SUMMARY
-          echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
-          echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
-          echo "::debug::GITHUB_OUTPUT is $GITHUB_OUTPUT"
-          cat $GITHUB_OUTPUT
-          echo "::group::My title"
-          echo "Inside group"
-          echo "::add-mask::Mona The Octocat"
-          echo "::endgroup::"
-          echo "::add-mask::GITHUB_OUTPUT: $GITHUB_OUTPUT"
+          if [ -s "$GITHUB_OUTPUT" ]; then
+            echo "### Job summary :rocket:" >> $GITHUB_STEP_SUMMARY
+          fi
 
   go_exercism_two-fer:
     needs: check
@@ -62,7 +55,10 @@ jobs:
 
     - name: Run test
       run: cd go/exercism/two-fer/ && go test .
-    
+
+    - name: Summary job
+      run: echo "- go/exercism/two-fer code is tested" >> $GITHUB_STEP_SUMMARY
+
   go_own_sys-dev_signal_ex1:
     needs: check
     if: needs.check.outputs.go_own_sys-dev_signal_ex1 == 'true'
@@ -86,6 +82,9 @@ jobs:
             push: true
             tags: ghcr.io/${{ github.actor }}/go-own-sys-dev-signal-ex1:latest
 
+      - name: Summary job
+        run: echo "- go/own/sys-dev/signal_ex1 build is published" >> $GITHUB_STEP_SUMMARY
+      
     # Паблишинг в docker.io репозиторий
     # Не работает, фейлится с "401 Unauthorized" на шаге "Build and push"
     # steps:
