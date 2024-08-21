@@ -11,6 +11,7 @@ jobs:
     outputs:
       go_exercism_two-fer: ${{ steps.check_files.outputs.go_exercism_two-fer }}
       go_own_sys-dev_signal_ex1: ${{ steps.check_files.outputs.go_own_sys-dev_signal_ex1 }}
+      k8s: ${{ steps.check_files.outputs.k8s }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -32,13 +33,15 @@ jobs:
               echo "go_exercism_two-fer=true" >> $GITHUB_OUTPUT
             elif [[ $file == go/own/sys-dev/signal_ex1/* ]]; then
               echo "go_own_sys-dev_signal_ex1=true" >> $GITHUB_OUTPUT
+            elif [[ $file == k8s/* ]]; then
+              echo "k8s=true" >> $GITHUB_OUTPUT
             else
               echo "file $file does not belong to any check pattern"
             fi
           done < files.txt
-          echo "=============== GITHUB_OUTPUT ==============="
+
           if [ -s "$GITHUB_OUTPUT" ]; then
-            echo "### Expected jobs: :rocket:" >> $GITHUB_STEP_SUMMARY
+            echo "### :rocket: Expected jobs:" >> $GITHUB_STEP_SUMMARY
             cat $GITHUB_OUTPUT >> $GITHUB_STEP_SUMMARY
           fi
 
@@ -109,3 +112,17 @@ jobs:
     #       file: ./Dockerfile
     #       push: true
     #       tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-own-sys-dev-signal-ex1:latest
+
+  k8s:
+    needs: check
+    if: needs.check.outputs.k8s == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: login to Github Packages
+        run: echo "${{ github.token }}" | docker login https://ghcr.io -u ${GITHUB_ACTOR} --password-stdin
+      - uses: actions/checkout@v4
+      - uses: docker://ghcr.io/yannh/kubeconform:latest
+        with:
+          entrypoint: '/kubeconform'
+          args: "-summary -output json kubeconfigs/"
