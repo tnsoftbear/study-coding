@@ -22,3 +22,4 @@ spec:
   - name: nginx-configmap-volume
     configMap:
       name: nginx-configmap
+
