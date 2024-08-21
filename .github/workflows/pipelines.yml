@@ -11,7 +11,7 @@ jobs:
     outputs:
       go_exercism_two-fer: ${{ steps.check_files.outputs.go_exercism_two-fer }}
       go_own_sys-dev_signal_ex1: ${{ steps.check_files.outputs.go_own_sys-dev_signal_ex1 }}
-      k8s: ${{ steps.check_files.outputs.k8s }}
+      k8s_healthprobe-for-app_k8s: ${{ steps.check_files.outputs.k8s_healthprobe-for-app_k8s }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,8 +33,8 @@ jobs:
               echo "go_exercism_two-fer=true" >> $GITHUB_OUTPUT
             elif [[ $file == go/own/sys-dev/signal_ex1/* ]]; then
               echo "go_own_sys-dev_signal_ex1=true" >> $GITHUB_OUTPUT
-            elif [[ $file == k8s/* ]]; then
-              echo "k8s=true" >> $GITHUB_OUTPUT
+            elif [[ $file == k8s/healthprobe-for-app/k8s/* ]]; then
+              echo "k8s_healthprobe-for-app_k8s=true" >> $GITHUB_OUTPUT
             else
               echo "file $file does not belong to any check pattern"
             fi
@@ -115,7 +115,7 @@ jobs:
 
   k8s:
     needs: check
-    if: needs.check.outputs.k8s == 'true'
+    if: needs.check.outputs.k8s_healthprobe-for-app_k8s == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -125,4 +125,4 @@ jobs:
       - uses: docker://ghcr.io/yannh/kubeconform:latest
         with:
           entrypoint: '/kubeconform'
-          args: "-summary -output json k8s/"
+          args: "-summary -output json k8s/healthprobe-for-app/k8s/"
