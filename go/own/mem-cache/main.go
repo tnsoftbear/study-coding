@@ -13,7 +13,7 @@ func main() {
 	ctx := context.TODO()
 	ttl := 2 * time.Second
 	cache := cache.NewCache(ctx, ttl)
-	profile := &model.Profile{
+	profile := model.Profile{
 		UUID: "id1",
 		Name: "name1",
 		Orders: []*model.Order{

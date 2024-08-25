@@ -1,16 +1,18 @@
-package cache
+package test
 
 import (
 	"context"
 	"encoding/json"
-	"mem-cache/model"
 	"testing"
 	"time"
+	
+	"mem-cache/model"
+	"mem-cache/cache"
 )
 
 func TestAbsence(t *testing.T) {
 	const KEY = "absent"
-	sut := NewCache(context.TODO(), 5 * time.Millisecond)
+	sut := cache.NewCache(context.TODO(), 5 * time.Millisecond)
 	if sut.Has(KEY) {
 		t.Errorf("Checking item absence by key '%s', but item exists", KEY)
 	}
@@ -18,16 +20,16 @@ func TestAbsence(t *testing.T) {
 	if v != nil {
 		t.Errorf("Reading absent item by key '%s', but item is found", KEY)
 	}
-	if err != ErrNotFound {
+	if err != cache.ErrNotFound {
 		t.Errorf("Reading absent item by key '%s' and expecting 'not found' error", KEY)
 	}
 }
 
 func TestExistence(t *testing.T) {
 	const KEY = "existing"
-	sut := NewCache(context.TODO(), 5 * time.Millisecond)
+	sut := cache.NewCache(context.TODO(), 5 * time.Millisecond)
 	now := time.Now()
-	initialProfile := &model.Profile{
+	initialProfile := model.Profile{
 		UUID: "id1",
 		Name: "name1",
 		Orders: []*model.Order{
@@ -62,12 +64,6 @@ func TestExistence(t *testing.T) {
 	if err != nil {
 		t.Errorf("Reading existing item by key '%s', but got error '%s'", KEY, err.Error())
 	}
-	
-	// Почему разные?
-	// if !reflect.DeepEqual(actual, expected) {
-	// 	compareJSON(actual, expected)
-	// 	t.Errorf("Reading existing item by key '%s', but expected value (%+v) not equal to actual (%+v)", KEY, expected, actual)
-	// }
 
 	cachedProfileJSON, _ := json.Marshal(cachedProfile)
 	if string(expectedProfileJSON) != string(cachedProfileJSON) {

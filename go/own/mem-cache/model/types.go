@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"mem-cache/cache"
+	"time"
+)
 
 type Profile struct {
 	UUID   string   `json:"uuid"`
@@ -28,6 +31,11 @@ func (p Profile) Clone() Profile {
 	}
 }
 
+func (p Profile) CloneToCacheValue() cache.CacheValue {
+	profileCV := p.Clone()
+	return profileCV
+}
+
 func (o Order) Clone() Order {
 	return Order{
 		UUID: o.UUID,
@@ -35,4 +43,9 @@ func (o Order) Clone() Order {
 		CreatedAt: o.CreatedAt,
 		UpdatedAt: o.UpdatedAt,
 	}
+}
+
+func (o Order) CloneToCacheValue() cache.CacheValue {
+	orderCV := o.Clone()
+	return orderCV
 }

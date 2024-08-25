@@ -5,16 +5,12 @@ import (
 	"errors"
 	"sync"
 	"time"
-
-	"mem-cache/model"
 )
 
-type Clonable interface {
-    Clone() CacheValue
-}
-
 type CacheKey string
-type CacheValue *model.Profile
+type CacheValue interface {
+	CloneToCacheValue() CacheValue
+}
 
 var ErrNotFound = errors.New("not found")
 var ErrExpired = errors.New("expired")
@@ -66,8 +62,8 @@ func (c *Cache) Set(key CacheKey, value CacheValue) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	expireAt := time.Now().Add(c.ttl)
-	copied := (*value).Clone()
-	c.data[key] = &CacheItem{&copied, expireAt}
+	copied := value.CloneToCacheValue()
+	c.data[key] = &CacheItem{copied, expireAt}
 	return nil
 }
 
@@ -98,19 +94,3 @@ func (c *Cache) cleanup(ctx context.Context) {
 		}
 	}
 }
-
-// func deepCopy(src, dst interface{}) error {
-// 	data, err := json.Marshal(src)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return json.Unmarshal(data, dst)
-// }
-
-// func deepCopy2(src, dst interface{}) error {
-// 	err := copier.Copy(&src, &dst)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
