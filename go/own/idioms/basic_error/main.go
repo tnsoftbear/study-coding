@@ -26,7 +26,8 @@ func main() {
 
 	// Извлекаем конкретный тип ошибки с использованием errors.As()
 	var extractedErr *BasicError
-	if errors.As(wrappedErr, &extractedErr) {
-		fmt.Println("Extracted error message:", extractedErr.Msg) // "my custom error"
+	if errors.As(wrappedErr, &extractedErr) {						
+		fmt.Println("Extracted error message:", extractedErr.Msg) 	// "my custom error"
 	}
 }
+
