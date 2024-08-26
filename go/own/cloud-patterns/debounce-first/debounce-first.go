@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand"
 	"sync"
 	"time"
-	"math/rand"
 )
 
 const TIME_FORMAT = "15:04:05.0000"
+
 type Circuit func(context.Context) (string, error)
 
 func DebounceFirst(circuit Circuit, d time.Duration) Circuit {
@@ -33,7 +34,7 @@ func DebounceFirst(circuit Circuit, d time.Duration) Circuit {
 		}
 
 		result, err = circuit(ctx)
-		
+
 		return result, err
 	}
 	return debounced
@@ -53,7 +54,7 @@ func myFunction(ctx context.Context) (string, error) {
 func main() {
 	fmt.Println("Start main")
 	ctx := context.Background()
-	var decoratedFunction Circuit = DebounceFirst(myFunction, time.Millisecond * 500)
+	var decoratedFunction Circuit = DebounceFirst(myFunction, time.Millisecond*500)
 	for {
 		response, err := decoratedFunction(ctx)
 		if err != nil {
@@ -61,6 +62,6 @@ func main() {
 		} else {
 			fmt.Printf("Result: %v\n", response)
 		}
-		time.Sleep(time.Millisecond * time.Duration(100 * rand.Intn(10)))
+		time.Sleep(time.Millisecond * time.Duration(100*rand.Intn(10)))
 	}
 }

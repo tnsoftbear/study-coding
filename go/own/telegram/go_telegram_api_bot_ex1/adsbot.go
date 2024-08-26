@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"

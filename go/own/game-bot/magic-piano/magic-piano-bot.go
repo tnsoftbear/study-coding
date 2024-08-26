@@ -96,8 +96,8 @@ func clickOnBar2(column int) {
 			fmt.Printf("%d) Empty found (%d: %d, %d)\n", counter, column, xr, y)
 		}
 
-		if (getState(xr, y - inc) == 2) {
-			fmt.Printf("%d) Re-check previous position and found hitted (%d: %d, %d)\n", counter, column, xr, y - 75)
+		if getState(xr, y-inc) == 2 {
+			fmt.Printf("%d) Re-check previous position and found hitted (%d: %d, %d)\n", counter, column, xr, y-75)
 			return
 		}
 	}

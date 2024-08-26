@@ -11,11 +11,11 @@ type List[T any] struct {
 func main() {
 	lst1 := List[uint8]{
 		next: nil,
-		val: 10,
+		val:  10,
 	}
 	lst2 := List[uint8]{
 		next: &lst1,
-		val: 20,
+		val:  20,
 	}
 	fmt.Printf("lst1: %v, lst2: %v", lst1, lst2)
 }

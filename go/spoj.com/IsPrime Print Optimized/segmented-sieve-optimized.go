@@ -14,7 +14,7 @@ const UNKNOWN = 0
 const DROPPED = 0
 
 var numberStatuses [AREA]uint8
-var primeNumbers []uint32	
+var primeNumbers []uint32
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 var writer *bufio.Writer = bufio.NewWriter(os.Stdout)
@@ -99,7 +99,7 @@ func runCase(min uint32, max uint32, caseIdx int) {
 	for i = 0; i < size; i++ {
 		area[i] = min + i
 	}
-	if (area[0] == 1) {
+	if area[0] == 1 {
 		area[0] = DROPPED
 	}
 	var prime uint32 = 2
@@ -115,7 +115,7 @@ func runCase(min uint32, max uint32, caseIdx int) {
 			}
 		}
 
- 		prime = findNextPrime(prime)
+		prime = findNextPrime(prime)
 		if prime*prime > max {
 			break
 		}

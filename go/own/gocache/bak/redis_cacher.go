@@ -14,14 +14,14 @@ const KEY_TPL = "cache:%s:%s"
 
 type RedisCacher struct {
 	rdb *redis.Client
-	ns 	string
+	ns  string
 	exp time.Duration
 }
 
 func NewRedisCacher(namespace string, expiration time.Duration) *RedisCacher {
 	return &RedisCacher{
 		rdb: storage.NewRedisClient(),
-		ns: namespace,
+		ns:  namespace,
 		exp: expiration,
 	}
 }

@@ -7,6 +7,6 @@ func (s str) log() {
 }
 
 func main() {
-    var s str = "hello"
-	s.log();
+	var s str = "hello"
+	s.log()
 }

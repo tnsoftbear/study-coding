@@ -14,7 +14,7 @@ func newInt2() *int {
 }
 
 func main() {
-    var i1 = newInt1()
+	var i1 = newInt1()
 	var i2 = newInt2()
-    fmt.Printf("%d %d %p %p\n", *i1, *i2, i1, i2)	
+	fmt.Printf("%d %d %p %p\n", *i1, *i2, i1, i2)
 }

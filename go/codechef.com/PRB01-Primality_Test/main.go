@@ -40,7 +40,7 @@ func checkIsPrime(number uint32) bool {
 			return true
 		}
 	}
-	prime := primeNumbers[len(primeNumbers) - 1]
+	prime := primeNumbers[len(primeNumbers)-1]
 	for {
 		prime = findNextPrime(prime)
 		if number%prime == 0 {

@@ -4,10 +4,10 @@ import "fmt"
 
 // Car implements a remote controlled car.
 type Car struct {
-	speed int
+	speed        int
 	batteryDrain int
-	battery int
-	distance int
+	battery      int
+	distance     int
 }
 
 // TODO: define the 'Drive()' method
@@ -20,7 +20,7 @@ func (c *Car) Drive() {
 
 // TODO: define the 'CanFinish(trackDistance int) bool' method
 func (c Car) CanFinish(trackDistance int) bool {
-	return (trackDistance / c.speed) * c.batteryDrain <= c.battery
+	return (trackDistance/c.speed)*c.batteryDrain <= c.battery
 }
 
 // TODO: define the 'DisplayDistance() string' method

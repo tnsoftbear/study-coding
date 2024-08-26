@@ -11,7 +11,7 @@ import (
 )
 
 type Book struct {
-	Id int
+	Id   int
 	Name string
 }
 

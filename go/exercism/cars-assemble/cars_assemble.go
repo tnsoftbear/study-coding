@@ -17,7 +17,7 @@ func SuccessRate(speed int) float64 {
 // CalculateProductionRatePerHour for the assembly line, taking into account
 // its success rate
 func CalculateProductionRatePerHour(speed int) float64 {
-	return float64(221 * speed) * SuccessRate(speed)
+	return float64(221*speed) * SuccessRate(speed)
 }
 
 // CalculateProductionRatePerMinute describes how many working items are
@@ -31,7 +31,7 @@ func CalculateProductionRatePerMinute(speed int) int {
 func CalculateLimitedProductionRatePerHour(speed int, limit float64) float64 {
 	var rate float64 = CalculateProductionRatePerHour(speed)
 	if rate > limit {
-		return limit;
+		return limit
 	}
-	return rate;
+	return rate
 }

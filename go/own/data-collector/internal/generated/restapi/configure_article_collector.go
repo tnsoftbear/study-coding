@@ -44,7 +44,7 @@ func configureAPI(api *operations.ArticleCollectorAPI) http.Handler {
 	// You may change here the memory limit for this multipart form parser. Below is the default (32 MB).
 	// article.UpdateArticleWithFormMaxParseMemory = 32 << 20
 
-	//api.ArticleAddArticleHandler = 
+	//api.ArticleAddArticleHandler =
 
 	if api.ArticleAddArticleHandler == nil {
 		api.ArticleAddArticleHandler = article.AddArticleHandlerFunc(func(params article.AddArticleParams) middleware.Responder {

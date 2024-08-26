@@ -1,6 +1,6 @@
 package lasagna
 
-const OvenTime int = 40;
+const OvenTime int = 40
 
 // RemainingOvenTime returns the remaining minutes based on the `actual` minutes already in the oven.
 func RemainingOvenTime(t int) int {

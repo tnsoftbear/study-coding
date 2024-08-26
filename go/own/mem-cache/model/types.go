@@ -38,8 +38,8 @@ func (p Profile) CloneToCacheValue() cache.CacheValue {
 
 func (o Order) Clone() Order {
 	return Order{
-		UUID: o.UUID,
-		Value: o.Value,
+		UUID:      o.UUID,
+		Value:     o.Value,
 		CreatedAt: o.CreatedAt,
 		UpdatedAt: o.UpdatedAt,
 	}

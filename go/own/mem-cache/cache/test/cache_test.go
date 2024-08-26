@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 	"testing"
 	"time"
-	
-	"mem-cache/model"
+
 	"mem-cache/cache"
+	"mem-cache/model"
 )
 
 func TestAbsence(t *testing.T) {
 	const KEY = "absent"
-	sut := cache.NewCache(context.TODO(), 5 * time.Millisecond)
+	sut := cache.NewCache(context.TODO(), 5*time.Millisecond)
 	if sut.Has(KEY) {
 		t.Errorf("Checking item absence by key '%s', but item exists", KEY)
 	}
@@ -27,7 +27,7 @@ func TestAbsence(t *testing.T) {
 
 func TestExistence(t *testing.T) {
 	const KEY = "existing"
-	sut := cache.NewCache(context.TODO(), 5 * time.Millisecond)
+	sut := cache.NewCache(context.TODO(), 5*time.Millisecond)
 	now := time.Now()
 	initialProfile := model.Profile{
 		UUID: "id1",

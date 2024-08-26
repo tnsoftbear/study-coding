@@ -24,7 +24,7 @@ func IncrementVoteCount(counter *int, increment int) {
 // NewElectionResult creates a new election result
 func NewElectionResult(candidateName string, votes int) *ElectionResult {
 	return &ElectionResult{
-		Name: candidateName,
+		Name:  candidateName,
 		Votes: votes,
 	}
 }

@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-const INIT_PRIME_MAX = 46340   // sqrt(2147483647). Real possible highest prime is 46337 (the next is 46349)
+const INIT_PRIME_MAX = 46340       // sqrt(2147483647). Real possible highest prime is 46337 (the next is 46349)
 const INIT_PRIME_AREA_SIZE = 15446 // INIT_PRIME_HIGHEST / 3
 
 const AREA = 1000001

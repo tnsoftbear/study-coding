@@ -22,7 +22,7 @@ func main() {
 	cfg := config.Init()
 
 	http.HandleFunc("/", hello)
-	
+
 	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
@@ -68,4 +68,4 @@ func main() {
 	<-stopped
 }
 
-// https://pkg.go.dev/net/http	
+// https://pkg.go.dev/net/http

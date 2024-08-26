@@ -9,6 +9,7 @@ import (
 )
 
 const TIME_FORMAT = "15:04:05.0000"
+
 type Circuit func(context.Context) (string, error)
 
 func Breaker(circuit Circuit, failureThreshold uint) Circuit {
@@ -41,7 +42,7 @@ func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 		m.RUnlock()
 
 		response, err := circuit(ctx) // Выполнить целевую ф-цию
-		
+
 		m.Lock()
 		defer m.Unlock()
 		lastAttempt = time.Now() // Зафиксировать время попытки
@@ -53,8 +54,8 @@ func Breaker(circuit Circuit, failureThreshold uint) Circuit {
 		consecutiveFailures = 0 // Иначе сбросить счетчик ошибок
 		return response, nil
 	}
-	
-	return circuitBreaker;
+
+	return circuitBreaker
 }
 
 func myFunction(ctx context.Context) (string, error) {

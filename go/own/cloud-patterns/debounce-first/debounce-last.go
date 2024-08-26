@@ -10,6 +10,7 @@ import (
 )
 
 const TIME_FORMAT = "15:04:05.0000"
+
 type Circuit func(context.Context) (string, error)
 
 func DebounceLast(circuit Circuit, d time.Duration) Circuit {

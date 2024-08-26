@@ -34,8 +34,8 @@ func tryLeft(out *bytes.Buffer) bool {
 	return tryDir("left", &left, out)
 }
 
-func tryRight(out *bytes.Buffer) bool { 
-	return tryDir("right", &right, out) 
+func tryRight(out *bytes.Buffer) bool {
+	return tryDir("right", &right, out)
 }
 
 func walk(walking *sync.WaitGroup, name string) {
@@ -53,7 +53,7 @@ func walk(walking *sync.WaitGroup, name string) {
 	fmt.Fprintf(&out, "\n%v tosses her hands up in exasperation!", name)
 }
 
-func broadcastPerSecond()  {
+func broadcastPerSecond() {
 	for range time.Tick(time.Second) {
 		cadence.Broadcast()
 	}

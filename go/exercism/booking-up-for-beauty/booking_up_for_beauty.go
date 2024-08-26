@@ -1,8 +1,8 @@
 package booking
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
 // Schedule returns a time.Time from a string containing a date
@@ -35,7 +35,7 @@ func Description(date string) string {
 	// Description("7/25/2019 13:45:00")
 	const layout = "1/2/2006 15:04:05"
 	v, _ := time.Parse(layout, date)
-	println(v.String());
+	println(v.String())
 	return fmt.Sprintf("You have an appointment on %s, %s %d, %d, at %d:%d.", v.Weekday(), v.Month(), v.Day(), v.Year(), v.Hour(), v.Minute())
 }
 

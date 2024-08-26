@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"regexp"
 	"crypto/sha512"
-	"io"
+	"fmt"
 	"github.com/gocolly/colly"
+	"io"
+	"regexp"
 	"strconv"
 )
 
@@ -15,7 +15,7 @@ func main() {
 
 	c := colly.NewCollector()
 	c.OnRequest(func(r *colly.Request) {
-		r.Headers.Set("Cookie", "PHPSESSID=" + token)
+		r.Headers.Set("Cookie", "PHPSESSID="+token)
 	})
 	c.OnHTML("div[class=message]", func(e *colly.HTMLElement) {
 		re := regexp.MustCompile(`----- BEGIN MESSAGE -----\s*([01]+)\s*----- END MESSAGE -----`)
@@ -25,7 +25,7 @@ func main() {
 		var chars []byte
 		var i int
 		for i = 0; i < charTotal; i++ {
-			charBinString := inputBinString[i*8:(i+1)*8]
+			charBinString := inputBinString[i*8 : (i+1)*8]
 			if charInt, err := strconv.ParseInt(charBinString, 2, 8); err != nil {
 				fmt.Print(err)
 			} else {
@@ -37,12 +37,12 @@ func main() {
 		io.WriteString(h512, input)
 		url2 := fmt.Sprintf("%s/%x", url, h512.Sum(nil))
 		fmt.Printf("Challenge url: %s\n", url2)
-		
+
 		c2 := colly.NewCollector()
 		c2.OnRequest(func(r2 *colly.Request) {
-			r2.Headers.Set("Cookie", "PHPSESSID=" + token)
+			r2.Headers.Set("Cookie", "PHPSESSID="+token)
 		})
-		c2.OnHTML("html", func (e2 *colly.HTMLElement) {
+		c2.OnHTML("html", func(e2 *colly.HTMLElement) {
 			re := regexp.MustCompile(`FLAG-[\w\d]+`)
 			flag := re.Find([]byte(e2.Text))
 			fmt.Printf("flag: %s\n", flag)

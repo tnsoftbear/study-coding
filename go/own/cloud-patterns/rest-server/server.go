@@ -17,7 +17,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var store = struct{
+var store = struct {
 	sync.RWMutex
 	m map[string]string
 }{m: make(map[string]string)}

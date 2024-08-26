@@ -8,8 +8,8 @@ import (
 )
 
 type Task struct {
-	Id      	string `json:"id"`
-	Name		string `json:"name"`
+	Id          string `json:"id"`
+	Name        string `json:"name"`
 	Description string `json:"description"`
 	CreatedAt   int64  `json:"created_at"`
 }
@@ -31,7 +31,7 @@ func setupRouter() *gin.Engine {
 		for _, task := range taskMap {
 			tasks = append(tasks, task)
 		}
-		json := gin.H{"tasks":tasks}
+		json := gin.H{"tasks": tasks}
 		c.JSON(http.StatusOK, json)
 	})
 
@@ -69,6 +69,6 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
- 	r := setupRouter()
- 	r.Run(":8080")
+	r := setupRouter()
+	r.Run(":8080")
 }

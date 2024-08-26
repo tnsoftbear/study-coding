@@ -89,7 +89,7 @@ func runCase(min int64, max int64, caseI int) {
 			concatenatedResult += fmt.Sprintf("%d\n", v)
 		}
 	}
-	allResults = append(allResults, concatenatedResult);
+	allResults = append(allResults, concatenatedResult)
 }
 
 func main() {

@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/gocolly/colly"
 	"os"
 	"os/exec"
 	"regexp"
-	"github.com/gocolly/colly"
 )
 
 const PHPSESSID = "f4fjafk68vct1tnm89ngc31o51"

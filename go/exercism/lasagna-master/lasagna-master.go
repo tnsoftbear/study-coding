@@ -16,11 +16,11 @@ func Quantities(layers []string) (noodles int, sauce float64) {
 			sauce += 0.2
 		}
 	}
-	return 
+	return
 }
 
 func AddSecretIngredient(friendsList []string, myList []string) []string {
-	return append(myList, friendsList[len(friendsList) - 1])
+	return append(myList, friendsList[len(friendsList)-1])
 }
 
 func ScaleRecipe(quantities []float64, amount int) []float64 {

@@ -6,22 +6,22 @@ type AbstractPluser interface {
 	plus(int) int
 }
 
-type OnePluser struct {}
+type OnePluser struct{}
 
 func (d OnePluser) plus(x int) int {
-    return x + 1
+	return x + 1
 }
 
-type TwoPluser struct {}
+type TwoPluser struct{}
 
 func (d TwoPluser) plus(x int) int {
 	return x + 2
 }
 
 func runTwice(pluser1 AbstractPluser, pluser2 AbstractPluser) int {
-    return pluser1.plus(1) + pluser2.plus(1)
+	return pluser1.plus(1) + pluser2.plus(1)
 }
 
 func main() {
-    fmt.Println(runTwice(OnePluser{}, TwoPluser{}))
+	fmt.Println(runTwice(OnePluser{}, TwoPluser{}))
 }

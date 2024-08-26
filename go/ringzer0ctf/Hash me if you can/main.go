@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"regexp"
 	"crypto/sha512"
-	"io"
+	"fmt"
 	"github.com/gocolly/colly"
+	"io"
+	"regexp"
 	"strings"
 )
 
@@ -15,7 +15,7 @@ func main() {
 
 	c := colly.NewCollector()
 	c.OnRequest(func(r *colly.Request) {
-		r.Headers.Set("Cookie", "PHPSESSID=" + token)
+		r.Headers.Set("Cookie", "PHPSESSID="+token)
 	})
 	c.OnHTML("div[class=message]", func(e *colly.HTMLElement) {
 		msgBegin := "----- BEGIN MESSAGE -----"
@@ -28,12 +28,12 @@ func main() {
 		io.WriteString(h512, string(input))
 		url2 := fmt.Sprintf("%s/%x", url, h512.Sum(nil))
 		println(url2)
-		
+
 		c2 := colly.NewCollector()
 		c2.OnRequest(func(r2 *colly.Request) {
-			r2.Headers.Set("Cookie", "PHPSESSID=" + token)
+			r2.Headers.Set("Cookie", "PHPSESSID="+token)
 		})
-		c2.OnHTML("html", func (e2 *colly.HTMLElement) {
+		c2.OnHTML("html", func(e2 *colly.HTMLElement) {
 			re := regexp.MustCompile(`FLAG-[\w\d]+`)
 			flag := re.Find([]byte(e2.Text))
 			println(fmt.Sprintf("flag: %s", flag))

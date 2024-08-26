@@ -45,7 +45,6 @@ func WithinLimit(log string, limit int) bool {
 	return utf8.RuneCountInString(log) <= limit
 }
 
-
 // func Application(log string) string {
 //     occurrance := strings.IndexAny(log, "❗🔍☀")
 //     if occurrance < 0 {
@@ -57,7 +56,6 @@ func WithinLimit(log string, limit int) bool {
 //         '☀': "weather",
 //     }[[]rune(log)[occurrance]]
 // }
-
 
 // func Replace(log string, old, new rune) string {
 // 	return strings.ReplaceAll(log, fmt.Sprintf("%c", old), fmt.Sprintf("%c", new))

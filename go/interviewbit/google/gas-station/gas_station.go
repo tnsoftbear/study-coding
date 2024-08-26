@@ -1,4 +1,4 @@
-package main;
+package main
 
 func main() {
 	a := []int{1, 2}
@@ -10,10 +10,10 @@ func main() {
 /**
  * @input A : Integer array
  * @input B : Integer array
- * 
+ *
  * @Output Integer
  */
-func canCompleteCircuit(A []int , B []int )  (int) {
+func canCompleteCircuit(A []int, B []int) int {
 	// compare array size
 	if len(A) != len(B) {
 		return -1
@@ -34,7 +34,7 @@ func canCompleteCircuit(A []int , B []int )  (int) {
 	return -1
 }
 
-func checkCircuit(A []int, B []int, start int) (bool) {
+func checkCircuit(A []int, B []int, start int) bool {
 	currentGas := 0
 	for i := start; i < len(A); i++ {
 		currentGas = currentGas + A[i] - B[i]

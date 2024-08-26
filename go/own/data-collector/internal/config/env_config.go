@@ -9,29 +9,29 @@ import (
 )
 
 type DBConfig struct {
-    Host     string `envconfig:"DB_HOST"`
-    Port     string `envconfig:"DB_PORT"`
-    User     string `envconfig:"DB_USER"`
-    Password string `envconfig:"DB_PASS"`
+	Host     string `envconfig:"DB_HOST"`
+	Port     string `envconfig:"DB_PORT"`
+	User     string `envconfig:"DB_USER"`
+	Password string `envconfig:"DB_PASS"`
 }
 
 type OpenAIConfig struct {
-    APIKey string `envconfig:"OPENAI_API_KEY"`
+	APIKey string `envconfig:"OPENAI_API_KEY"`
 }
 
 // All configuration
 type Config struct {
-    DB       DBConfig    
-    OpenAI   OpenAIConfig
-    Port     int       `envconfig:"PORT"`
+	DB     DBConfig
+	OpenAI OpenAIConfig
+	Port   int `envconfig:"PORT"`
 }
 
 // First export environment variables from .env
 func InitConfig() Config {
-    if err := godotenv.Load(); err != nil {
-        fmt.Println("Cannot load .env:", err)
-        os.Exit(1)
-    }
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("Cannot load .env:", err)
+		os.Exit(1)
+	}
 
 	// Fill config struct with environment variables
 	var cfg Config

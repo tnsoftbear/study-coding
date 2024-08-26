@@ -38,7 +38,8 @@ func Same(t1, t2 *tree.Tree) bool {
 
 	var buf1 []int
 	var buf2 []int
-	forloop: for {
+forloop:
+	for {
 		select {
 		case v1, ok := <-ch1:
 			if ok {

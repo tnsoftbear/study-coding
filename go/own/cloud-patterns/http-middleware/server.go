@@ -6,10 +6,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"html"
 	"io"
 	"log"
 	"net/http"
-	"html"
 )
 
 type ctxKey string
@@ -41,7 +41,7 @@ func authMiddleware(next http.Handler) http.Handler {
 		}
 
 		rctx := context.WithValue(r.Context(), keyUserName, "Dj. Groove")
-		next.ServeHTTP(w, r.WithContext(rctx))		
+		next.ServeHTTP(w, r.WithContext(rctx))
 	})
 }
 

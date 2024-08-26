@@ -12,7 +12,7 @@ func (ip IPAddr) String() string {
 	for _, n := range ip {
 		result = result + strconv.Itoa(int(n)) + "."
 	}
-	result = result[:len(result) - 1]
+	result = result[:len(result)-1]
 	return result
 }
 
