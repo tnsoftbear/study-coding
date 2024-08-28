@@ -1,0 +1,253 @@
+[
+    {
+        "Id": "ef17f0e2fa6f9c5cc17c62bb133aef170deeb175b04503d4f5078363be50de2d",
+        "Created": "2024-08-28T16:45:34.166525983Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "mysqld"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 21981,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2024-08-28T16:45:34.493300146Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:a82a8f162e188e0df15b0d2d90c6e9e973af8e88a6cb74b8052122ae5e02325c",
+        "ResolvConfPath": "/var/lib/docker/containers/ef17f0e2fa6f9c5cc17c62bb133aef170deeb175b04503d4f5078363be50de2d/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/ef17f0e2fa6f9c5cc17c62bb133aef170deeb175b04503d4f5078363be50de2d/hostname",
+        "HostsPath": "/var/lib/docker/containers/ef17f0e2fa6f9c5cc17c62bb133aef170deeb175b04503d4f5078363be50de2d/hosts",
+        "LogPath": "/var/lib/docker/containers/ef17f0e2fa6f9c5cc17c62bb133aef170deeb175b04503d4f5078363be50de2d/ef17f0e2fa6f9c5cc17c62bb133aef170deeb175b04503d4f5078363be50de2d-json.log",
+        "Name": "/frr-mysql",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/deploy/docker/db-mysql/initdb:/docker-entrypoint-initdb.d:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "frr",
+            "PortBindings": {
+                "3306/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "3307"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                15,
+                189
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "host",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": false,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/dca330138a5b45c69448255f6b7e2b082d3e0111595737ec4d25e1bd4e21dbee-init/diff:/var/lib/docker/overlay2/95200dc4c4d98a7a4a2b02b8226cc3e01bc42d5c7e9e5fddf53a1a88eea42e35/diff:/var/lib/docker/overlay2/8615fc3326a9f13554c37b0bc52cbaaaea9bcdaf31ca524598df7c736fb53af5/diff:/var/lib/docker/overlay2/457febb07c487335ba0cf50e9f19794d7e9f8b1836ee77e71b73dfc0684c5eaf/diff:/var/lib/docker/overlay2/0866a1557ec1b71f57e4cd884ae3822172b7459778b8ba2ac5ba880bb15fee17/diff:/var/lib/docker/overlay2/7548f661a0cbd4e08561e1ff2fe351c347f9db6b7e77bd2a9a583806ffddd035/diff:/var/lib/docker/overlay2/c8a2e41626b8fead8350237a918aac2e8481284e58540b90336bbc716424de46/diff:/var/lib/docker/overlay2/45e22eb8ad30842921942f10a42b10bab498be8afde5761e789cc84ab13b0869/diff:/var/lib/docker/overlay2/392bdc7f016deb5d46543f2fe2159b1bea58bd2fad00d511c9b713f24f2fc260/diff:/var/lib/docker/overlay2/69bbc3ed81705784fcf17328b86b5f4f09fda7340a8d7abe3c1b2f967e756927/diff:/var/lib/docker/overlay2/2f71dd5d3bc929305f15c22813b36eda61445a73062d1dddcf93af8df5764ff2/diff",
+                "MergedDir": "/var/lib/docker/overlay2/dca330138a5b45c69448255f6b7e2b082d3e0111595737ec4d25e1bd4e21dbee/merged",
+                "UpperDir": "/var/lib/docker/overlay2/dca330138a5b45c69448255f6b7e2b082d3e0111595737ec4d25e1bd4e21dbee/diff",
+                "WorkDir": "/var/lib/docker/overlay2/dca330138a5b45c69448255f6b7e2b082d3e0111595737ec4d25e1bd4e21dbee/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/deploy/docker/db-mysql/initdb",
+                "Destination": "/docker-entrypoint-initdb.d",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "b4070c51113ce9507206c5801e16b87982307187a7e33871c4cdb007ee12e6c1",
+                "Source": "/var/lib/docker/volumes/b4070c51113ce9507206c5801e16b87982307187a7e33871c4cdb007ee12e6c1/_data",
+                "Destination": "/var/lib/mysql",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "ef17f0e2fa6f",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "3306/tcp": {},
+                "33060/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "MYSQL_ROOT_PASSWORD=pw",
+                "MYSQL_DATABASE=frr",
+                "MYSQL_USER=admin",
+                "MYSQL_PASSWORD=123",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.17",
+                "MYSQL_MAJOR=innovation",
+                "MYSQL_VERSION=9.0.1-1.el9",
+                "MYSQL_SHELL_VERSION=9.0.1-1.el9"
+            ],
+            "Cmd": [
+                "mysqld"
+            ],
+            "Image": "mysql:latest",
+            "Volumes": {
+                "/var/lib/mysql": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "d9d152257ef805fbcbc5d241a50c642731aad83e80e7bc2bea121873a89e27c7",
+            "SandboxKey": "/var/run/docker/netns/d9d152257ef8",
+            "Ports": {
+                "3306/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "3307"
+                    }
+                ],
+                "33060/tcp": null
+            },
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "frr": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "02:42:ac:12:00:02",
+                    "DriverOpts": null,
+                    "NetworkID": "892758e235f9e22cef81d45b929a4e1b06ec5b1de7e08073a2c8f2405c62b77e",
+                    "EndpointID": "4e993e0b1df762c7a5d2252bf7defaa534caf3eae33899b1a730b401ecb9aab6",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "frr-mysql",
+                        "ef17f0e2fa6f"
+                    ]
+                }
+            }
+        }
+    }
+]
