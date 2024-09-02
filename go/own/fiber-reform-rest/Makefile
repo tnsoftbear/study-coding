@@ -23,7 +23,7 @@ dockerinit:
 dbup:	# https://hub.docker.com/_/mysql
 	docker run --name frr-news-storage -p3307:3306 --network frr \
 	-e MYSQL_ROOT_PASSWORD=pw -e MYSQL_DATABASE=frr -e MYSQL_USER=admin -e MYSQL_PASSWORD=123 \
-	-v E:/coding/my/go/own/fiber-reform-rest/deploy/docker/mysql-storage/initdb:/docker-entrypoint-initdb.d:ro \
+	-v E:/coding/my/go/own/fiber-reform-rest/deploy/docker/storage/initdb:/docker-entrypoint-initdb.d:ro \
 	-d mysql:latest
 dbdown:
 	docker stop frr-news-storage

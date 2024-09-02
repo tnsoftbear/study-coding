@@ -2,34 +2,139 @@ package controller
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
-	"fiber-reform-rest/internal/domain/model"
-	"fiber-reform-rest/internal/domain/repository"
+	"fiber-reform-rest/internal/core/domain/model"
+	"fiber-reform-rest/internal/core/domain/repository"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetNewsList(c *fiber.Ctx, repo repository.NewsRepository) error {
-	page := c.QueryInt("page", 1)
-	perPage := c.QueryInt("per-page", 10)
-	news := repo.Load(page, perPage)
-	return c.JSON(fiber.Map{
-		"Success": true,
-		"News":    news,
+func GetNewsList(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	type Response struct {
+		Success bool          `json:"Success"`
+		News    []*model.News `json:"News,omitempty"`
+	}
+	page := ctx.QueryInt("page", 1)
+	perPage := ctx.QueryInt("per-page", 10)
+	news := repo.LoadCollection(page, perPage)
+	return ctx.JSON(&Response{
+		Success: len(news) > 0,
+		News:    news,
 	})
 }
 
-func PostNewsEditById(c *fiber.Ctx, repo repository.NewsRepository) error {
-	id, err := strconv.Atoi(c.Params("Id"))
-	news := &model.News{
-		ID: int64(id),
-		Title: "xxx",
-		Content: "ccc xxx",
+func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	type Response struct {
+		Success    bool       `json:"Success"`
+		Message    string     `json:"Message"`
+		News       model.News `json:"News,omitempty"`
+		Categories []int64    `json:"Categories,omitempty"`
 	}
-	repo.Save(news)
+	type NewsRequest struct {
+		ID         int64   `json:"Id"`
+		Title      string  `json:"Title"`
+		Content    string  `json:"Content"`
+		Categories []int64 `json:"Categories"`
+	}
+	var newsRequest NewsRequest
+	err := ctx.BodyParser(&newsRequest)
 	if err != nil {
-		return c.SendStatus(404)
+		log.Printf("BodyParser error: %v\n", err)
+		return ctx.SendStatus(404)
 	}
-	return c.SendString(fmt.Sprintf("Id is %d", id))
+
+	id, err := strconv.Atoi(ctx.Params("Id"))
+	if err != nil {
+		log.Printf("Route param parsing error: %v\n", err)
+		return ctx.SendStatus(404)
+	}
+
+	if int64(id) != newsRequest.ID {
+		message := fmt.Sprintf("Route ID (%d) does not match News record ID (%d) in request body", id, newsRequest.ID)
+		log.Println(message)
+		return ctx.JSON(&Response{
+			Success: false,
+			Message: message,
+		})
+	}
+
+	newsModel := repo.FindByID(newsRequest.ID)
+	if newsModel == nil {
+		message := fmt.Sprintf("Cannot find News record by ID (%d)", newsRequest.ID)
+		return ctx.JSON(&Response{
+			Success: false,
+			Message: message,
+		})
+	}
+
+	if newsRequest.Title != "" {
+		newsModel.Title = newsRequest.Title
+	}
+	if newsRequest.Content != "" {
+		newsModel.Content = newsRequest.Content
+	}
+
+	repo.Save(newsModel)
+
+	for _, catID := range newsRequest.Categories {
+		repo.SaveCategory(newsModel.ID, catID)
+	}
+
+	return ctx.JSON(&Response{
+		Success:    true,
+		Message:    fmt.Sprintf("News updated (ID: %d)", id),
+		News:       *newsModel,
+		Categories: repo.LoadCategoryIDs(newsModel.ID),
+	})
+}
+
+func PostNewsAdd(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	type Response struct {
+		Success bool   `json:"Success"`
+		Message string `json:"Message"`
+	}
+	type NewsRequest struct {
+		ID      int64  `json:"Id"`
+		Title   string `json:"Title"`
+		Content string `json:"Content"`
+	}
+	var newsRequest NewsRequest
+	err := ctx.BodyParser(&newsRequest)
+	if err != nil {
+		log.Printf("BodyParser error: %v\n", err)
+		return ctx.SendStatus(404)
+	}
+
+	newsModel := &model.News{
+		Title:   newsRequest.Title,
+		Content: newsRequest.Content,
+	}
+	repo.Save(newsModel)
+
+	return ctx.JSON(&Response{
+		Success: true,
+		Message: fmt.Sprintf("News added (ID: %d)", newsModel.ID),
+	})
+}
+
+func PostNewsAddCategory(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	newsID, err := strconv.Atoi(ctx.Params("NewsId"))
+	if err != nil {
+		log.Printf("Route param (NewsId) parsing error: %v\n", err)
+		return ctx.SendStatus(404)
+	}
+	catID, err := strconv.Atoi(ctx.Params("CatId"))
+	if err != nil {
+		log.Printf("Route param (CatId) parsing error: %v\n", err)
+		return ctx.SendStatus(404)
+	}
+	if repo.FindByID(int64(newsID)) == nil {
+		return ctx.JSON(fiber.Map{"Success": false, "Message": fmt.Sprintf("Cannot find News record by ID (%d)", newsID)})
+	}
+
+	repo.SaveCategory(int64(newsID), int64(catID))
+
+	return ctx.JSON(fiber.Map{"Success": true, "Message": fmt.Sprintf("Category (%d) assigned to news record (%d)", catID, newsID)})
 }

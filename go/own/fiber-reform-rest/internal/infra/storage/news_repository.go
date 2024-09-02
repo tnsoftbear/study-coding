@@ -1,42 +1,118 @@
 package storage
 
 import (
-	"fiber-reform-rest/internal/domain/model"
+	"fiber-reform-rest/internal/core/domain/model"
+	"fmt"
+	"log"
 
 	"gopkg.in/reform.v1"
 )
 
 type NewsRepository struct {
-	reformDB *reform.DB
+	db *reform.DB
 }
 
 func NewNewsRepository(reformDB *reform.DB) *NewsRepository {
 	return &NewsRepository{
-		reformDB: reformDB,
+		db: reformDB,
 	}
 }
 
-func (r *NewsRepository) Load(page, perPage int) []*model.News {
-	// offset := (page-1) * perPage
-	// limit := perPage
-	return []*model.News{
-		{
-			ID:      1,
-			Title:   "aaa",
-			Content: "content aaa",
-		},
-		{
-			ID:      2,
-			Title:   "bbb",
-			Content: "content bbb",
-		},
+func (r *NewsRepository) LoadCollection(page, perPage int) []*model.News {
+	offset := (page - 1) * perPage
+	tail := fmt.Sprintf(" ORDER BY id LIMIT %s, %s", r.db.Placeholder(1), r.db.Placeholder(2))
+	rows, err := r.db.SelectRows(model.NewsTable, tail, offset, perPage)
+	if err != nil {
+		log.Fatal(err)
 	}
+	defer rows.Close()
+
+	var results []*model.News
+	for {
+		var news model.News
+		if err = r.db.NextRow(&news, rows); err != nil {
+			break
+		}
+		news.Categories = r.LoadCategoryIDs(news.ID)
+		results = append(results, &news)
+	}
+	if err != reform.ErrNoRows {
+		log.Fatal(err)
+	}
+
+	return results
 }
 
-func (r *NewsRepository) Save(*model.News) (*model.News, error) {
-	return &model.News{
-		ID:      3,
-		Title:   "ccc",
-		Content: "content ccc",
-	}, nil
+func (r *NewsRepository) LoadCategoryIDs(newsID int64) []int64 {
+	tail := fmt.Sprintf("WHERE NewsId = %s", r.db.Placeholder(1))
+	rows, err := r.db.SelectRows(model.NewsCategoryView, tail, newsID)
+	if err != nil && err != reform.ErrNoRows {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	var categoryIDs []int64
+	var nc model.NewsCategory
+	for {
+		err = r.db.NextRow(&nc, rows)
+		if err == reform.ErrNoRows {
+			break
+		}
+		categoryIDs = append(categoryIDs, nc.CategoryID)
+	}
+	return categoryIDs
+}
+
+// Return nil, when record absent
+func (r *NewsRepository) FindByID(id int64) *model.News {
+	var newsModel model.News
+	err := r.db.FindByPrimaryKeyTo(&newsModel, id)
+	if err == reform.ErrNoRows {
+		return nil
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &newsModel
+}
+
+// Я заменил вызов r.db.Save(news) на r.db.Update(news) и r.db.Insert(news),
+// потому что при сохранении существующей сущности,
+// в случае полного совпадения входных данных с состоянием сущности в БД,
+// после Update вызывается Insert на том же Id сущности, что приводит к SQL ошибке дублирующего INSERT.
+func (r *NewsRepository) Save(news *model.News) *model.News {
+	if news.HasPK() {
+		err := r.db.Update(news)
+		if err != nil && err != reform.ErrNoRows {
+			log.Fatalf("Error in r.db.Update(): %v", err)
+		}
+		return news
+	}
+
+	err := r.db.Insert(news)
+	if err != nil && err != reform.ErrNoRows {
+		log.Fatalf("Error in r.db.Insert(): %v", err)
+	}
+	return news
+}
+
+func (r *NewsRepository) SaveCategory(newsID, catID int64) {
+	tail := fmt.Sprintf("WHERE NewsId = %s AND CategoryId = %s", r.db.Placeholder(1), r.db.Placeholder(1))
+	cnt, err := r.db.Count(model.NewsCategoryView, tail, newsID, catID)
+	if err != nil && err != reform.ErrNoRows {
+		log.Fatal(err)
+	}
+	if cnt > 0 {
+		log.Printf("News (%d) to Category (%d) association already exists", newsID, catID)
+		return
+	}
+
+	nc := &model.NewsCategory{
+		NewsID:     newsID,
+		CategoryID: catID,
+	}
+	err = r.db.Insert(nc)
+	if err != nil && err != reform.ErrNoRows {
+		log.Fatalf("Error in r.db.Insert(): %v", err)
+	}
 }

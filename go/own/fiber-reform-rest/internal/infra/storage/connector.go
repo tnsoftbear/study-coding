@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	"fiber-reform-rest/internal/infra/env"
 
@@ -16,7 +17,7 @@ func Setup() *reform.DB {
 	username := env.GetEnv("MYSQL_USER", "admin")
 	password := env.GetEnv("MYSQL_PASSWORD", "123")
 	dbHost := env.GetEnv("DB_HOST", "localhost")
-	dbPort := env.GetEnv("DB_PORT", "3307")
+	dbPort := env.GetEnv("DB_PORT", "3307")	// TODO: 3306
 	dbName := env.GetEnv("MYSQL_DATABASE", "frr")
 	dbAddr := fmt.Sprintf("%s:%s", dbHost, dbPort)
 	cfg := mysql.Config{
@@ -33,7 +34,12 @@ func Setup() *reform.DB {
 		log.Fatal(err)
 	}
 
+	// Set up important parts as was told by the documentation.
+	db.SetConnMaxLifetime(time.Minute * 3)
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
+
 	// defer db.Close()
-	reformDB := reform.NewDB(db, dialectsMysql.Dialect, nil)
+	reformDB := reform.NewDB(db, dialectsMysql.Dialect, reform.NewPrintfLogger(log.Printf))
 	return reformDB
 }
