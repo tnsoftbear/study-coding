@@ -6,40 +6,33 @@ import (
 	"log"
 	"time"
 
-	"fiber-reform-rest/internal/infra/env"
+	"fiber-reform-rest/internal/infra/config"
 
 	"github.com/go-sql-driver/mysql"
 	"gopkg.in/reform.v1"
 	dialectsMysql "gopkg.in/reform.v1/dialects/mysql"
 )
 
-func Setup() *reform.DB {
-	username := env.GetEnv("MYSQL_USER", "admin")
-	password := env.GetEnv("MYSQL_PASSWORD", "123")
-	dbHost := env.GetEnv("DB_HOST", "localhost")
-	dbPort := env.GetEnv("DB_PORT", "3307")	// TODO: 3306
-	dbName := env.GetEnv("MYSQL_DATABASE", "frr")
-	dbAddr := fmt.Sprintf("%s:%s", dbHost, dbPort)
-	cfg := mysql.Config{
-		User:   username,
-		Passwd: password,
+func Setup(cfg *config.MysqlStorage) *reform.DB {
+	dbAddr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
+	mysqlConfig := mysql.Config{
+		User:   cfg.Username,
+		Passwd: cfg.Password,
 		Net:    "tcp",
 		Addr:   dbAddr,
-		DBName: dbName,
+		DBName: cfg.Database,
 	}
 
 	// Get a database handle.
-	db, err := sql.Open("mysql", cfg.FormatDSN())
+	db, err := sql.Open("mysql", mysqlConfig.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Set up important parts as was told by the documentation.
+	db.SetMaxOpenConns(10) // sets the maximum number of open connections to the database.
+	db.SetMaxIdleConns(10) // sets the maximum number of connections in the idle connection pool
 	db.SetConnMaxLifetime(time.Minute * 3)
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(10)
 
-	// defer db.Close()
 	reformDB := reform.NewDB(db, dialectsMysql.Dialect, reform.NewPrintfLogger(log.Printf))
 	return reformDB
 }

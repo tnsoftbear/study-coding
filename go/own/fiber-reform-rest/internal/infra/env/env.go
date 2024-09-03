@@ -8,10 +8,12 @@ func Setup() {
 	viper.AutomaticEnv()
 }
 
-func GetEnv(key, def string) string {
-	val := viper.GetString(key)
-	if val == "" {
-		return def
-	}
-	return val
+func GetStringEnv(key string, def string) string {
+	viper.SetDefault(key, def)
+	return viper.GetString(key)
+}
+
+func GetIntEnv(key string, def int) int {
+	viper.SetDefault(key, def)
+	return viper.GetInt(key)
 }

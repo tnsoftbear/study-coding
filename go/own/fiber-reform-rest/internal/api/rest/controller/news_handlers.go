@@ -50,9 +50,10 @@ func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 		log.Printf("Route param parsing error: %v\n", err)
 		return ctx.SendStatus(404)
 	}
+	newsID := int64(id)
 
-	if int64(id) != newsRequest.ID {
-		message := fmt.Sprintf("Route ID (%d) does not match News record ID (%d) in request body", id, newsRequest.ID)
+	if newsID != newsRequest.ID {
+		message := fmt.Sprintf("Route ID (%d) does not match News record ID (%d) in request body", newsID, newsRequest.ID)
 		log.Println(message)
 		return ctx.JSON(&Response{
 			Success: false,
@@ -79,14 +80,15 @@ func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 	repo.Save(newsModel)
 
 	for _, catID := range newsRequest.Categories {
-		repo.SaveCategory(newsModel.ID, catID)
+		repo.AssignCategory(newsID, catID)
 	}
+	repo.UnassignCategories(newsID, newsRequest.Categories)
 
 	return ctx.JSON(&Response{
 		Success:    true,
-		Message:    fmt.Sprintf("News updated (ID: %d)", id),
+		Message:    fmt.Sprintf("News updated (ID: %d)", newsID),
 		News:       *newsModel,
-		Categories: repo.LoadCategoryIDs(newsModel.ID),
+		Categories: repo.LoadCategoryIDs(newsID),
 	})
 }
 
@@ -134,7 +136,7 @@ func PostNewsAddCategory(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 		return ctx.JSON(fiber.Map{"Success": false, "Message": fmt.Sprintf("Cannot find News record by ID (%d)", newsID)})
 	}
 
-	repo.SaveCategory(int64(newsID), int64(catID))
+	repo.AssignCategory(int64(newsID), int64(catID))
 
 	return ctx.JSON(fiber.Map{"Success": true, "Message": fmt.Sprintf("Category (%d) assigned to news record (%d)", catID, newsID)})
 }

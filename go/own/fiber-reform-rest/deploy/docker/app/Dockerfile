@@ -4,7 +4,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./build/news_service ./cmd/news_service.go
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o ./build/news_service ./cmd/news_service.go
 # COPY ./config ./build
 
 FROM alpine:latest

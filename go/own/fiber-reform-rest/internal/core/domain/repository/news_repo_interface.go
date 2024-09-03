@@ -3,9 +3,10 @@ package repository
 import "fiber-reform-rest/internal/core/domain/model"
 
 type NewsRepository interface {
+	AssignCategory(newsID, catID int64)
+	FindByID(id int64) *model.News
+	LoadCategoryIDs(newsID int64) []int64
 	LoadCollection(page, perPage int) []*model.News
 	Save(*model.News) *model.News
-	FindByID(id int64) *model.News
-	SaveCategory(newsID, catID int64)
-	LoadCategoryIDs(newsID int64) []int64
+	UnassignCategories(newsID int64, skipIDs []int64)
 }

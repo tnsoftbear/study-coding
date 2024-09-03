@@ -4,21 +4,22 @@ import (
 	"fiber-reform-rest/internal/core/domain/model"
 	"fmt"
 	"log"
+	"strings"
 
 	"gopkg.in/reform.v1"
 )
 
-type NewsRepository struct {
+type NewsRepositoryMysql struct {
 	db *reform.DB
 }
 
-func NewNewsRepository(reformDB *reform.DB) *NewsRepository {
-	return &NewsRepository{
+func NewNewsRepositoryMysql(reformDB *reform.DB) *NewsRepositoryMysql {
+	return &NewsRepositoryMysql{
 		db: reformDB,
 	}
 }
 
-func (r *NewsRepository) LoadCollection(page, perPage int) []*model.News {
+func (r *NewsRepositoryMysql) LoadCollection(page, perPage int) []*model.News {
 	offset := (page - 1) * perPage
 	tail := fmt.Sprintf(" ORDER BY id LIMIT %s, %s", r.db.Placeholder(1), r.db.Placeholder(2))
 	rows, err := r.db.SelectRows(model.NewsTable, tail, offset, perPage)
@@ -43,7 +44,7 @@ func (r *NewsRepository) LoadCollection(page, perPage int) []*model.News {
 	return results
 }
 
-func (r *NewsRepository) LoadCategoryIDs(newsID int64) []int64 {
+func (r *NewsRepositoryMysql) LoadCategoryIDs(newsID int64) []int64 {
 	tail := fmt.Sprintf("WHERE NewsId = %s", r.db.Placeholder(1))
 	rows, err := r.db.SelectRows(model.NewsCategoryView, tail, newsID)
 	if err != nil && err != reform.ErrNoRows {
@@ -64,7 +65,7 @@ func (r *NewsRepository) LoadCategoryIDs(newsID int64) []int64 {
 }
 
 // Return nil, when record absent
-func (r *NewsRepository) FindByID(id int64) *model.News {
+func (r *NewsRepositoryMysql) FindByID(id int64) *model.News {
 	var newsModel model.News
 	err := r.db.FindByPrimaryKeyTo(&newsModel, id)
 	if err == reform.ErrNoRows {
@@ -80,7 +81,7 @@ func (r *NewsRepository) FindByID(id int64) *model.News {
 // потому что при сохранении существующей сущности,
 // в случае полного совпадения входных данных с состоянием сущности в БД,
 // после Update вызывается Insert на том же Id сущности, что приводит к SQL ошибке дублирующего INSERT.
-func (r *NewsRepository) Save(news *model.News) *model.News {
+func (r *NewsRepositoryMysql) Save(news *model.News) *model.News {
 	if news.HasPK() {
 		err := r.db.Update(news)
 		if err != nil && err != reform.ErrNoRows {
@@ -96,8 +97,8 @@ func (r *NewsRepository) Save(news *model.News) *model.News {
 	return news
 }
 
-func (r *NewsRepository) SaveCategory(newsID, catID int64) {
-	tail := fmt.Sprintf("WHERE NewsId = %s AND CategoryId = %s", r.db.Placeholder(1), r.db.Placeholder(1))
+func (r *NewsRepositoryMysql) AssignCategory(newsID, catID int64) {
+	tail := fmt.Sprintf("WHERE NewsId = %s AND CategoryId = %s", r.db.Placeholder(1), r.db.Placeholder(2))
 	cnt, err := r.db.Count(model.NewsCategoryView, tail, newsID, catID)
 	if err != nil && err != reform.ErrNoRows {
 		log.Fatal(err)
@@ -115,4 +116,14 @@ func (r *NewsRepository) SaveCategory(newsID, catID int64) {
 	if err != nil && err != reform.ErrNoRows {
 		log.Fatalf("Error in r.db.Insert(): %v", err)
 	}
+}
+
+func (r *NewsRepositoryMysql) UnassignCategories(newsID int64, skipIDs []int64) {
+	skipIDList := strings.Trim(strings.Replace(fmt.Sprint(skipIDs), " ", ",", -1), "[]")
+	tail := fmt.Sprintf("WHERE NewsId = %d AND CategoryId NOT IN (%s)", newsID, skipIDList)
+	cnt, err := r.db.DeleteFrom(model.NewsCategoryView, tail)
+	if err != nil && err != reform.ErrNoRows {
+		log.Fatal(err)
+	}
+	log.Printf("%d categories are unassigned from news record (%d)", cnt, newsID)
 }
