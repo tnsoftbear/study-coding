@@ -1,3 +1,6 @@
+include:
+  - compose-base.yaml
+
 name: frr
 
 services:
@@ -13,14 +16,15 @@ services:
     env_file:
       - path: ./.env
         required: true
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://$${APP_HOST}:$${APP_PORT}/ping"]
-    #   interval: 60s
-    #   timeout: 5s
-    #   retries: 3
-    #   start_period: 1s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://$${APP_HOST}:$${APP_PORT}/ping"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 0s
     networks:
       - news-storage
+      - news-public
     ports:
       - "4000:4000"
     read_only: true
@@ -31,19 +35,15 @@ services:
     env_file:
       - path: ./.env
         required: true
-    # healthcheck:
-    #   test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent",  "-u$${MYSQL_USER}", "-p$${MYSQL_PASSWORD}"]
-    #   interval: 60s
-    #   timeout: 5s
-    #   retries: 3
-    #   start_period: 1s
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent",  "-u$${MYSQL_USER}", "-p$${MYSQL_PASSWORD}"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 0s
     image: mysql:latest
     networks:
       - news-storage
     restart: unless-stopped
     volumes:
       - ./storage/initdb:/docker-entrypoint-initdb.d
-
-networks:
-  news-storage:
-    name: frr-news-storage

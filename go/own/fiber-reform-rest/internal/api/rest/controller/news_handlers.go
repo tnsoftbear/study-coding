@@ -18,7 +18,7 @@ func GetNewsList(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 	}
 	page := ctx.QueryInt("page", 1)
 	perPage := ctx.QueryInt("per-page", 10)
-	news := repo.LoadCollection(page, perPage)
+	news := repo.LoadPagenated(page, perPage)
 	return ctx.JSON(&Response{
 		Success: len(news) > 0,
 		News:    news,
@@ -26,19 +26,19 @@ func GetNewsList(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 }
 
 func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	type Request struct {
+		ID         int64   `json:"Id"`
+		Title      string  `json:"Title"`
+		Content    string  `json:"Content"`
+		Categories []int64 `json:"Categories"`
+	}
 	type Response struct {
 		Success    bool       `json:"Success"`
 		Message    string     `json:"Message"`
 		News       model.News `json:"News,omitempty"`
 		Categories []int64    `json:"Categories,omitempty"`
 	}
-	type NewsRequest struct {
-		ID         int64   `json:"Id"`
-		Title      string  `json:"Title"`
-		Content    string  `json:"Content"`
-		Categories []int64 `json:"Categories"`
-	}
-	var newsRequest NewsRequest
+	var newsRequest Request
 	err := ctx.BodyParser(&newsRequest)
 	if err != nil {
 		log.Printf("BodyParser error: %v\n", err)
@@ -53,7 +53,7 @@ func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 	newsID := int64(id)
 
 	if newsID != newsRequest.ID {
-		message := fmt.Sprintf("Route ID (%d) does not match News record ID (%d) in request body", newsID, newsRequest.ID)
+		message := fmt.Sprintf("News ID in route (ID: %d) does not match News record ID in request body (ID: %d)", newsID, newsRequest.ID)
 		log.Println(message)
 		return ctx.JSON(&Response{
 			Success: false,
@@ -63,7 +63,7 @@ func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 
 	newsModel := repo.FindByID(newsRequest.ID)
 	if newsModel == nil {
-		message := fmt.Sprintf("Cannot find News record by ID (%d)", newsRequest.ID)
+		message := fmt.Sprintf("Cannot find News record (ID: %d)", newsRequest.ID)
 		return ctx.JSON(&Response{
 			Success: false,
 			Message: message,
@@ -93,16 +93,19 @@ func PostNewsEditById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 }
 
 func PostNewsAdd(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	type Request struct {
+		ID         int64   `json:"Id"`
+		Title      string  `json:"Title"`
+		Content    string  `json:"Content"`
+		Categories []int64 `json:"Categories"`
+	}
 	type Response struct {
-		Success bool   `json:"Success"`
-		Message string `json:"Message"`
+		Success    bool        `json:"Success"`
+		Message    string      `json:"Message"`
+		News       *model.News `json:"News"`
+		Categories []int64     `json:"Categories,omitempty"`
 	}
-	type NewsRequest struct {
-		ID      int64  `json:"Id"`
-		Title   string `json:"Title"`
-		Content string `json:"Content"`
-	}
-	var newsRequest NewsRequest
+	var newsRequest Request
 	err := ctx.BodyParser(&newsRequest)
 	if err != nil {
 		log.Printf("BodyParser error: %v\n", err)
@@ -114,11 +117,30 @@ func PostNewsAdd(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 		Content: newsRequest.Content,
 	}
 	repo.Save(newsModel)
+	for _, catID := range newsRequest.Categories {
+		repo.AssignCategory(newsModel.ID, catID)
+	}
 
 	return ctx.JSON(&Response{
-		Success: true,
-		Message: fmt.Sprintf("News added (ID: %d)", newsModel.ID),
+		Success:    true,
+		Message:    fmt.Sprintf("News added (ID: %d)", newsModel.ID),
+		News:       newsModel,
+		Categories: repo.LoadCategoryIDs(newsModel.ID),
 	})
+}
+
+func DeleteNewsById(ctx *fiber.Ctx, repo repository.NewsRepository) error {
+	newsID, err := strconv.Atoi(ctx.Params("NewsId"))
+	if err != nil {
+		log.Printf("Route param (NewsId) parsing error: %v\n", err)
+		return ctx.SendStatus(404)
+	}
+	deletedNews := repo.DeleteNewsById(int64(newsID))
+	if deletedNews != nil {
+		return ctx.JSON(fiber.Map{"Success": true, "Message": fmt.Sprintf("News record (ID: %d) is deleted", deletedNews.ID)})
+	} else {
+		return ctx.JSON(fiber.Map{"Success": false, "Message": fmt.Sprintf("News record (ID: %d) not found", newsID)})
+	}
 }
 
 func PostNewsAddCategory(ctx *fiber.Ctx, repo repository.NewsRepository) error {
@@ -133,10 +155,10 @@ func PostNewsAddCategory(ctx *fiber.Ctx, repo repository.NewsRepository) error {
 		return ctx.SendStatus(404)
 	}
 	if repo.FindByID(int64(newsID)) == nil {
-		return ctx.JSON(fiber.Map{"Success": false, "Message": fmt.Sprintf("Cannot find News record by ID (%d)", newsID)})
+		return ctx.JSON(fiber.Map{"Success": false, "Message": fmt.Sprintf("Cannot find News record (ID: %d)", newsID)})
 	}
 
 	repo.AssignCategory(int64(newsID), int64(catID))
 
-	return ctx.JSON(fiber.Map{"Success": true, "Message": fmt.Sprintf("Category (%d) assigned to news record (%d)", catID, newsID)})
+	return ctx.JSON(fiber.Map{"Success": true, "Message": fmt.Sprintf("Category (ID: %d) assigned to news record (ID: %d)", catID, newsID)})
 }

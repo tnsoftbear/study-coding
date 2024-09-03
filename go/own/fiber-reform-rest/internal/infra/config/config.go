@@ -66,6 +66,7 @@ func loadFromYaml(config *Config, configPath string) (*Config, error) {
 }
 
 func populateFromEnv(config *Config) {
+	env.Setup()
 	config.App.Host = env.GetStringEnv("APP_HOST", config.App.Host)
 	config.App.Port = env.GetIntEnv("APP_PORT", config.App.Port)
 	config.Auth.Jwt.Tokenkey = env.GetStringEnv("AUTH_JWT_TOKENKEY", config.Auth.Jwt.Tokenkey)

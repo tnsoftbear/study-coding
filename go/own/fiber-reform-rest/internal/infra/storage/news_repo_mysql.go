@@ -19,7 +19,7 @@ func NewNewsRepositoryMysql(reformDB *reform.DB) *NewsRepositoryMysql {
 	}
 }
 
-func (r *NewsRepositoryMysql) LoadCollection(page, perPage int) []*model.News {
+func (r *NewsRepositoryMysql) LoadPagenated(page, perPage int) []*model.News {
 	offset := (page - 1) * perPage
 	tail := fmt.Sprintf(" ORDER BY id LIMIT %s, %s", r.db.Placeholder(1), r.db.Placeholder(2))
 	rows, err := r.db.SelectRows(model.NewsTable, tail, offset, perPage)
@@ -119,11 +119,32 @@ func (r *NewsRepositoryMysql) AssignCategory(newsID, catID int64) {
 }
 
 func (r *NewsRepositoryMysql) UnassignCategories(newsID int64, skipIDs []int64) {
-	skipIDList := strings.Trim(strings.Replace(fmt.Sprint(skipIDs), " ", ",", -1), "[]")
-	tail := fmt.Sprintf("WHERE NewsId = %d AND CategoryId NOT IN (%s)", newsID, skipIDList)
+	categoryIdCond := ""
+	if len(skipIDs) > 0 {
+		skipIDList := strings.Trim(strings.Replace(fmt.Sprint(skipIDs), " ", ",", -1), "[]")
+		categoryIdCond = fmt.Sprintf(" AND CategoryId NOT IN (%s)", skipIDList)
+	}
+	tail := fmt.Sprintf("WHERE NewsId = %d%s", newsID, categoryIdCond)
 	cnt, err := r.db.DeleteFrom(model.NewsCategoryView, tail)
 	if err != nil && err != reform.ErrNoRows {
 		log.Fatal(err)
 	}
 	log.Printf("%d categories are unassigned from news record (%d)", cnt, newsID)
+}
+
+func (r *NewsRepositoryMysql) DeleteNewsById(newsID int64) *model.News {
+	news := r.FindByID(newsID)
+	if news == nil {
+		return nil
+	}
+	return r.DeleteNews(news)
+}
+
+func (r *NewsRepositoryMysql) DeleteNews(news *model.News) *model.News {
+	err := r.db.Delete(news)
+	if err != nil && err != reform.ErrNoRows {
+		log.Fatal(err)
+	}
+	r.UnassignCategories(news.ID, nil)
+	return news
 }

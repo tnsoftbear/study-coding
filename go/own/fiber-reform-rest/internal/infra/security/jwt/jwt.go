@@ -28,9 +28,9 @@ func NewJWTManager(cfg *config.Jwt) *JWTManager {
 
 // Generate generates the jwt token based on payload
 func (j *JWTManager) Generate(payload *TokenPayload) string {
-	v, err := time.ParseDuration(j.cfg.Expiration) // TODO: config
+	v, err := time.ParseDuration(j.cfg.Expiration)
 	if err != nil {
-		log.Fatal("Invalid time duration. Should be time.ParseDuration string")
+		log.Fatalf("Invalid time duration: %v", err)
 	}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -38,7 +38,7 @@ func (j *JWTManager) Generate(payload *TokenPayload) string {
 		"ID":  payload.ID,
 	})
 
-	token, err := t.SignedString([]byte(j.cfg.Tokenkey)) // TODO: config
+	token, err := t.SignedString([]byte(j.cfg.Tokenkey))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,7 +52,7 @@ func (j *JWTManager) parse(token string) (*jwt.Token, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
 		}
 
-		return []byte(j.cfg.Tokenkey), nil // TODO: config
+		return []byte(j.cfg.Tokenkey), nil
 	})
 }
 
@@ -70,7 +70,6 @@ func (j *JWTManager) Verify(token string) (*TokenPayload, error) {
 		return nil, err
 	}
 
-	// Getting ID, it's an interface{} so I need to cast it to uint
 	id, ok := claims["ID"].(float64)
 	if !ok {
 		return nil, errors.New("something went wrong")

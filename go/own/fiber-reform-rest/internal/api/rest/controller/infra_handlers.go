@@ -9,6 +9,6 @@ func GetPing(ctx *fiber.Ctx) error {
 		Message string `json:"message"`
 	}
 
-	response := Response{Message: "Pong"}
+	response := Response{Message: "pong"}
 	return ctx.JSON(response)
 }

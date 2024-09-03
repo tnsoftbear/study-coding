@@ -19,15 +19,20 @@ func Setup(app *fiber.App, reformDB *reform.DB, config *config.Config) {
 	jm := jwt.NewJWTManager(&config.Auth.Jwt)
 	app.Use(logger.New())
 	
-	pub := app.Group("", limiter.New())
+	limitCfg := limiter.Config{
+		Max: 60,
+	}
+
+	pub := app.Group("", limiter.New(limitCfg))
 	pub.Get("/ping", controller.GetPing)
 	pub.Get("/dashboard", monitor.New())
 	pub.Post("/login", func(ctx *fiber.Ctx) error { return controller.PostLogin(ctx, jm) })
 
-	api := app.Group("", limiter.New())
+	api := app.Group("", limiter.New(limitCfg))
 	api.Use(middleware.Auth(&config.Auth))
 	api.Get("/list", func(ctx *fiber.Ctx) error { return controller.GetNewsList(ctx, newsRepo) })
 	api.Post("/add", func(ctx *fiber.Ctx) error { return controller.PostNewsAdd(ctx, newsRepo) })
 	api.Post("/add-category/:NewsId/:CatId", func(ctx *fiber.Ctx) error { return controller.PostNewsAddCategory(ctx, newsRepo) })
 	api.Post("/edit/:Id", func(ctx *fiber.Ctx) error { return controller.PostNewsEditById(ctx, newsRepo) })
+	api.Delete("/:NewsId", func(ctx *fiber.Ctx) error { return controller.DeleteNewsById(ctx, newsRepo) })
 }

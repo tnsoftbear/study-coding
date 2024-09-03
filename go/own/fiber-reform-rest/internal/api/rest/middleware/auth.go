@@ -10,8 +10,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// Auth is the authentication middleware
 func Auth(authCfg *config.Auth) fiber.Handler {
-	// Auth is the authentication middleware
 	return func(ctx *fiber.Ctx) error {
 		authHeader := ctx.Get("Authorization")
 		if authHeader == "" {
