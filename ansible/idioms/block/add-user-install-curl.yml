@@ -1,0 +1,23 @@
+# ansible-playbook --user igor -i ./inventory.ini add-user-install-curl.yml
+
+- name: main
+  hosts: bern_vm1
+  tasks:
+    - name: Preconfig block
+      block:
+        - name: Create user
+          vars:
+            username: ansibleuser
+          user:
+            name: "{{ username }}"
+            state: present
+            shell: /bin/bash
+            home: /home/{{ username }}
+            comment: "Ansible user"
+        - name: Install curl
+          apt:
+            name: curl
+            update-cache: yes
+      become: true
+      vars:
+        ansible_become_password: "x"

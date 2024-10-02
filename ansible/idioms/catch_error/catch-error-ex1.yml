@@ -1,0 +1,31 @@
+# ansible-playbook --user igor -i ./inventory.ini catch-error-ex1.yml
+
+- name: main
+  hosts: bern_vm1
+  any_errors_fatal: true              # я не увидел разницы между true и false ...
+  tasks:
+    - name: Preconfig block
+      become: true
+      vars:
+        ansible_become_password: "xx"   # incorrect pw
+        # ansible_become_password: "x"    # correct pw
+      block:
+        - name: Create user
+          user:
+            name: ansibleuser
+            state: present
+          register: error
+          ignore_errors: yes   # вот это позволяет перейти к следующему таску несмотря на ошибку
+        - name: Install curl
+          apt:
+            name: curl
+            update-cache: yes
+          register: error
+      rescue:
+        - name: Catch error
+          debug:
+            var: error
+      always:
+        - name: Finalize
+          debug:
+            msg: "Rebooting"

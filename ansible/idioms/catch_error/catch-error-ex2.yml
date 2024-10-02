@@ -1,0 +1,21 @@
+# ansible-playbook --user igor -i ./inventory.ini catch-error-ex2.yml
+
+- name: main
+  hosts: bern_vm1
+  tasks:
+    - name: Preconfig block
+      block:
+        - name: Fail on FAILED
+          command: echo "FAILED"
+          register: command_result
+          failed_when: "'FAILED' in command_result.stdout"
+        - name: Echo next step
+          command: echo "Next step"
+      rescue:
+        - name: Catch error
+          debug:
+            var: error
+      always:
+        - name: Finalize
+          debug:
+            msg: "Rebooting"

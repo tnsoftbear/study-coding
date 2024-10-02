@@ -1,0 +1,19 @@
+# ansible-playbook --user igor -i ./inventory.ini del-user-uninstall-curl.yml
+
+---
+- name: Rollback configuration
+  hosts: bern_vm1
+  become: true
+  vars:
+    ansible_become_password: "x"
+
+  tasks:
+    - name: Remove user
+      user:
+        name: ansibleuser
+        state: absent
+
+    - name: Remove curl
+      apt:
+        name: curl
+        state: absent
