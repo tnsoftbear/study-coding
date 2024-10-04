@@ -1,0 +1,56 @@
+# ansible-playbook --user root -k --limit bern_vm1 init.yml
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Add APT repositories
+      blockinfile:
+        path: /etc/apt/sources.list
+        insertafter: EOF
+        block: |
+          deb http://deb.debian.org/debian/ bookworm main
+          deb http://security.debian.org/ bookworm-security main
+          deb http://deb.debian.org/debian/ bookworm-updates main
+
+    - name: Remove CD-ROM repository
+      lineinfile:
+        path: /etc/apt/sources.list
+        state: absent
+        regexp: '^deb cdrom'
+
+    - name: Install packages
+      apt:
+        name:
+          - vim
+          - sudo
+        state: present
+        update_cache: yes
+
+    - name: Generate password hash
+      command: "openssl passwd -6 a"
+      register: password_hash
+
+    - name: Create user 'ansible' and add to 'sudo' group
+      user:
+        name: ansible
+        groups: sudo
+        append: yes
+        password: "{{ password_hash.stdout }}"
+
+    - name: Upload SSH public key for ansible user
+      authorized_key:
+        user: ansible
+        state: present
+        key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+
+    - name: Disable root SSH login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin yes'
+        line: 'PermitRootLogin no'
+
+    - name: Restart SSH service
+      service:
+        name: ssh
+        state: restarted
