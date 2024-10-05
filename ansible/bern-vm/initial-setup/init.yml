@@ -5,7 +5,7 @@
   tasks:
 
     - name: Add APT repositories
-      blockinfile:
+      ansible.builtin.blockinfile:
         path: /etc/apt/sources.list
         insertafter: EOF
         block: |
@@ -14,13 +14,13 @@
           deb http://deb.debian.org/debian/ bookworm-updates main
 
     - name: Remove CD-ROM repository
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/apt/sources.list
         state: absent
         regexp: '^deb cdrom'
 
     - name: Install packages
-      apt:
+      ansible.builtin.apt:
         name:
           - vim
           - sudo
@@ -28,29 +28,29 @@
         update_cache: yes
 
     - name: Generate password hash
-      command: "openssl passwd -6 a"
+      ansible.builtin.command: "openssl passwd -6 a"
       register: password_hash
 
     - name: Create user 'ansible' and add to 'sudo' group
-      user:
+      ansible.builtin.user:
         name: ansible
         groups: sudo
         append: yes
         password: "{{ password_hash.stdout }}"
 
     - name: Upload SSH public key for ansible user
-      authorized_key:
+      ansible.posix.authorized_key:
         user: ansible
         state: present
         key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
 
     - name: Disable root SSH login
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin yes'
         line: 'PermitRootLogin no'
 
     - name: Restart SSH service
-      service:
+      ansible.builtin.service:
         name: ssh
         state: restarted
