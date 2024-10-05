@@ -1,23 +1,23 @@
 # ansible-playbook --user igor -i ./inventory.ini sleep-poll-not-0.yml
 # Т.к. poll включен для первого sleep, то второй sleep начнётся только после завершения первого.
-
+---
 - name: Sleep playbook
   hosts: bern
   tasks:
-  - name: Sleep for 10 seconds
+  - name: Sleep for 10 seconds        
     command: /bin/sleep 10
     async: 1000
     poll: 2
     register: sleep10_result
   - debug:
       var: sleep10_result
-  - name: Echo "Done sleep 10"
+  - name: Echo "Done sleep 10"        
     command: echo "Done sleep 10"
-  - name: Sleep for 20 seconds
+  - name: Sleep for 20 seconds        
     command: /bin/sleep 20
     async: 1000
     poll: 3
     register: sleep20_result
   - debug:
       var: sleep20_result
-
+...

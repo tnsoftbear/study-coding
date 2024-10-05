@@ -12,7 +12,7 @@ jobs:
       go_exercism_two-fer: ${{ steps.check_files.outputs.go_exercism_two-fer }}
       go_own_sys-dev_signal_ex1: ${{ steps.check_files.outputs.go_own_sys-dev_signal_ex1 }}
       k8s_healthprobe-for-app_k8s: ${{ steps.check_files.outputs.k8s_healthprobe-for-app_k8s }}
-      ansible: ${{ steps.check_files.outputs.ansible }}
+      ansible_bern-vm: ${{ steps.check_files.outputs.ansible_bern-vm }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,8 +36,8 @@ jobs:
               echo "go_own_sys-dev_signal_ex1=true" >> $GITHUB_OUTPUT
             elif [[ $file == k8s/healthprobe-for-app/k8s/* ]]; then
               echo "k8s_healthprobe-for-app_k8s=true" >> $GITHUB_OUTPUT
-            elif [[ $file == ansible/* ]]; then
-              echo "ansible=true" >> $GITHUB_OUTPUT
+            elif [[ $file == ansible/bern-vm/* ]]; then
+              echo "ansible_bern-vm=true" >> $GITHUB_OUTPUT
             else
               echo "file $file does not belong to any check pattern"
             fi
@@ -128,10 +128,10 @@ jobs:
           entrypoint: '/kubeconform'
           args: "-summary -output json k8s/healthprobe-for-app/k8s/"
 
-  ansible:
+  ansible_bern-vm:
     needs: check
-    if: needs.check.outputs.ansible == 'true'
-    name: Ansible Lint
+    if: needs.check.outputs.ansible_bern-vm == 'true'
+    name: Ansible Lint for bern-vm project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -140,5 +140,5 @@ jobs:
         with:
           args: ""
           setup_python: "true"
-          working_directory: "./ansible"
+          working_directory: "./ansible/bern-vm"
           requirements_file: "tests/requirements.yml"

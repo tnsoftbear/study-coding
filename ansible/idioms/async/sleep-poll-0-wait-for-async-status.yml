@@ -1,25 +1,31 @@
 # ansible-playbook --user igor -i ./inventory.ini sleep-poll-0-wait-for-async-status.yml
 # Т.к poll выключен для первого sleep, то мы будем дожидаться его завершения в задаче "Check sleep result"
-
+---
 - name: Sleep playbook
   hosts: bern
   tasks:
-  - name: Sleep for 10 seconds
-    command: /bin/sleep 10
-    async: 1000
-    poll: 0
-    register: sleep_result
-  - debug:
-      var: sleep_result
-  - name: Echo "Done"
-    command: echo "Done"
-  - name: Check sleep result
-    async_status:
-      jid: "{{ sleep_result.ansible_job_id }}"
-    register: check_result
-    until: check_result.finished
-    retries: 100
-    delay: 1
-  - debug:
-      var: check_result
+    - name: Sleep for 10 seconds
+      ansible.builtin.command: /bin/sleep 10
+      async: 1000
+      poll: 0
+      register: sleep_result
 
+    - name: Debug sleep_result
+      ansible.builtin.debug:
+        var: sleep_result
+
+    - name: Echo "Done"
+      ansible.builtin.command: echo "Done"
+
+    - name: Check sleep result
+      ansible.builtin.async_status:
+        jid: "{{ sleep_result.ansible_job_id }}"
+      register: check_result
+      until: check_result.finished
+      retries: 100
+      delay: 1
+      
+    - name: Debug check_result
+      ansible.builtin.debug:
+        var: check_result
+...
