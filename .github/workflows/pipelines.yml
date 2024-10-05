@@ -141,4 +141,4 @@ jobs:
           args: ""
           setup_python: "true"
           working_directory: "./ansible"
-          requirements_file: ""
+          requirements_file: "tests/requirements.yml"
