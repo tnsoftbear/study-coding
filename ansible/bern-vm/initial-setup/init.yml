@@ -20,7 +20,7 @@
         state: absent
         regexp: '^deb cdrom'
 
-    - name: Install packages
+    - name: Install packages (sudo, vim)
       ansible.builtin.apt:
         name:
           - vim
