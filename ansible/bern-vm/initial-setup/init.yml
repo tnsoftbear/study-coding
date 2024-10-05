@@ -1,6 +1,7 @@
 # ansible-playbook --user root -k --limit bern_vm1 init.yml
 ---
-- hosts: all
+- name: Bootstrap VM
+  hosts: all
   become: true
   tasks:
 
@@ -25,17 +26,18 @@
           - vim
           - sudo
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Generate password hash
       ansible.builtin.command: "openssl passwd -6 a"
       register: password_hash
+      changed_when: password_hash.rc != 0
 
     - name: Create user 'ansible' and add to 'sudo' group
       ansible.builtin.user:
         name: ansible
         groups: sudo
-        append: yes
+        append: true
         password: "{{ password_hash.stdout }}"
 
     - name: Upload SSH public key for ansible user
