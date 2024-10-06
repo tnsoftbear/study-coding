@@ -9,11 +9,12 @@
 
   tasks:
     - name: Remove user
-      user:
+      ansible.builtin.user:
         name: ansibleuser
         state: absent
 
     - name: Remove curl
-      apt:
+      ansible.builtin.apt:
         name: curl
         state: absent
+...

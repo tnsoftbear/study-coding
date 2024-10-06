@@ -9,13 +9,16 @@
       async: 1000
       poll: 0
       register: sleep_result
+      changed_when: false
 
     - name: Debug sleep_result
       ansible.builtin.debug:
         var: sleep_result
+      changed_when: false
 
     - name: Echo "Done"
       ansible.builtin.command: echo "Done"
+      changed_when: false
 
     - name: Check sleep result
       ansible.builtin.async_status:
@@ -24,7 +27,8 @@
       until: check_result.finished
       retries: 100
       delay: 1
-      
+      changed_when: false
+
     - name: Debug check_result
       ansible.builtin.debug:
         var: check_result

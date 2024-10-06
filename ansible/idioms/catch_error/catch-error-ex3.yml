@@ -1,25 +1,31 @@
 # ansible-playbook --user igor -i ./inventory.ini catch-error-ex3.yml
-
-- name: main
+---
+- name: "Error handling example #3"
   hosts: bern_vm1
   tasks:
     - name: Preconfig block
       when: ansible_facts['distribution'] == 'Ubuntu'  # т.к. не убунту, то этот блок будет пропущен
       block:
         - name: Fail on FAILED
-          command: echo "FAILED"
+          ansible.builtin.command: echo "FAILED"
           register: command_result
           failed_when: "'FAILED' in command_result.stdout"
+          changed_when: false
+
         - name: Echo next step
-          command: echo "Next step"
+          ansible.builtin.command: echo "Next step"
+          changed_when: false
       rescue:
         - name: Catch error
-          debug:
+          ansible.builtin.debug:
             var: error
       always:
         - name: Finalize
-          debug:
+          ansible.builtin.debug:
             msg: "Rebooting"
-    - block:
+    - name: Postconfig block
+      block:
         - name: Echo third step
-          command: echo "Third step"
+          ansible.builtin.command: echo "Third step"
+          changed_when: false
+...
