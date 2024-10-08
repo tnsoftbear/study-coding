@@ -1,9 +1,15 @@
-# ansible-playbook --user root -k --limit bern_vm1 init.yml
+# ansible-playbook -k init.yml
 ---
 - name: Bootstrap VM
-  hosts: all
+  hosts: bern_vm1
   become: true
+  remote_user: root
   tasks:
+
+    - name: Restart systemd-timesyncd service
+      ansible.builtin.systemd:
+        name: systemd-timesyncd
+        state: restarted
 
     - name: Add APT repositories
       ansible.builtin.blockinfile:
@@ -17,16 +23,16 @@
     - name: Remove CD-ROM repository
       ansible.builtin.lineinfile:
         path: /etc/apt/sources.list
-        state: absent
         regexp: '^deb cdrom'
+        state: absent
 
     - name: Install packages (sudo, vim)
       ansible.builtin.apt:
         name:
-          - vim
           - sudo
-        state: present
+          - vim
         update_cache: true
+        state: present
 
     - name: Generate password hash
       ansible.builtin.command: "openssl passwd -6 a"
@@ -38,20 +44,25 @@
         name: ansible
         groups: sudo
         append: true
+        shell: /bin/bash
         password: "{{ password_hash.stdout }}"
+        state: present
 
     - name: Upload SSH public key for ansible user
       ansible.posix.authorized_key:
         user: ansible
-        state: present
         key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+        state: present
 
     - name: Disable root SSH login
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin yes'
         line: 'PermitRootLogin no'
+      notify:
+        - Restart SSH service
 
+  handlers:
     - name: Restart SSH service
       ansible.builtin.service:
         name: ssh
