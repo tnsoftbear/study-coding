@@ -1,19 +1,12 @@
-terraform {
-    required_providers {
-        libvirt = {
-            source = "dmacvicar/libvirt"
-            version = "0.8.0"
-        }
-    }
-}
-
+// https://registry.terraform.io/providers/dmacvicar/libvirt/latest/docs/resources/volume
 resource "libvirt_volume" "root" {
   name = "${var.domain_name}-root"
   pool = var.pool_name
-  source = "https://cloud.debian.org/images/cloud/sid/daily/20241011-1897/debian-sid-generic-amd64-daily-20241011-1897.qcow2"
+  source = var.volume_source
   format = "qcow2"
 }
 
+// https://registry.terraform.io/providers/dmacvicar/libvirt/latest/docs/resources/cloudinit
 resource "libvirt_cloudinit_disk" "commoninit" {
   name = "${var.domain_name}-commoninit"
   pool = var.pool_name
@@ -30,6 +23,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
   })
 }
 
+// https://registry.terraform.io/providers/dmacvicar/libvirt/latest/docs/resources/domain
 resource "libvirt_domain" "server" {
   name = var.domain_name
   memory = var.domain_memory
@@ -42,23 +36,5 @@ resource "libvirt_domain" "server" {
 
   disk {
     volume_id = libvirt_volume.root.id
-  }
-
-  console {
-    type = "pty"
-    target_port = "0"
-    target_type = "serial"
-  }
-
-  console {
-    type = "pty"
-    target_type = "virtio"
-    target_port = "1"
-  }
-
-  graphics {
-    type = "spice"
-    listen_type = "address"
-    autoport = true
   }
 }
