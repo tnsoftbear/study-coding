@@ -15,6 +15,9 @@ provider "libvirt" {
 locals {
   project_name = "cairo"
   network_zone = "cairo.local"
+  network_mask = "10.0.2.0"
+  network_bits = 24
+  network_range = "${local.network_mask}/${local.network_bits}"
   volume_source = "/qemu/qcow2/debian-sid-generic-amd64-daily-20241011-1897.qcow2"
   vm_props = {
     vm1 = {name = "${local.project_name}-vm1", ip = "10.0.2.11"}
@@ -28,7 +31,7 @@ resource "libvirt_network" "network" {
   autostart = true
   mode = "nat"
   domain = local.network_zone
-  addresses = ["10.0.2.0/24"]
+  addresses = [local.network_range]
 
   dns {
     enabled = true
@@ -44,23 +47,23 @@ resource "libvirt_pool" "pool" {
 }
 
 module "vms" {
-  source = "./vmdomain"
-  for_each = local.vm_props
+  source                = "./vmdomain"
+  for_each              = local.vm_props
 
-  domain_name     = each.value.name
-  domain_memory = 1024
-  domain_vcpu = 1
+  domain_name           = each.value.name
+  domain_memory         = 1024
+  domain_vcpu           = 1
   
-  network_name = libvirt_network.network.name
-  network_zone = local.network_zone
-  network_address = each.value.ip
-  network_bits = 24
-  network_gateway = "10.0.2.1"
+  network_address       = each.value.ip
+  network_bits          = local.network_bits
+  network_gateway       = cidrhost(local.network_range, 1)
+  network_name          = libvirt_network.network.name
+  network_zone          = local.network_zone
 
-  pool_name = libvirt_pool.pool.name
-  volume_source = local.volume_source
+  pool_name             = libvirt_pool.pool.name
+  volume_source         = local.volume_source
 
-  ssh_public_key_path = file("~/.ssh/id_rsa.pub")
+  ssh_public_key_path   = file("~/.ssh/id_rsa.pub")
 }
 
 output "vm1_domain_name" {
@@ -88,27 +91,6 @@ output "vm_details" {
     vm.domain_name => vm.network_address
   }
 }
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-
-# module "vms" {
-#   count = 2
-#   source = "./vmdomain"
-
-#   domain_name = "${local.project_name}-vm${count.index + 1}"
-#   domain_memory = "1024"
-#   domain_vcpu = 1
-  
-#   network_name = libvirt_network.network.name
-#   network_zone = local.network_zone
-#   network_address = cidrhost("10.0.2.0/24", sum([11, count.index]))
-#   network_bits = 24
-#   network_gateway = "10.0.2.1"
-
-#   pool_name = libvirt_pool.pool.name
-
-#   ssh_public_key_path = file("~/.ssh/id_rsa.pub")
-# }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
