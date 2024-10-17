@@ -47,7 +47,7 @@ module "masters" {
   count = 1
 
   domain_name       = "${local.project_name}-master${count.index}"
-  domain_memory     = 2048
+  domain_memory     = 1664
   domain_vcpu       = 1
   
   network_name      = libvirt_network.network.name
@@ -67,7 +67,7 @@ module "nodes" {
   count = 2
 
   domain_name       = "${local.project_name}-node${count.index}"
-  domain_memory     = 2048
+  domain_memory     = 1152
   domain_vcpu       = 1
   
   network_name      = libvirt_network.network.name
@@ -83,7 +83,7 @@ module "nodes" {
 }
 
 resource "local_file" "inventory_file" {
-  content = templatefile("./templates/inventory.tpl", 
+  content = templatefile("./templates/inventory.ini.j2", 
     {
       masters = module.masters
       nodes = module.nodes

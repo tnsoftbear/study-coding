@@ -26,7 +26,7 @@ $ git checkout -b v2.26.0 tags/v2.26.0
 # Install virtual environment tools
 $ pamac install python-virtualenvwrapper
 $ virtualenv ./.env
-$ . ./.venv/bin/activate
+$ . ./.env/bin/activate
 
 # Install Kubespray dependencies
 (.venv) pip install -r ./requirements.txt

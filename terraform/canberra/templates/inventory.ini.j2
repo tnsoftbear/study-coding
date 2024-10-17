@@ -21,9 +21,6 @@ ${ master["domain_name"] }
 ${ node["domain_name"] }
 %{ endfor ~}
 
-[calico_rr]
-
 [k8s_cluster:children]
 kube_control_plane
 kube_node
-calico_rr
