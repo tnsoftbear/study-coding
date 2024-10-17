@@ -4,6 +4,10 @@
 
 This repository contains different sources written by me as result of studing different programming languages and coding practices.
 
+## Ansible
+
+* [Bern project](https://github.com/tnsoftbear/study-coding/tree/master/ansible/bern/) Initial setup for the Debian 12 VM and MariaDB installation.
+
 ## Bash
 
 Currently includes solutions for tasks of exercism.com case studies and my own experiments.
@@ -32,6 +36,11 @@ Currently includes few solutions for tasks of exercism.com case studies.
 ## Scala
 
 Nothing interesting.
+
+## Terraform
+
+* [Cairo project](https://github.com/tnsoftbear/study-coding/tree/master/terraform/cairo). This Terraform configuration is aimed at automating the creation and management of a virtual machine environment using the libvirt provider with QEMU on a Linux system. The objective is to deploy a fully operational VM with customizable networking, storage, and initialization settings, utilizing cloud-init for provisioning.
+* [Canberra project](https://github.com/tnsoftbear/study-coding/tree/master/terraform/canberra). This project focuses on setting up a Kubernetes cluster using Kubespray and Ansible, deployed on virtual machines provisioned and managed through Terraform.
 
 ## TypeScript
 
