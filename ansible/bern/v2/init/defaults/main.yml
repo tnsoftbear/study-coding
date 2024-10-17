@@ -1,0 +1,11 @@
+---
+ssh_public_key_path: '/home/ansible/.ssh/id_rsa.pub'
+user_name: 'ansible'
+user_password: 'a'
+user_shell: '/bin/bash'
+user_groups: ['sudo']
+additional_packages:
+  - sudo
+  - vim
+  - mc
+...

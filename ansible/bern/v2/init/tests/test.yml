@@ -1,0 +1,88 @@
+---
+- name: Test the "init" role
+  hosts: test
+  tasks:
+    - name: Load variables from defaults
+      ansible.builtin.include_vars:
+        file: "../defaults/main.yml"
+
+    - name: Check if systemd-timesyncd service is running
+      ansible.builtin.systemd:
+        name: systemd-timesyncd
+        state: started
+      register: timesyncd_service_status
+
+    - name: Assert that systemd-timesyncd service is running
+      ansible.builtin.assert:
+        that:
+          - timesyncd_service_status.changed == false
+        fail_msg: "systemd-timesyncd service is not running."
+
+    - name: Read the current /etc/apt/sources.list file
+      ansible.builtin.slurp:
+        src: /etc/apt/sources.list
+      register: current_sources_list
+
+    - name: Load expected sources.list content from role
+      ansible.builtin.set_fact:
+        expected_sources_list: "{{ lookup('file', '../files/sources.list') }}"
+
+    - name: Assert that /etc/apt/sources.list matches the expected sources.list
+      ansible.builtin.assert:
+        that:
+          - current_sources_list['content'] | b64decode | trim == expected_sources_list | trim
+        fail_msg: "The /etc/apt/sources.list file does not match the expected sources.list."
+
+    - name: Check if additional packages are installed
+      ansible.builtin.apt:
+        name: "{{ additional_packages }}"
+        state: present
+      register: package_status
+
+    - name: Assert that additional packages are installed
+      ansible.builtin.assert:
+        that:
+          - package_status is not failed
+        fail_msg: "One or more additional packages failed to install."
+
+    - name: Check if the user 'ansible' exists
+      ansible.builtin.getent:
+        database: passwd
+        key: "{{ user_name }}"
+      register: user_check
+
+    - name: Assert that user 'ansible' exists
+      ansible.builtin.assert:
+        that:
+          - user_check is not failed
+        fail_msg: "User 'ansible' was not created."
+
+    - name: Check if user 'ansible' is in the sudo group
+      ansible.builtin.command: "groups {{ user_name }}"
+      register: user_groups
+      changed_when: false
+
+    - name: Assert that user 'ansible' is in the sudo group
+      ansible.builtin.assert:
+        that:
+          - "user_groups.stdout is search('sudo')"
+        fail_msg: "User 'ansible' is not in the sudo group."
+      changed_when: false
+
+    - name: Verify SSH public key for ansible user
+      ansible.builtin.command: "grep '{{ lookup('file', ssh_public_key_path) }}' /home/{{ user_name }}/.ssh/authorized_keys"
+      register: ssh_key_status
+      failed_when: ssh_key_status.rc != 0
+      changed_when: false
+
+    - name: Check if root SSH login is disabled
+      ansible.builtin.command: "grep '^PermitRootLogin' /etc/ssh/sshd_config"
+      register: ssh_config_check
+      changed_when: false
+
+    - name: Assert that root SSH login is disabled
+      ansible.builtin.assert:
+        that:
+          - ssh_config_check.stdout == "PermitRootLogin no"
+        fail_msg: "Root SSH login is not disabled."
+...

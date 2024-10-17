@@ -1,0 +1,9 @@
+# ansible-playbook -k init.yml
+---
+- name: Bootstrap VM
+  hosts: bern_vm1
+  become: true
+  remote_user: root
+  roles:
+    - init
+...

@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: tnsoftbear
+  description: Initial steps for VM setup
+  company: Bern Inc
+  license: MIT
+  min_ansible_version: "2.1"
+  galaxy_tags:
+    - debian
+    - setup
+dependencies: []
+...

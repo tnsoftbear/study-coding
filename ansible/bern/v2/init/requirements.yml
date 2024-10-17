@@ -1,0 +1,6 @@
+---
+collections:
+  - name: ansible.posix
+    version: ">=1.6.0"
+    source: https://galaxy.ansible.com
+...

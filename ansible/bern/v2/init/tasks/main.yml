@@ -1,0 +1,49 @@
+---
+- name: Restart systemd-timesyncd service
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+
+- name: Replace /etc/apt/sources.list with custom sources.list
+  ansible.builtin.copy:
+    src: sources.list
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+
+- name: Install
+  ansible.builtin.apt:
+    name: "{{ additional_packages }}"
+    update_cache: true
+    state: present
+
+- name: Generate password hash
+  ansible.builtin.command: "openssl passwd -6 {{ user_password }}"
+  register: password_hash
+  changed_when: password_hash.rc != 0
+
+- name: Create user 'ansible' and add to 'sudo' group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: "{{ user_groups }}"
+    append: true
+    shell: "{{ user_shell }}"
+    password: "{{ password_hash.stdout }}"
+    state: present
+
+- name: Upload SSH public key for ansible user
+  ansible.posix.authorized_key:
+    user: "{{ user_name }}"
+    key: "{{ lookup('file', ssh_public_key_path) }}"
+    state: present
+
+- name: Disable root SSH login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin yes'
+    line: 'PermitRootLogin no'
+  notify:
+    - Restart SSH service
+...
