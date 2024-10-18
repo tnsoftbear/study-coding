@@ -24,7 +24,7 @@
 
     - name: Check if apt packages are installed
       ansible.builtin.apt:
-        name: "{{ apt_packages }}"
+        name: "{{ mariadb_var.apt.packages }}"
         state: present
       register: package_status
 
@@ -36,18 +36,18 @@
 
     - name: Get keyrings directory stats
       ansible.builtin.stat:
-        path: "{{ apt_keyrings_dir_path }}"
-      register: apt_keyrings_dir
+        path: "{{ mariadb_var.apt.keyring.dir.path }}"
+      register: keyrings_dir_stat
 
     - name: Assert keyrings directory exists
       ansible.builtin.assert:
         that:
-          - apt_keyrings_dir.stat.exists
-        fail_msg: "{{ apt_keyrings_dir_path }} directory does not exist."
+          - keyrings_dir_stat.stat.exists
+        fail_msg: "{{ mariadb_var.apt.keyring.dir.path }} directory does not exist."
 
     - name: Get MariaDB signing key file stats
       ansible.builtin.stat:
-        path: "{{ apt_keyrings_dir_path }}/{{ apt_keyring_file_name }}"
+        path: "{{ mariadb_var.apt.keyring.dir.path }}/{{ mariadb_var.apt.keyring.file.name }}"
       register: mariadb_key
 
     - name: Assert MariaDB signing key is downloaded
@@ -58,13 +58,13 @@
 
     - name: Get content of apt sources list
       ansible.builtin.slurp:
-        src: "{{ apt_sources_file_path }}"
+        src: "{{ mariadb_var.apt.sources_file_path }}"
       register: sources_list_content
 
     - name: Assert MariaDB repo is present in sources.list
       ansible.builtin.assert:
         that:
-          - "apt_repo_info.splitlines()[0] in sources_list_content['content'] | b64decode"
+          - "mariadb_var.apt.repo_info.splitlines()[0] in sources_list_content['content'] | b64decode"
         fail_msg: "MariaDB repository was not added to sources.list."
 
     - name: Check MariaDB installation

@@ -7,41 +7,41 @@
 - name: Replace /etc/apt/sources.list with custom sources.list
   ansible.builtin.copy:
     src: sources.list
-    dest: "{{ apt_sources_file_path }}"
+    dest: "{{ init_var.apt.sources_file.path }}"
     owner: root
     group: root
-    mode: "{{ apt_sources_file_permissions }}"
+    mode: "{{ init_var.apt.sources_file.permissions }}"
     backup: false
 
-- name: Install
+- name: Install packages
   ansible.builtin.apt:
-    name: "{{ apt_packages }}"
+    name: "{{ init_var.apt.packages }}"
     update_cache: true
     state: present
 
 - name: Generate password hash
-  ansible.builtin.command: "openssl passwd -6 {{ user_password }}"
+  ansible.builtin.command: "openssl passwd -6 {{ init_def.user.password }}"
   register: password_hash
   changed_when: password_hash.rc != 0
 
 - name: Create user 'ansible' and add to 'sudo' group
   ansible.builtin.user:
-    name: "{{ user_name }}"
-    groups: "{{ user_groups }}"
+    name: "{{ init_def.user.name }}"
+    groups: "{{ init_def.user.groups }}"
     append: true
-    shell: "{{ user_shell }}"
+    shell: "{{ init_def.user.shell }}"
     password: "{{ password_hash.stdout }}"
     state: present
 
 - name: Upload SSH public key for ansible user
   ansible.posix.authorized_key:
-    user: "{{ user_name }}"
-    key: "{{ lookup('file', ssh_public_key_path) }}"
+    user: "{{ init_def.user.name }}"
+    key: "{{ lookup('file', init_def.user.ssh_public_key_path) }}"
     state: present
 
 - name: Disable root SSH login
   ansible.builtin.lineinfile:
-    path: "{{ sshd_config_file_path }}"
+    path: "{{ init_var.sshd.config_file_path }}"
     regexp: '^PermitRootLogin yes'
     line: 'PermitRootLogin no'
   notify:

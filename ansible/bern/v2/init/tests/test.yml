@@ -1,12 +1,15 @@
+# ansible-playbook -i init/tests/inventory init/tests/test.yml
 ---
 - name: Test the "init" role
   hosts: test
-  # roles:
-  #   - init
   tasks:
     - name: Load variables from defaults
       ansible.builtin.include_vars:
-        file: "../defaults/main.yml"
+        dir: ../defaults
+
+    - name: Load variables from vars
+      ansible.builtin.include_vars:
+        dir: ../vars
 
     - name: Check if systemd-timesyncd service is running
       ansible.builtin.systemd:
@@ -37,7 +40,7 @@
 
     - name: Check if apt packages are installed
       ansible.builtin.apt:
-        name: "{{ apt_packages }}"
+        name: "{{ init_var.apt.packages }}"
         state: present
       register: package_status
 
@@ -50,7 +53,7 @@
     - name: Check if the user 'ansible' exists
       ansible.builtin.getent:
         database: passwd
-        key: "{{ user_name }}"
+        key: "{{ init_def.user.name }}"
       register: user_check
 
     - name: Assert that user 'ansible' exists
@@ -60,7 +63,7 @@
         fail_msg: "User 'ansible' was not created."
 
     - name: Check if user 'ansible' is in the sudo group
-      ansible.builtin.command: "groups {{ user_name }}"
+      ansible.builtin.command: "groups {{ init_def.user.name }}"
       register: user_groups
       changed_when: false
 
@@ -72,7 +75,7 @@
       changed_when: false
 
     - name: Verify SSH public key for ansible user
-      ansible.builtin.command: "grep '{{ lookup('file', ssh_public_key_path) }}' /home/{{ user_name }}/.ssh/authorized_keys"
+      ansible.builtin.command: "grep '{{ lookup('file', init_def.user.ssh_public_key_path) }}' /home/{{ init_def.user.name }}/.ssh/authorized_keys"
       register: ssh_key_status
       failed_when: ssh_key_status.rc != 0
       changed_when: false

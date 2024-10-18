@@ -1,2 +1,7 @@
 ---
 # defaults file for mariadb
+mariadb_def:
+  user:
+    login: admin
+    password: a
+...

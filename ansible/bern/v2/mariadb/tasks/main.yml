@@ -7,33 +7,33 @@
 
 - name: Install packages (apt-transport-https, curl)
   ansible.builtin.apt:
-    name: "{{ apt_packages }}"
-    state: present
+    name: "{{ mariadb_var.apt.packages }}"
     update_cache: true
+    state: present
 
 - name: Create the directory /etc/apt/keyrings
   ansible.builtin.file:
-    path: "{{ apt_keyrings_dir_path }}"
+    path: "{{ mariadb_var.apt.keyring.dir.path }}"
+    mode: "{{ mariadb_var.apt.keyring.dir.permissions }}"
     state: directory
-    mode: "{{ apt_keyrings_dir_permissions }}"
 
 - name: Download the MariaDB release signing key
   ansible.builtin.get_url:
-    url: "{{ apt_keyring_key_url }}"
-    dest: "{{ apt_keyrings_dir_path }}/{{ apt_keyring_file_name }}"
-    mode: "{{ apt_keyring_file_permissions }}"
+    url: "{{ mariadb_var.apt.keyring.key_url }}"
+    dest: "{{ mariadb_var.apt.keyring.dir.path }}/{{ mariadb_var.apt.keyring.file.name }}"
+    mode: "{{ mariadb_var.apt.keyring.file.permissions }}"
 
 - name: Add MariaDB Lithuanian APT repository
   ansible.builtin.blockinfile:
-    path: "{{ apt_sources_file_path }}"
+    path: "{{ mariadb_var.apt.sources_file_path }}"
     insertafter: EOF
-    block: "{{ apt_repo_info }}"
+    block: "{{ mariadb_var.apt.repo_info }}"
 
 - name: Install MariaDB
   ansible.builtin.apt:
     name: mariadb-server
-    state: present
     update_cache: true
     autoclean: true
     autoremove: true
+    state: present
 ...

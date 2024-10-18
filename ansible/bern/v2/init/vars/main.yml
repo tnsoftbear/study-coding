@@ -1,5 +1,13 @@
 ---
-apt_sources_file_path: '/etc/apt/sources.list'
-apt_sources_file_permissions: '0644'
-sshd_config_file_path: '/etc/ssh/sshd_config'
+init_var:
+  apt:
+    sources_file:
+      path: '/etc/apt/sources.list'
+      permissions: '0644'
+    packages:
+      - sudo
+      - vim
+      - mc
+  sshd:
+    config_file_path: '/etc/ssh/sshd_config'
 ...
