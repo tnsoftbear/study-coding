@@ -1,4 +1,4 @@
-# ansible-playbook -k init-only.yml
+# ansible-playbook -k full.yml
 ---
 - name: Bootstrap VM
   hosts: bern_vm1
@@ -7,4 +7,5 @@
   remote_user: root       # ssh <remote_user>@host
   roles:
     - init
+    - mariadb
 ...

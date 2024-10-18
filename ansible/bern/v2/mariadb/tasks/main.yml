@@ -1,0 +1,39 @@
+---
+# tasks file for mariadb
+- name: Restart systemd-timesyncd service
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+
+- name: Install packages (apt-transport-https, curl)
+  ansible.builtin.apt:
+    name: "{{ apt_packages }}"
+    state: present
+    update_cache: true
+
+- name: Create the directory /etc/apt/keyrings
+  ansible.builtin.file:
+    path: "{{ apt_keyrings_dir_path }}"
+    state: directory
+    mode: "{{ apt_keyrings_dir_permissions }}"
+
+- name: Download the MariaDB release signing key
+  ansible.builtin.get_url:
+    url: "{{ apt_keyring_key_url }}"
+    dest: "{{ apt_keyrings_dir_path }}/{{ apt_keyring_file_name }}"
+    mode: "{{ apt_keyring_file_permissions }}"
+
+- name: Add MariaDB Lithuanian APT repository
+  ansible.builtin.blockinfile:
+    path: "{{ apt_sources_file_path }}"
+    insertafter: EOF
+    block: "{{ apt_repo_info }}"
+
+- name: Install MariaDB
+  ansible.builtin.apt:
+    name: mariadb-server
+    state: present
+    update_cache: true
+    autoclean: true
+    autoremove: true
+...

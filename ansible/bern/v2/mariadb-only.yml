@@ -1,0 +1,10 @@
+# ansible-playbook -K mariadb.yml
+---
+- name: "Install MariaDB"
+  hosts: bern_vm1
+  become: true
+  become_user: root
+  remote_user: ansible
+  roles:
+    - mariadb
+...

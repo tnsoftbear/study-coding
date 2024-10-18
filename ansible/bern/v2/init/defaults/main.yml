@@ -4,7 +4,7 @@ user_name: 'ansible'
 user_password: 'a'
 user_shell: '/bin/bash'
 user_groups: ['sudo']
-additional_packages:
+apt_packages:
   - sudo
   - vim
   - mc

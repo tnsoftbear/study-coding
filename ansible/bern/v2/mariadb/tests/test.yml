@@ -1,0 +1,81 @@
+# ansible-playbook -K -i mariadb/tests/inventory mariadb/tests/test.yml
+---
+- name: Test for the "mariadb" role
+  hosts: test
+  remote_user: ansible
+  become: true
+  become_user: root
+  tasks:
+    - name: Load variables from vars
+      ansible.builtin.include_vars:
+        file: "../vars/main.yml"
+
+    - name: Check if systemd-timesyncd service is running
+      ansible.builtin.systemd:
+        name: systemd-timesyncd
+        state: started
+      register: timesyncd_service_status
+
+    - name: Assert that systemd-timesyncd service is running
+      ansible.builtin.assert:
+        that:
+          - timesyncd_service_status.changed == false
+        fail_msg: "systemd-timesyncd service is not running."
+
+    - name: Check if apt packages are installed
+      ansible.builtin.apt:
+        name: "{{ apt_packages }}"
+        state: present
+      register: package_status
+
+    - name: Assert that apt packages are installed
+      ansible.builtin.assert:
+        that:
+          - package_status is not failed
+        fail_msg: "One or more appt packages failed to install."
+
+    - name: Get keyrings directory stats
+      ansible.builtin.stat:
+        path: "{{ apt_keyrings_dir_path }}"
+      register: apt_keyrings_dir
+
+    - name: Assert keyrings directory exists
+      ansible.builtin.assert:
+        that:
+          - apt_keyrings_dir.stat.exists
+        fail_msg: "{{ apt_keyrings_dir_path }} directory does not exist."
+
+    - name: Get MariaDB signing key file stats
+      ansible.builtin.stat:
+        path: "{{ apt_keyrings_dir_path }}/{{ apt_keyring_file_name }}"
+      register: mariadb_key
+
+    - name: Assert MariaDB signing key is downloaded
+      ansible.builtin.assert:
+        that:
+          - mariadb_key.stat.exists
+        fail_msg: "MariaDB release signing key was not downloaded."
+
+    - name: Get content of apt sources list
+      ansible.builtin.slurp:
+        src: "{{ apt_sources_file_path }}"
+      register: sources_list_content
+
+    - name: Assert MariaDB repo is present in sources.list
+      ansible.builtin.assert:
+        that:
+          - "apt_repo_info.splitlines()[0] in sources_list_content['content'] | b64decode"
+        fail_msg: "MariaDB repository was not added to sources.list."
+
+    - name: Check MariaDB installation
+      ansible.builtin.command: mariadb --version
+      register: mariadb_version
+      ignore_errors: true
+      changed_when: false
+
+    - name: Assert MariaDB is installed
+      ansible.builtin.assert:
+        that:
+          - mariadb_version.stdout is search('mariadb')
+        fail_msg: "MariaDB server is not installed or not functioning correctly."
+...

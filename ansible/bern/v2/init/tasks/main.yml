@@ -7,15 +7,15 @@
 - name: Replace /etc/apt/sources.list with custom sources.list
   ansible.builtin.copy:
     src: sources.list
-    dest: /etc/apt/sources.list
+    dest: "{{ apt_sources_file_path }}"
     owner: root
     group: root
-    mode: '0644'
-    backup: true
+    mode: "{{ apt_sources_file_permissions }}"
+    backup: false
 
 - name: Install
   ansible.builtin.apt:
-    name: "{{ additional_packages }}"
+    name: "{{ apt_packages }}"
     update_cache: true
     state: present
 
@@ -41,7 +41,7 @@
 
 - name: Disable root SSH login
   ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
+    path: "{{ sshd_config_file_path }}"
     regexp: '^PermitRootLogin yes'
     line: 'PermitRootLogin no'
   notify:

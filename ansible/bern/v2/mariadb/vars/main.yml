@@ -1,0 +1,14 @@
+---
+# vars file for mariadb
+apt_packages:
+  - apt-transport-https
+  - curl
+apt_keyrings_dir_path: '/etc/apt/keyrings'
+apt_keyrings_dir_permissions: '0755'
+apt_keyring_file_name: 'mariadb-keyring.pgp'
+apt_keyring_file_permissions: '0644'
+apt_keyring_key_url: 'https://mariadb.org/mariadb_release_signing_key.pgp'
+apt_sources_file_path: '/etc/apt/sources.list'
+apt_repo_info: |
+  deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://mariadb.mirror.serveriai.lt/repo/11.4/debian bookworm main
+...
